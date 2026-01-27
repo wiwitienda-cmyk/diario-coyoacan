@@ -78,19 +78,27 @@ function App() {
         </div>
 
         {/* Main Header */}
-        <header className="border-b-4 border-ink p-4 md:p-8 flex justify-between items-center bg-newsprint sticky top-0 z-40">
+        <header className="border-b-4 border-ink p-4 md:p-8 flex flex-col md:flex-row justify-between items-center bg-newsprint sticky top-0 z-40 gap-4">
           <div>
             <h1 className="text-4xl md:text-6xl font-headline leading-none">Diario Coyoacán</h1>
             <p className="font-subhead text-sm md:text-base uppercase tracking-widest mt-1 text-rust">
               {articleData.date} • {articleData.category}
             </p>
           </div>
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 border-2 border-ink hover:bg-ink hover:text-newsprint transition-colors"
-          >
-            {isMenuOpen ? <X /> : <Menu />}
-          </button>
+          <div className="flex gap-4 items-center">
+            <a href="/" className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors hidden md:block">
+              Inicio
+            </a>
+            <a href="https://www.lodgify.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-rust text-white border-2 border-ink font-subhead uppercase text-sm hover:bg-ink transition-colors shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1A1A1A]">
+              Reservaciones
+            </a>
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 border-2 border-ink hover:bg-ink hover:text-newsprint transition-colors"
+            >
+              {isMenuOpen ? <X /> : <Menu />}
+            </button>
+          </div>
         </header>
 
         <main className="max-w-7xl mx-auto p-4 md:p-8 grid grid-cols-1 md:grid-cols-12 gap-8">
