@@ -55,14 +55,14 @@ function App() {
           <meta property="og:url" content="https://diariocoyoacan.com/cafe-avellaneda" />
           <meta property="og:title" content={articleData.headline} />
           <meta property="og:description" content={articleData.summary} />
-          <meta property="og:image" content="/images/cafe-avellaneda-hero.jpg" />
+          <meta property="og:image" content="/images/cafe-avellaneda-real.jpg" />
 
           {/* Twitter */}
           <meta property="twitter:card" content="summary_large_image" />
           <meta property="twitter:url" content="https://diariocoyoacan.com/cafe-avellaneda" />
           <meta property="twitter:title" content={articleData.headline} />
           <meta property="twitter:description" content={articleData.summary} />
-          <meta property="twitter:image" content="/images/cafe-avellaneda-hero.jpg" />
+          <meta property="twitter:image" content="/images/cafe-avellaneda-real.jpg" />
         </Helmet>
 
         {/* Marquee Header */}
@@ -96,10 +96,10 @@ function App() {
             <div className="relative group">
               <div className="absolute inset-0 bg-ink translate-x-2 translate-y-2 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform"></div>
               <img 
-                src="/images/cafe-avellaneda-hero.jpg" 
-                alt="Interior de Café Avellaneda" 
-                className="relative w-full h-[400px] md:h-[500px] object-cover border-4 border-ink grayscale-[20%] group-hover:grayscale-0 transition-all duration-500"
-              />
+              src="/images/cafe-avellaneda-real.jpg" 
+              alt="Café Avellaneda: Taza de café y galleta en mesa rústica" 
+              className="relative w-full h-[400px] md:h-[500px] object-cover border-4 border-ink grayscale-[10%] group-hover:grayscale-0 transition-all duration-500"
+            />
               <div className="absolute top-4 right-4 bg-rust text-white px-4 py-2 font-subhead uppercase text-sm border-2 border-ink rotate-3 shadow-[4px_4px_0px_0px_#1A1A1A]">
                 Recomendado
               </div>
