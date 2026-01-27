@@ -1,0 +1,41 @@
+CREATE TABLE `articles` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`slug` varchar(255) NOT NULL,
+	`dateISO` varchar(10) NOT NULL,
+	`weatherTemp` int NOT NULL,
+	`weatherConditionEs` varchar(50) NOT NULL,
+	`weatherConditionEn` varchar(50) NOT NULL,
+	`locationAddress` varchar(255) NOT NULL,
+	`locationLat` varchar(20) NOT NULL,
+	`locationLng` varchar(20) NOT NULL,
+	`locationMapsUrl` text NOT NULL,
+	`heroImage` varchar(500) NOT NULL,
+	`headlineEs` text NOT NULL,
+	`summaryEs` text NOT NULL,
+	`categoryEs` varchar(100) NOT NULL,
+	`dateEs` varchar(100) NOT NULL,
+	`contentEs` text NOT NULL,
+	`menuItemsEs` text NOT NULL,
+	`hoursWeekEs` varchar(50) NOT NULL,
+	`hoursSundayEs` varchar(50) NOT NULL,
+	`headlineEn` text NOT NULL,
+	`summaryEn` text NOT NULL,
+	`categoryEn` varchar(100) NOT NULL,
+	`dateEn` varchar(100) NOT NULL,
+	`contentEn` text NOT NULL,
+	`menuItemsEn` text NOT NULL,
+	`hoursWeekEn` varchar(50) NOT NULL,
+	`hoursSundayEn` varchar(50) NOT NULL,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `articles_id` PRIMARY KEY(`id`),
+	CONSTRAINT `articles_slug_unique` UNIQUE(`slug`)
+);
+--> statement-breakpoint
+CREATE TABLE `subscribers` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`email` varchar(320) NOT NULL,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `subscribers_id` PRIMARY KEY(`id`),
+	CONSTRAINT `subscribers_email_unique` UNIQUE(`email`)
+);

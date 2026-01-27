@@ -5,9 +5,8 @@ import { MapPin, Clock, Coffee, Navigation, Share2, Menu, X, Globe, Map, QrCode 
 import 'leaflet/dist/leaflet.css';
 import { QRCodeSVG } from 'qrcode.react';
 import { useLocation } from 'wouter';
-
-// Data
-import { getLatestArticle, getArticleById, getAllArticles, ArticleData } from '../data/articles';
+import { trpc } from '@/lib/trpc';
+import { toast } from 'sonner';
 
 // Fix Leaflet marker icon issue
 import L from 'leaflet';
@@ -26,32 +25,116 @@ L.Marker.prototype.options.icon = DefaultIcon;
 export default function DiarioCoyoacan() {
   const [location, setLocation] = useLocation();
   const [lang, setLang] = useState<'es' | 'en'>('es');
-  const [article, setArticle] = useState<ArticleData | null>(null);
+  const [email, setEmail] = useState('');
   
-  // Obtener el ID del artículo de la URL (query param ?id=...)
-  // Nota: wouter no tiene un hook nativo para query params, así que usamos URLSearchParams
+  // Obtener el slug del artículo de la URL (query param ?slug=...)
   const searchParams = new URLSearchParams(window.location.search);
-  const articleId = searchParams.get('id');
+  const articleSlug = searchParams.get('slug');
 
-  useEffect(() => {
-    if (articleId) {
-      const foundArticle = getArticleById(articleId);
-      if (foundArticle) {
-        setArticle(foundArticle);
-      } else {
-        // Si no encuentra el ID, carga el último
-        setArticle(getLatestArticle());
-      }
-    } else {
-      // Si no hay ID en la URL, carga el último (comportamiento por defecto)
-      setArticle(getLatestArticle());
+  // Fetch article data from database
+  const { data: article, isLoading } = trpc.articles.bySlug.useQuery(
+    { slug: articleSlug || '' },
+    { 
+      enabled: !!articleSlug,
     }
-  }, [articleId]);
+  );
+  
+  const { data: latestArticle, isLoading: isLoadingLatest } = trpc.articles.latest.useQuery(
+    undefined,
+    { enabled: !articleSlug }
+  );
+  
+  const { data: allArticles } = trpc.articles.list.useQuery();
+  
+  const subscribeMutation = trpc.newsletter.subscribe.useMutation({
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success(lang === 'es' ? '¡Gracias por suscribirte!' : 'Thank you for subscribing!');
+        setEmail('');
+      } else {
+        toast.error(data.error || 'Error al suscribirse');
+      }
+    },
+    onError: (error) => {
+      toast.error(lang === 'es' ? 'Error al suscribirse' : 'Subscription error');
+    }
+  });
 
-  if (!article) return <div className="min-h-screen flex items-center justify-center bg-newsprint">Cargando...</div>;
+  const currentArticle = articleSlug ? article : latestArticle;
+  
+  if (isLoading || isLoadingLatest || !currentArticle) {
+    return (
+      <div className="min-h-screen bg-newsprint flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-ink mx-auto mb-4"></div>
+          <p className="font-subhead text-lg">Cargando...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const t = article.translations[lang];
-  const allArticles = getAllArticles();
+  // Parse JSON fields
+  const contentEs = JSON.parse(currentArticle.contentEs);
+  const contentEn = JSON.parse(currentArticle.contentEn);
+  const menuItemsEs = JSON.parse(currentArticle.menuItemsEs);
+  const menuItemsEn = JSON.parse(currentArticle.menuItemsEn);
+
+  const t = lang === 'es' ? {
+    headline: currentArticle.headlineEs,
+    summary: currentArticle.summaryEs,
+    category: currentArticle.categoryEs,
+    date: currentArticle.dateEs,
+    weather: currentArticle.weatherConditionEs,
+    content: contentEs,
+    menuItems: menuItemsEs,
+    menuTitle: 'Menú Destacado',
+    locationTitle: 'Ubicación',
+    hoursTitle: 'Horarios',
+    weekHours: 'Lun-Sáb',
+    sundayHours: 'Dom',
+    getDirections: 'Cómo llegar',
+    openMaps: 'Abrir en Maps',
+    share: 'Compartir',
+    subscribeTitle: '¡Suscríbete al Diario!',
+    subscribeText: 'Recibe las mejores recomendaciones de Coyoacán directamente en tu correo cada semana.',
+    subscribePlaceholder: 'Tu correo electrónico',
+    subscribeButton: 'Suscribirse',
+    previousEditions: 'Ediciones Anteriores',
+    recommended: 'Recomendado',
+    scanCode: 'Escanea para llevar',
+    home: 'Inicio',
+    reservations: 'Reservaciones',
+    hoursWeek: currentArticle.hoursWeekEs,
+    hoursSunday: currentArticle.hoursSundayEs,
+  } : {
+    headline: currentArticle.headlineEn,
+    summary: currentArticle.summaryEn,
+    category: currentArticle.categoryEn,
+    date: currentArticle.dateEn,
+    weather: currentArticle.weatherConditionEn,
+    content: contentEn,
+    menuItems: menuItemsEn,
+    menuTitle: 'Featured Menu',
+    locationTitle: 'Location',
+    hoursTitle: 'Opening Hours',
+    weekHours: 'Mon-Sat',
+    sundayHours: 'Sun',
+    getDirections: 'Get Directions',
+    openMaps: 'Open in Maps',
+    share: 'Share',
+    subscribeTitle: 'Subscribe to the Daily!',
+    subscribeText: 'Get the best Coyoacán recommendations directly to your inbox every week.',
+    subscribePlaceholder: 'Your email address',
+    subscribeButton: 'Subscribe',
+    previousEditions: 'Previous Editions',
+    recommended: 'Featured',
+    scanCode: 'Scan to take away',
+    home: 'Home',
+    reservations: 'Reservations',
+    hoursWeek: currentArticle.hoursWeekEn,
+    hoursSunday: currentArticle.hoursSundayEn,
+  };
+
   const shareUrl = window.location.href;
 
   const handleShare = async () => {
@@ -66,48 +149,46 @@ export default function DiarioCoyoacan() {
         console.log('Error sharing', error);
       }
     } else {
-      alert('Link copiado al portapapeles');
+      alert(lang === 'es' ? 'Link copiado al portapapeles' : 'Link copied to clipboard');
       navigator.clipboard.writeText(shareUrl);
     }
   };
 
-  const toggleLang = () => {
-    setLang(prev => prev === 'es' ? 'en' : 'es');
-  };
-
-  const navigateToArticle = (id: string) => {
-    // Navegación simple recargando la URL con el nuevo parámetro
-    window.location.href = `/diario?id=${id}`;
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      subscribeMutation.mutate({ email });
+    }
   };
 
   return (
-    <div className="min-h-screen bg-newsprint text-ink font-body-news selection:bg-rust selection:text-white pt-20">
+    <div className="min-h-screen bg-newsprint text-ink font-body selection:bg-rust selection:text-white">
       <Helmet>
         <title>{t.headline} | Diario Coyoacán</title>
         <meta name="description" content={t.summary} />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://superanfitrion.com.mx/diario?id=${article.id}`} />
+        <meta property="og:url" content={shareUrl} />
         <meta property="og:title" content={t.headline} />
         <meta property="og:description" content={t.summary} />
-        <meta property="og:image" content={article.images.hero} />
+        <meta property="og:image" content={currentArticle.heroImage} />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={`https://superanfitrion.com.mx/diario?id=${article.id}`} />
+        <meta property="twitter:url" content={shareUrl} />
         <meta property="twitter:title" content={t.headline} />
         <meta property="twitter:description" content={t.summary} />
-        <meta property="twitter:image" content={article.images.hero} />
+        <meta property="twitter:image" content={currentArticle.heroImage} />
       </Helmet>
 
       {/* Marquee Header */}
       <div className="bg-ink text-newsprint py-2 overflow-hidden whitespace-nowrap border-b-4 border-rust">
         <div className="animate-marquee inline-block font-subhead uppercase tracking-widest text-sm">
-          HOY EN COYOACÁN: {t.headline} • CLIMA: {t.weather.toUpperCase()} {article.weatherTemp}°C • 
+          HOY EN COYOACÁN: {t.headline} • CLIMA: {t.weather.toUpperCase()} {currentArticle.weatherTemp}°C • 
           HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX • 
           DESCUBRE LOS MEJORES LUGARES DE LA CDMX • 
-          HOY EN COYOACÁN: {t.headline} • CLIMA: {t.weather.toUpperCase()} {article.weatherTemp}°C • 
+          HOY EN COYOACÁN: {t.headline} • CLIMA: {t.weather.toUpperCase()} {currentArticle.weatherTemp}°C • 
           HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX • 
           DESCUBRE LOS MEJORES LUGARES DE LA CDMX •
         </div>
@@ -122,14 +203,14 @@ export default function DiarioCoyoacan() {
           </p>
         </div>
         <div className="flex gap-4 items-center">
-          <button 
-            onClick={toggleLang}
-            className="flex items-center gap-2 px-3 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors"
+          <button
+            onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
+            className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors flex items-center gap-2"
           >
             <Globe className="w-4 h-4" />
             {lang === 'es' ? 'EN' : 'ES'}
           </button>
-          <a href="https://superanfitrion.com.mx/" className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors">
+          <a href="https://superanfitrion.com.mx/" className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors hidden md:block">
             {t.home}
           </a>
           <a href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-rust text-white border-2 border-ink font-subhead uppercase text-sm hover:bg-ink transition-colors shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1A1A1A]">
@@ -145,8 +226,8 @@ export default function DiarioCoyoacan() {
           <div className="relative group">
             <div className="absolute inset-0 bg-ink translate-x-2 translate-y-2 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform"></div>
             <img 
-              src={article.images.hero} 
-              alt={t.headline} 
+              src={currentArticle.heroImage}
+              alt={t.headline}
               className="relative w-full h-[400px] md:h-[500px] object-cover border-4 border-ink grayscale-[10%] group-hover:grayscale-0 transition-all duration-500"
             />
             <div className="absolute top-4 right-4 bg-rust text-white px-4 py-2 font-subhead uppercase text-sm border-2 border-ink rotate-3 shadow-[4px_4px_0px_0px_#1A1A1A]">
@@ -158,12 +239,12 @@ export default function DiarioCoyoacan() {
             {t.headline}
           </h2>
           
-          <p className="text-xl md:text-2xl font-body-news italic text-gray-700 border-l-4 border-rust pl-6 py-2">
+          <p className="text-xl md:text-2xl font-body italic text-gray-700 border-l-4 border-rust pl-6 py-2">
             "{t.summary}"
           </p>
 
-          <div className="prose prose-lg prose-headings:font-headline prose-p:font-body-news max-w-none">
-            {t.content.map((section, idx) => (
+          <div className="prose prose-lg prose-headings:font-headline prose-p:font-body max-w-none">
+            {t.content.map((section: any, idx: number) => (
               <div key={idx} className="mb-8">
                 <h3 className="text-2xl font-bold mb-4 uppercase font-subhead border-b-2 border-ink inline-block pb-1">
                   {section.title}
@@ -175,168 +256,178 @@ export default function DiarioCoyoacan() {
             ))}
           </div>
 
-          {/* Newsletter Section */}
-          <div className="bg-newsprint border-4 border-ink p-8 neo-shadow mt-12 text-center">
-            <h3 className="text-3xl font-headline mb-4">{t.subscribeTitle}</h3>
-            <p className="font-body-news text-lg mb-6">{t.subscribeText}</p>
-            <form className="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
-              <input 
-                type="email" 
-                placeholder={t.subscribePlaceholder}
-                className="flex-1 p-3 border-2 border-ink font-body-news focus:outline-none focus:border-rust"
-              />
-              <button 
-                type="submit"
-                className="px-6 py-3 bg-ink text-white font-subhead uppercase tracking-wider hover:bg-rust transition-colors"
-              >
-                {t.subscribeButton}
-              </button>
-            </form>
+          {/* Menu Highlights Grid */}
+          <div className="bg-white border-4 border-ink p-6 neo-shadow mt-12">
+            <div className="flex items-center gap-3 mb-6 border-b-2 border-ink pb-4">
+              <Coffee className="w-8 h-8 text-rust" />
+              <h3 className="text-2xl font-subhead uppercase">{t.menuTitle}</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {t.menuItems.map((item: any, idx: number) => (
+                <div key={idx} className="flex justify-between items-start border-b border-dashed border-gray-400 pb-2">
+                  <div>
+                    <h4 className="font-bold font-subhead text-lg">{item.item}</h4>
+                    <p className="text-sm text-gray-600 italic">{item.desc}</p>
+                  </div>
+                  <span className="font-bold bg-newsprint px-2 py-1 border border-ink text-sm">
+                    {item.price}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* Sidebar */}
+        {/* Sidebar / Info Panel */}
         <aside className="md:col-span-4 space-y-8">
           
-          {/* Map Widget */}
-          <div className="border-4 border-ink p-4 bg-white neo-shadow">
-            <div className="h-64 w-full mb-4 border-2 border-ink">
-              {/* Key forces remount when location changes */}
+          {/* Map Card */}
+          <div className="bg-white border-4 border-ink p-4 neo-shadow sticky top-32">
+            <div className="h-[300px] w-full border-2 border-ink mb-4 relative z-0">
               <MapContainer 
-                key={`${article.location.lat}-${article.location.lng}`}
-                center={[article.location.lat, article.location.lng]} 
+                center={[parseFloat(currentArticle.locationLat), parseFloat(currentArticle.locationLng)]} 
                 zoom={16} 
-                style={{ height: '100%', width: '100%' }}
                 scrollWheelZoom={false}
+                style={{ height: '100%', width: '100%' }}
               >
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={[article.location.lat, article.location.lng]}>
+                <Marker position={[parseFloat(currentArticle.locationLat), parseFloat(currentArticle.locationLng)]}>
                   <Popup>
-                    {t.headline} <br /> {article.location.address}
+                    {t.headline}
                   </Popup>
                 </Marker>
               </MapContainer>
             </div>
-            
+
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <MapPin className="w-6 h-6 text-rust mt-1 flex-shrink-0" />
                 <div>
-                  <h4 className="font-subhead uppercase text-sm text-gray-500">{t.locationTitle}</h4>
-                  <p className="font-body-news font-bold">{article.location.address}</p>
+                  <h4 className="font-subhead font-bold uppercase">{t.locationTitle}</h4>
+                  <p className="text-sm">{currentArticle.locationAddress}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <Clock className="w-6 h-6 text-rust mt-1 flex-shrink-0" />
                 <div>
-                  <h4 className="font-subhead uppercase text-sm text-gray-500">{t.hoursTitle}</h4>
-                  <p className="font-body-news">{t.weekHours}: {t.hours.week}</p>
-                  <p className="font-body-news">{t.sundayHours}: {t.hours.sunday}</p>
+                  <h4 className="font-subhead font-bold uppercase">{t.hoursTitle}</h4>
+                  <p className="text-sm">{t.weekHours}: {t.hoursWeek}</p>
+                  <p className="text-sm">{t.sundayHours}: {t.hoursSunday}</p>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2 pt-2">
-                <a 
-                  href={article.location.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2 border-2 border-ink flex items-center justify-center gap-2 font-subhead uppercase text-sm hover:bg-ink hover:text-white transition-colors"
-                >
-                  <Navigation className="w-4 h-4" />
-                  {t.getDirections}
-                </a>
-                
-                <a 
-                  href={article.location.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2 bg-blue-600 text-white border-2 border-ink flex items-center justify-center gap-2 font-subhead uppercase text-sm hover:bg-blue-700 transition-colors shadow-[2px_2px_0px_0px_#1A1A1A]"
-                >
-                  <Map className="w-4 h-4" />
-                  {t.openMaps}
-                </a>
-              </div>
+              <a 
+                href={currentArticle.locationMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full bg-blue-600 text-white text-center py-3 font-subhead uppercase tracking-wider hover:bg-blue-700 transition-colors border-2 border-ink flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_#1A1A1A]"
+              >
+                <Map className="w-4 h-4" />
+                {t.openMaps}
+              </a>
             </div>
           </div>
 
-          {/* Menu Highlights */}
-          <div className="border-4 border-ink p-6 bg-newsprint neo-shadow relative overflow-hidden">
-            <div className="absolute -right-4 -top-4 w-16 h-16 bg-rust rotate-45"></div>
-            <h3 className="text-2xl font-headline mb-6 flex items-center gap-2">
-              <Coffee className="w-6 h-6 text-rust" />
-              {t.menuTitle}
-            </h3>
-            <ul className="space-y-4">
-              {t.menuItems.map((item, idx) => (
-                <li key={idx} className="border-b border-gray-300 pb-2 last:border-0">
-                  <div className="flex justify-between items-baseline">
-                    <span className="font-bold font-subhead uppercase">{item.item}</span>
-                    <span className="font-mono text-sm text-rust">{item.price}</span>
-                  </div>
-                  <p className="text-sm text-gray-600 italic">{item.desc}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* QR Code Widget */}
-          <div className="border-4 border-ink p-6 bg-white neo-shadow text-center">
-            <h3 className="text-xl font-headline mb-4 flex items-center justify-center gap-2">
-              <QrCode className="w-5 h-5 text-rust" />
+          {/* QR Code Card */}
+          <div className="bg-white border-4 border-ink p-6 neo-shadow">
+            <h3 className="text-xl font-headline mb-4 flex items-center gap-2">
+              <QrCode className="w-6 h-6 text-rust" />
               {t.scanCode}
             </h3>
-            <div className="bg-white p-2 inline-block border-2 border-ink mb-2">
+            <div className="flex justify-center bg-white p-4 border-2 border-ink">
               <QRCodeSVG 
-                value={`https://superanfitrion.com.mx/diario?id=${article.id}`}
-                size={150}
+                value="https://superanfitrion.com.mx/diario" 
+                size={180}
                 level="H"
                 includeMargin={true}
               />
             </div>
-            <p className="text-xs font-mono text-gray-500 mt-2">superanfitrion.com.mx/diario</p>
+            <p className="text-sm text-center mt-4 text-gray-600">
+              superanfitrion.com.mx/diario
+            </p>
           </div>
 
-          {/* Share Button */}
-          <button 
-            onClick={handleShare}
-            className="w-full py-4 bg-rust text-white font-headline text-xl uppercase tracking-widest border-4 border-ink hover:bg-ink transition-colors flex items-center justify-center gap-3 neo-shadow"
-          >
-            <Share2 className="w-6 h-6" />
-            {t.share}
-          </button>
-
           {/* Previous Editions */}
-          <div className="border-4 border-ink p-4 bg-gray-100">
-            <h4 className="font-subhead uppercase text-sm text-gray-500 mb-3 border-b-2 border-gray-300 pb-1">
-              {t.previousEditions}
-            </h4>
-            <ul className="space-y-2">
-              {allArticles.map((a) => (
-                <li key={a.id}>
-                  <button 
-                    onClick={() => navigateToArticle(a.id)}
-                    className={`text-left w-full hover:text-rust transition-colors ${a.id === article.id ? 'font-bold text-rust' : 'text-gray-600'}`}
+          {allArticles && allArticles.length > 1 && (
+            <div className="bg-white border-4 border-ink p-6 neo-shadow">
+              <h3 className="text-xl font-headline mb-4">{t.previousEditions}</h3>
+              <div className="space-y-3">
+                {allArticles.map((art) => (
+                  <a
+                    key={art.id}
+                    href={`/diario?slug=${art.slug}`}
+                    className={`block p-3 border-2 border-ink hover:bg-newsprint transition-colors ${
+                      art.slug === currentArticle.slug ? 'bg-rust text-white' : ''
+                    }`}
                   >
-                    <span className="block font-subhead text-xs text-gray-400 uppercase">{a.translations[lang].date}</span>
-                    <span className="font-body-news text-sm">{a.translations[lang].headline}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
+                    <p className="font-subhead text-sm uppercase">{art.dateISO}</p>
+                    <p className="text-sm font-bold line-clamp-2">
+                      {lang === 'es' ? art.headlineEs : art.headlineEn}
+                    </p>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Newsletter Subscription */}
+          <div className="bg-rust text-white border-4 border-ink p-6 neo-shadow">
+            <h3 className="text-xl font-headline mb-2">{t.subscribeTitle}</h3>
+            <p className="mb-4 font-body text-sm">{t.subscribeText}</p>
+            <form onSubmit={handleSubscribe} className="space-y-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t.subscribePlaceholder}
+                className="w-full px-4 py-2 border-2 border-ink text-ink"
+                required
+              />
+              <button
+                type="submit"
+                disabled={subscribeMutation.isPending}
+                className="w-full bg-white text-ink py-3 font-subhead uppercase tracking-wider border-2 border-ink hover:bg-newsprint hover:translate-x-1 hover:translate-y-1 transition-transform shadow-[4px_4px_0px_0px_#1A1A1A] disabled:opacity-50"
+              >
+                {subscribeMutation.isPending ? (lang === 'es' ? 'Enviando...' : 'Sending...') : t.subscribeButton}
+              </button>
+            </form>
+          </div>
+
+          {/* Share Card */}
+          <div className="bg-ink text-white border-4 border-rust p-6 neo-shadow">
+            <h3 className="text-xl font-headline mb-4">
+              {lang === 'es' ? '¿Te gustó este artículo?' : 'Did you like this article?'}
+            </h3>
+            <p className="mb-6 font-body text-sm">
+              {lang === 'es' 
+                ? 'Comparte este descubrimiento con tus amigos y planeen su próxima visita a Coyoacán.' 
+                : 'Share this discovery with your friends and plan your next visit to Coyoacán.'}
+            </p>
+            <button 
+              onClick={handleShare}
+              className="w-full bg-white text-ink py-3 font-subhead uppercase tracking-wider border-2 border-rust hover:bg-newsprint hover:translate-x-1 hover:translate-y-1 transition-transform flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_#C1666B]"
+            >
+              <Share2 className="w-4 h-4" />
+              {t.share}
+            </button>
           </div>
 
         </aside>
       </main>
 
-      <footer className="bg-ink text-newsprint py-8 mt-12 border-t-8 border-rust">
-        <div className="max-w-7xl mx-auto px-4 text-center">
+      {/* Footer */}
+      <footer className="bg-ink text-newsprint py-12 mt-12 border-t-8 border-rust">
+        <div className="max-w-7xl mx-auto px-8 text-center">
           <h2 className="text-4xl font-headline mb-4">Diario Coyoacán</h2>
-          <p className="font-mono text-sm opacity-70">
-            &copy; 2026 SuperAnfitrión. Hecho con ❤️ en Coyoacán.
+          <p className="font-subhead uppercase tracking-widest text-sm opacity-70 mb-8">
+            {lang === 'es' ? 'Periodismo local • Cultura • Gastronomía' : 'Local Journalism • Culture • Gastronomy'}
+          </p>
+          <p className="text-xs font-mono opacity-50">
+            &copy; 2026 Diario Coyoacán. {lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
           </p>
         </div>
       </footer>
