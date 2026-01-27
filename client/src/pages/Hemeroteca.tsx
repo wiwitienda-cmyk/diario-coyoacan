@@ -62,10 +62,10 @@ export default function Hemeroteca() {
                 {lang === 'es' ? 'EN' : 'ES'}
               </button>
               <Link href="/">
-                <a className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors flex items-center gap-2">
+                <button className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors flex items-center gap-2">
                   <ArrowLeft className="w-4 h-4" />
                   {t.backToHome}
-                </a>
+                </button>
               </Link>
             </div>
           </div>
@@ -84,7 +84,7 @@ export default function Hemeroteca() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {articles.map((article) => (
               <Link key={article.id} href={`/diario?slug=${article.slug}`}>
-                <a className="group block">
+                <div className="group block cursor-pointer">
                   <div className="relative">
                     {/* Shadow effect */}
                     <div className="absolute inset-0 bg-ink translate-x-2 translate-y-2 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform"></div>
@@ -131,7 +131,7 @@ export default function Hemeroteca() {
                       </div>
                     </div>
                   </div>
-                </a>
+                </div>
               </Link>
             ))}
           </div>
