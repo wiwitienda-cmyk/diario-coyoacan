@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --color-newsprint: #F0F0E8;
+  --color-ink: #1A1A1A;
+  --color-rust: #C05621;
+  --color-coyoacan: #2B6CB0;
+  
+  --font-headline: "UnifrakturMaguntia", "Chomsky", serif;
+  --font-subhead: "Oswald", sans-serif;
+  --font-body: "Merriweather", serif;
+}
+
+@layer base {
+  body {
+    @apply bg-newsprint text-ink font-body antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline text-ink;
+  }
+}
+
+/* Custom Leaflet Styles */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+/* Neo-Brutalist Utilities */
+.neo-border {
+  @apply border-2 border-ink;
+}
+
+.neo-shadow {
+  box-shadow: 4px 4px 0px 0px #1A1A1A;
+}
+
+.neo-shadow-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #1A1A1A;
+}
+
+.neo-shadow-active:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #1A1A1A;
+}
+
+/* Halftone Effect */
+.halftone {
+  position: relative;
+  overflow: hidden;
+}
+
+.halftone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, #1A1A1A 1px, transparent 1.5px);
+  background-size: 4px 4px;
+  opacity: 0.1;
+  pointer-events: none;
+}
