@@ -69,7 +69,11 @@ function App() {
         <div className="bg-ink text-newsprint py-2 overflow-hidden whitespace-nowrap border-b-4 border-rust">
           <div className="animate-marquee inline-block font-subhead uppercase tracking-widest text-sm">
             HOY EN COYOACÁN: {articleData.headline} • CLIMA: {articleData.weather.condition.toUpperCase()} {articleData.weather.temp}°C • 
-            HOY EN COYOACÁN: {articleData.headline} • CLIMA: {articleData.weather.condition.toUpperCase()} {articleData.weather.temp}°C •
+            HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX • 
+            DESCUBRE LOS MEJORES LUGARES DE LA CDMX • 
+            HOY EN COYOACÁN: {articleData.headline} • CLIMA: {articleData.weather.condition.toUpperCase()} {articleData.weather.temp}°C • 
+            HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX • 
+            DESCUBRE LOS MEJORES LUGARES DE LA CDMX •
           </div>
         </div>
 
