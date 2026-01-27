@@ -104,6 +104,7 @@ export default function DiarioCoyoacan() {
     scanCode: 'Escanea para llevar',
     home: 'Inicio',
     reservations: 'Reservaciones',
+    archive: 'Ediciones Anteriores',
     hoursWeek: currentArticle.hoursWeekEs,
     hoursSunday: currentArticle.hoursSundayEs,
   } : {
@@ -131,6 +132,7 @@ export default function DiarioCoyoacan() {
     scanCode: 'Scan to take away',
     home: 'Home',
     reservations: 'Reservations',
+    archive: 'Previous Editions',
     hoursWeek: currentArticle.hoursWeekEn,
     hoursSunday: currentArticle.hoursSundayEn,
   };
@@ -202,7 +204,7 @@ export default function DiarioCoyoacan() {
             {t.date} • {t.category}
           </p>
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-3 items-center flex-wrap">
           <button
             onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
             className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors flex items-center gap-2"
@@ -210,10 +212,13 @@ export default function DiarioCoyoacan() {
             <Globe className="w-4 h-4" />
             {lang === 'es' ? 'EN' : 'ES'}
           </button>
-          <a href="https://superanfitrion.com.mx/" className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors hidden md:block">
+          <a href="https://superanfitrion.com.mx/" className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors hidden md:inline-block">
             {t.home}
           </a>
-          <a href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-rust text-white border-2 border-ink font-subhead uppercase text-sm hover:bg-ink transition-colors shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1A1A1A]">
+          <a href="/hemeroteca" className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors">
+            {t.archive}
+          </a>
+          <a href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-rust text-white border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-white transition-colors shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1A1A1A]">
             {t.reservations}
           </a>
         </div>
