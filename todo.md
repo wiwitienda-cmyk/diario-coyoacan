@@ -16,8 +16,10 @@
 - [x] Crear sitemap.xml dinámico que se actualice automáticamente con nuevos artículos
 - [x] Crear robots.txt optimizado para SEO
 - [x] Agregar botones de compartir en WhatsApp, Facebook y Twitter en cada artículo
-
-## Problemas de SEO en Página Principal (/)
 - [x] Agregar palabras clave relevantes (Coyoacán, hospedaje, CDMX, cultura, gastronomía, SúperAnfitrión)
 - [x] Optimizar título de 82 caracteres a 30-60 caracteres (ahora trunca a 45 + ' | Coyoacán')
 - [x] Agregar texto alternativo (alt) - todas las imágenes principales ya tienen alt text
+
+## Problemas Reportados
+- [x] Eliminar componente de Disqus que muestra error (hasta que se configure la cuenta)
+- [x] Corregir mapa sticky que se encima con el contenido de abajo

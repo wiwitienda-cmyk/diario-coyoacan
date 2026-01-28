@@ -7,7 +7,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { useLocation } from 'wouter';
 import { trpc } from '@/lib/trpc';
 import { toast } from 'sonner';
-import DisqusComments from '@/components/DisqusComments';
+
 import SocialShareButtons from '@/components/SocialShareButtons';
 
 // Fix Leaflet marker icon issue
@@ -307,18 +307,14 @@ export default function DiarioCoyoacan() {
             </div>
           </div>
           
-          {/* Comments Section */}
-          <DisqusComments 
-            articleSlug={currentArticle.slug} 
-            articleTitle={t.headline} 
-          />
+
         </section>
 
         {/* Sidebar / Info Panel */}
         <aside className="md:col-span-4 space-y-8">
           
           {/* Map Card */}
-          <div className="bg-white border-4 border-ink p-4 neo-shadow sticky top-32">
+          <div className="bg-white border-4 border-ink p-4 neo-shadow">
             <div className="h-[300px] w-full border-2 border-ink mb-4 relative z-0">
               <MapContainer 
                 center={[parseFloat(currentArticle.locationLat), parseFloat(currentArticle.locationLng)]} 
