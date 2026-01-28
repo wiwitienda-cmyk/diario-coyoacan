@@ -1,7 +1,12 @@
 import { drizzle } from "drizzle-orm/mysql2";
 import { articles } from "../drizzle/schema.ts";
 import { invokeLLM } from "./_core/llm.ts";
+import { generateImage } from "./_core/imageGeneration.ts";
+import { storagePut } from "./storage.ts";
+import { notifyOwner } from "./_core/notification.ts";
+import { subscribers } from "../drizzle/schema.ts";
 import dotenv from "dotenv";
+import { nanoid } from "nanoid";
 
 dotenv.config();
 
@@ -227,8 +232,27 @@ async function generateDailyArticle() {
     console.log(`📍 Lugar seleccionado: ${place.name}`);
     
     // 2. Generar contenido con IA
-    console.log("✍️  Generando contenido con IA...");
+    console.log("✓️  Generando contenido con IA...");
     const content = await generateArticleContent(place);
+    
+    // 2.5. Generar imagen con IA
+    console.log("🎨 Generando imagen con IA...");
+    const imagePrompt = `A vibrant, photorealistic image of ${place.name} in Coyoacan, Mexico City. ${place.keywords}. Warm sunlight, colorful Mexican atmosphere, inviting and authentic local scene. High quality, professional photography style.`;
+    
+    let heroImageUrl = "/images/placeholder-article.jpg";
+    try {
+      const { url: imageUrl } = await generateImage({ prompt: imagePrompt });
+      
+      // Descargar la imagen generada y subirla a S3
+      const imageResponse = await fetch(imageUrl);
+      const imageBuffer = Buffer.from(await imageResponse.arrayBuffer());
+      const imageKey = `articles/${content.slug}-${nanoid(8)}.png`;
+      const { url: s3Url } = await storagePut(imageKey, imageBuffer, "image/png");
+      heroImageUrl = s3Url;
+      console.log("✅ Imagen generada y subida a S3");
+    } catch (imageError) {
+      console.warn("⚠️  Error generando imagen, usando placeholder:", imageError.message);
+    }
     
     // 3. Preparar datos para la base de datos
     const today = new Date();
@@ -261,7 +285,7 @@ async function generateDailyArticle() {
       locationLng: content.locationLng,
       locationMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(content.locationAddress)}`,
       
-      heroImage: "/images/placeholder-article.jpg", // Placeholder - se puede mejorar con generación de imágenes
+      heroImage: heroImageUrl,
       
       headlineEs: content.headlineEs,
       summaryEs: content.summaryEs,
@@ -290,6 +314,45 @@ async function generateDailyArticle() {
     console.log(`📰 Título: ${content.headlineEs}`);
     console.log(`🔗 Slug: ${content.slug}`);
     console.log(`📅 Fecha: ${dateEs}`);
+    
+    // 5. Enviar notificación a suscriptores
+    console.log("📧 Notificando a suscriptores...");
+    try {
+      const allSubscribers = await db.select().from(subscribers);
+      
+      if (allSubscribers.length > 0) {
+        const articleUrl = `${process.env.VITE_APP_URL || 'https://diario-coyo.manus.space'}/diario?slug=${content.slug}`;
+        
+        const newsletterContent = `
+🗞️ NUEVO ARTÍCULO PUBLICADO - Diario Coyoacán
+
+📰 ${content.headlineEs}
+📅 ${dateEs}
+🌡️ ${content.weatherConditionEs} ${weatherTemp}°C
+
+📝 Resumen:
+${content.summaryEs}
+
+🔗 Leer artículo completo:
+${articleUrl}
+
+👥 Suscriptores activos: ${allSubscribers.length}
+📧 Lista de correos:
+${allSubscribers.map(s => s.email).join(', ')}
+        `.trim();
+        
+        await notifyOwner({
+          title: `📰 Nuevo artículo: ${content.headlineEs}`,
+          content: newsletterContent
+        });
+        
+        console.log(`✅ Notificación enviada (${allSubscribers.length} suscriptores)`);
+      } else {
+        console.log("⚠️  No hay suscriptores para notificar");
+      }
+    } catch (notifyError) {
+      console.warn("⚠️  Error enviando notificación:", notifyError.message);
+    }
     
     process.exit(0);
   } catch (error) {
