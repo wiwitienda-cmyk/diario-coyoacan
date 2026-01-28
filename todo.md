@@ -19,7 +19,9 @@
 - [x] Agregar palabras clave relevantes (Coyoacán, hospedaje, CDMX, cultura, gastronomía, SúperAnfitrión)
 - [x] Optimizar título de 82 caracteres a 30-60 caracteres (ahora trunca a 45 + ' | Coyoacán')
 - [x] Agregar texto alternativo (alt) - todas las imágenes principales ya tienen alt text
-
-## Problemas Reportados
 - [x] Eliminar componente de Disqus que muestra error (hasta que se configure la cuenta)
 - [x] Corregir mapa sticky que se encima con el contenido de abajo
+
+## Nuevos Problemas de SEO Reportados
+- [x] Reducir palabras clave de 13 a 6 enfocadas (Coyoacán, hospedaje CDMX, cultura México, gastronomía Coyoacán, SúperAnfitrión, turismo Ciudad de México)
+- [x] Agregar texto alternativo (alt) y aria-hidden a iconos decorativos (QR code con title, iconos con aria-hidden)

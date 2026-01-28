@@ -195,7 +195,7 @@ export default function DiarioCoyoacan() {
         <meta name="twitter:creator" content="@DiarioCoyoacan" />
         
         {/* Additional SEO */}
-        <meta name="keywords" content={`Coyoacán, CDMX, Ciudad de México, turismo, hospedaje, cultura, gastronomía, lugares, ${currentArticle.slug}, ${t.category}, SúperAnfitrión, noticias, guía`} />
+        <meta name="keywords" content="Coyoacán, hospedaje CDMX, cultura México, gastronomía Coyoacán, SúperAnfitrión, turismo Ciudad de México" />
         <meta name="author" content="Diario Coyoacán" />
         <link rel="canonical" content={shareUrl} />
       </Helmet>
@@ -225,7 +225,7 @@ export default function DiarioCoyoacan() {
             onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
             className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors flex items-center gap-2"
           >
-            <Globe className="w-4 h-4" />
+            <Globe className="w-4 h-4" aria-hidden="true" />
             {lang === 'es' ? 'EN' : 'ES'}
           </button>
           <a href="https://superanfitrion.com.mx/" className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors hidden md:inline-block">
@@ -289,7 +289,7 @@ export default function DiarioCoyoacan() {
           {/* Menu Highlights Grid */}
           <div className="bg-white border-4 border-ink p-6 neo-shadow mt-12">
             <div className="flex items-center gap-3 mb-6 border-b-2 border-ink pb-4">
-              <Coffee className="w-8 h-8 text-rust" />
+              <Coffee className="w-8 h-8 text-rust" aria-hidden="true" />
               <h3 className="text-2xl font-subhead uppercase">{t.menuTitle}</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -336,7 +336,7 @@ export default function DiarioCoyoacan() {
 
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <MapPin className="w-6 h-6 text-rust mt-1 flex-shrink-0" />
+                <MapPin className="w-6 h-6 text-rust mt-1 flex-shrink-0" aria-hidden="true" />
                 <div>
                   <h4 className="font-subhead font-bold uppercase">{t.locationTitle}</h4>
                   <p className="text-sm">{currentArticle.locationAddress}</p>
@@ -344,7 +344,7 @@ export default function DiarioCoyoacan() {
               </div>
 
               <div className="flex items-start gap-3">
-                <Clock className="w-6 h-6 text-rust mt-1 flex-shrink-0" />
+                <Clock className="w-6 h-6 text-rust mt-1 flex-shrink-0" aria-hidden="true" />
                 <div>
                   <h4 className="font-subhead font-bold uppercase">{t.hoursTitle}</h4>
                   <p className="text-sm">{t.weekHours}: {t.hoursWeek}</p>
@@ -358,7 +358,7 @@ export default function DiarioCoyoacan() {
                 rel="noopener noreferrer"
                 className="block w-full bg-blue-600 text-white text-center py-3 font-subhead uppercase tracking-wider hover:bg-blue-700 transition-colors border-2 border-ink flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_#1A1A1A]"
               >
-                <Map className="w-4 h-4" />
+                <Map className="w-4 h-4" aria-hidden="true" />
                 {t.openMaps}
               </a>
             </div>
@@ -367,7 +367,7 @@ export default function DiarioCoyoacan() {
           {/* QR Code Card */}
           <div className="bg-white border-4 border-ink p-6 neo-shadow">
             <h3 className="text-xl font-headline mb-4 flex items-center gap-2">
-              <QrCode className="w-6 h-6 text-rust" />
+              <QrCode className="w-6 h-6 text-rust" aria-hidden="true" />
               {t.scanCode}
             </h3>
             <div className="flex justify-center bg-white p-4 border-2 border-ink">
@@ -376,6 +376,7 @@ export default function DiarioCoyoacan() {
                 size={180}
                 level="H"
                 includeMargin={true}
+                title={lang === 'es' ? 'Código QR para acceder al Diario Coyoacán' : 'QR Code to access Diario Coyoacán'}
               />
             </div>
             <p className="text-sm text-center mt-4 text-gray-600">
@@ -443,7 +444,7 @@ export default function DiarioCoyoacan() {
               onClick={handleShare}
               className="w-full bg-white text-ink py-3 font-subhead uppercase tracking-wider border-2 border-rust hover:bg-newsprint hover:translate-x-1 hover:translate-y-1 transition-transform flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_#C1666B]"
             >
-              <Share2 className="w-4 h-4" />
+              <Share2 className="w-4 h-4" aria-hidden="true" />
               {t.share}
             </button>
           </div>
