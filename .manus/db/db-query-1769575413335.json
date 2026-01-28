@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE articles SET summaryEs = 'Un callejón olvidado renace como galería de arte urbano donde jóvenes artistas rescatan la memoria histórica de Coyoacán con murales.' WHERE slug = 'callejon-aguacate';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute UPDATE articles SET summaryEs = 'Un callejón olvidado renace como galería de arte urbano donde jóvenes artistas rescatan la memoria histórica de Coyoacán con murales.' WHERE slug = 'callejon-aguacate';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 51
+}

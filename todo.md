@@ -54,3 +54,7 @@
 
 ## Nuevo Problema de SEO Reportado (Recurrente)
 - [x] Verificar y corregir las 5 imágenes sin texto alternativo en la página principal (corregido selector de useEffect: .leaflet-tile en lugar de .leaflet-tile-container img)
+
+## Nuevos Problemas de SEO Reportados
+- [x] Acortar meta description de 192 caracteres a 50-160 caracteres (ahora 145 caracteres)
+- [x] Verificar y corregir las 5 imágenes sin texto alternativo (MutationObserver funcionando correctamente, 0 imágenes sin alt)
