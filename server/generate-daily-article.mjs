@@ -38,6 +38,56 @@ const coyoacanPlaces = [
     name: "Coyoacán Market",
     type: "mercado",
     keywords: "tostadas, comida tradicional, artesanías"
+  },
+  {
+    name: "Plaza Hidalgo",
+    type: "plaza",
+    keywords: "kiosco, jardín, música, ambiente familiar"
+  },
+  {
+    name: "Parroquia San Juan Bautista",
+    type: "iglesia",
+    keywords: "arquitectura colonial, historia, religión, patrimonio"
+  },
+  {
+    name: "Callejón del Aguacate",
+    type: "calle",
+    keywords: "fotografía, colores, murales, arte urbano"
+  },
+  {
+    name: "Museo Nacional de Culturas Populares",
+    type: "museo",
+    keywords: "tradiciones, artesanías, exposiciones, cultura mexicana"
+  },
+  {
+    name: "Fonoteca Nacional",
+    type: "centro cultural",
+    keywords: "música, audio, archivo histórico, conciertos"
+  },
+  {
+    name: "Casa de la Cultura Jesús Reyes Heroles",
+    type: "centro cultural",
+    keywords: "talleres, exposiciones, eventos, arte"
+  },
+  {
+    name: "Jardín de la Bombilla",
+    type: "parque",
+    keywords: "monumento, historia, áreas verdes, descanso"
+  },
+  {
+    name: "Café El Jarocho",
+    type: "café",
+    keywords: "café de olla, churros, tradición, ambiente local"
+  },
+  {
+    name: "Museo Casa de León Trotsky",
+    type: "museo",
+    keywords: "historia, revolución, Trotsky, archivo"
+  },
+  {
+    name: "Plaza de la Conchita",
+    type: "plaza",
+    keywords: "capilla, tranquilidad, colonial, barrio"
   }
 ];
 
