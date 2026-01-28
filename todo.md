@@ -47,7 +47,7 @@
 - [x] Generar imagen subjetiva para Mercado: manos trabajadoras en blanco y negro, estilo documental
 - [x] Generar imagen subjetiva para Café Avellaneda: detalle íntimo del ritual de servir café
 - [x] Cambiar botón "ARCHIVO" a "ARTÍCULOS" en header (también actualizado en Hemeroteca)
-- [ ] Reescribir artículos con tono periodístico de reportaje (no blog ni promo)
+- [x] Reescribir 6 artículos con tono periodístico estilo El País: reportajes investigativos con narrativa envolvente, fuentes citadas (directoras de museos, artistas, dueños de negocios), contexto histórico profundo (desde prehispánico hasta actualidad), y temáticas sociales (gentrificación, resistencia cultural, preservación de memoria)
 
 ## Nuevo Problema de SEO Reportado
 - [x] Agregar texto alternativo (alt) a las 5 imágenes que faltan (tiles y sombra de Leaflet con alt="" y aria-hidden)

@@ -1,0 +1,40 @@
+{
+  "query": "SELECT slug, LENGTH(contentEs) as length, SUBSTRING(contentEs, 970, 50) as error_area FROM articles WHERE contentEs IS NOT NULL ORDER BY createdAt DESC LIMIT 6;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, LENGTH(contentEs) as length, SUBSTRING(contentEs, 970, 50) as error_area FROM articles WHERE contentEs IS NOT NULL ORDER BY createdAt DESC LIMIT 6;",
+  "rows": [
+    {
+      "slug": "fonoteca-nacional",
+      "length": "2380",
+      "error_area": "e batalla, y las primeras transmisiones radiofónic"
+    },
+    {
+      "slug": "callejon-del-aguacate-coyoacan",
+      "length": "2296",
+      "error_area": " de gran formato hasta pequeñas piezas de stencil."
+    },
+    {
+      "slug": "casa-azul-museo-frida-kahlo",
+      "length": "2407",
+      "error_area": "sde 2018. La casa conserva objetos personales que "
+    },
+    {
+      "slug": "jardin-centenario-coyoacan",
+      "length": "2121",
+      "error_area": "a, de estilo barroco novohispano, presenta relieve"
+    },
+    {
+      "slug": "cafe-avellaneda",
+      "length": "2776",
+      "error_area": "a, Café Avellaneda mantiene una filosofía arraigad"
+    },
+    {
+      "slug": "mercado-coyoacan",
+      "length": "2222",
+      "error_area": "oacán. \"Mi abuela empezó aquí en 1958, dos años de"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\tlength\terror_area\nfonoteca-nacional\t2380\te batalla, y las primeras transmisiones radiofónic\ncallejon-del-aguacate-coyoacan\t2296\t de gran formato hasta pequeñas piezas de stencil.\ncasa-azul-museo-frida-kahlo\t2407\tsde 2018. La casa conserva objetos personales que \njardin-centenario-coyoacan\t2121\ta, de estilo barroco novohispano, presenta relieve\ncafe-avellaneda\t2776\ta, Café Avellaneda mantiene una filosofía arraigad\nmercado-coyoacan\t2222\toacán. \"Mi abuela empezó aquí en 1958, dos años de\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}
