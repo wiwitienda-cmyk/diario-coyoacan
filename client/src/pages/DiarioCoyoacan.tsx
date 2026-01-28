@@ -168,7 +168,7 @@ export default function DiarioCoyoacan() {
   return (
     <div className="min-h-screen bg-newsprint text-ink font-body selection:bg-rust selection:text-white">
       <Helmet>
-        <title>{t.headline} | Diario Coyoacán</title>
+        <title>{t.headline.length > 45 ? t.headline.substring(0, 45) + '...' : t.headline} | Coyoacán</title>
         <meta name="description" content={t.summary} />
         
         {/* Open Graph / Facebook */}
@@ -195,7 +195,7 @@ export default function DiarioCoyoacan() {
         <meta name="twitter:creator" content="@DiarioCoyoacan" />
         
         {/* Additional SEO */}
-        <meta name="keywords" content={`Coyoacán, CDMX, Ciudad de México, turismo, ${currentArticle.slug}, ${t.category}`} />
+        <meta name="keywords" content={`Coyoacán, CDMX, Ciudad de México, turismo, hospedaje, cultura, gastronomía, lugares, ${currentArticle.slug}, ${t.category}, SúperAnfitrión, noticias, guía`} />
         <meta name="author" content="Diario Coyoacán" />
         <link rel="canonical" content={shareUrl} />
       </Helmet>
