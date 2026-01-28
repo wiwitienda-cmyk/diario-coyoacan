@@ -64,6 +64,33 @@ export default function DiarioCoyoacan() {
 
   const currentArticle = articleSlug ? article : latestArticle;
   
+  // Agregar alt text a imágenes de Leaflet para SEO
+  useEffect(() => {
+    const addAltToLeafletImages = () => {
+      // Tiles del mapa
+      const tiles = document.querySelectorAll('.leaflet-tile-container img');
+      tiles.forEach(tile => {
+        if (!tile.hasAttribute('alt')) {
+          tile.setAttribute('alt', '');
+          tile.setAttribute('aria-hidden', 'true');
+        }
+      });
+      
+      // Sombra del marcador
+      const shadows = document.querySelectorAll('.leaflet-marker-shadow');
+      shadows.forEach(shadow => {
+        if (!shadow.hasAttribute('alt')) {
+          shadow.setAttribute('alt', '');
+          shadow.setAttribute('aria-hidden', 'true');
+        }
+      });
+    };
+    
+    // Ejecutar después de que el mapa se renderice
+    const timer = setTimeout(addAltToLeafletImages, 1000);
+    return () => clearTimeout(timer);
+  }, [currentArticle]);
+  
   if (isLoading || isLoadingLatest || !currentArticle) {
     return (
       <div className="min-h-screen bg-newsprint flex items-center justify-center">

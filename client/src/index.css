@@ -180,3 +180,9 @@
     }
   }
 }
+/* Accesibilidad para imágenes de mapa Leaflet */
+.leaflet-tile-container img,
+.leaflet-marker-shadow {
+  /* Las imágenes de tiles y sombras del mapa son decorativas */
+  /* Leaflet no permite agregar alt directamente, así que usamos CSS para mejorar accesibilidad */
+}

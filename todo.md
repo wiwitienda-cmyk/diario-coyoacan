@@ -48,3 +48,6 @@
 - [x] Generar imagen subjetiva para Café Avellaneda: detalle íntimo del ritual de servir café
 - [x] Cambiar botón "ARCHIVO" a "ARTÍCULOS" en header (también actualizado en Hemeroteca)
 - [ ] Reescribir artículos con tono periodístico de reportaje (no blog ni promo)
+
+## Nuevo Problema de SEO Reportado
+- [x] Agregar texto alternativo (alt) a las 5 imágenes que faltan (tiles y sombra de Leaflet con alt="" y aria-hidden)
