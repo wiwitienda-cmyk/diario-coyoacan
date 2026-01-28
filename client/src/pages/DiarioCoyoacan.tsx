@@ -8,6 +8,7 @@ import { useLocation } from 'wouter';
 import { trpc } from '@/lib/trpc';
 import { toast } from 'sonner';
 import DisqusComments from '@/components/DisqusComments';
+import SocialShareButtons from '@/components/SocialShareButtons';
 
 // Fix Leaflet marker icon issue
 import L from 'leaflet';
@@ -176,13 +177,27 @@ export default function DiarioCoyoacan() {
         <meta property="og:title" content={t.headline} />
         <meta property="og:description" content={t.summary} />
         <meta property="og:image" content={currentArticle.heroImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="Diario Coyoacán" />
+        <meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
+        <meta property="article:published_time" content={currentArticle.createdAt.toISOString()} />
+        <meta property="article:author" content="Diario Coyoacán" />
+        <meta property="article:section" content={t.category} />
 
         {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={shareUrl} />
-        <meta property="twitter:title" content={t.headline} />
-        <meta property="twitter:description" content={t.summary} />
-        <meta property="twitter:image" content={currentArticle.heroImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={shareUrl} />
+        <meta name="twitter:title" content={t.headline} />
+        <meta name="twitter:description" content={t.summary} />
+        <meta name="twitter:image" content={currentArticle.heroImage} />
+        <meta name="twitter:site" content="@DiarioCoyoacan" />
+        <meta name="twitter:creator" content="@DiarioCoyoacan" />
+        
+        {/* Additional SEO */}
+        <meta name="keywords" content={`Coyoacán, CDMX, Ciudad de México, turismo, ${currentArticle.slug}, ${t.category}`} />
+        <meta name="author" content="Diario Coyoacán" />
+        <link rel="canonical" content={shareUrl} />
       </Helmet>
 
       {/* Marquee Header */}
@@ -248,6 +263,15 @@ export default function DiarioCoyoacan() {
           <p className="text-xl md:text-2xl font-body italic text-gray-700 border-l-4 border-rust pl-6 py-2">
             "{t.summary}"
           </p>
+          
+          {/* Social Share Buttons */}
+          <div className="border-t-2 border-b-2 border-ink py-4 my-6">
+            <SocialShareButtons 
+              url={shareUrl}
+              title={t.headline}
+              description={t.summary}
+            />
+          </div>
 
           <div className="prose prose-lg prose-headings:font-headline prose-p:font-body max-w-none">
             {t.content.map((section: any, idx: number) => (
