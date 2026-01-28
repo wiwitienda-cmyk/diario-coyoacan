@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE articles SET heroImage = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663072521459/Q8BeTaWP8ahBzzm2xVz4Wa/articles/callejon-aguacate-artistic.jpg' WHERE slug LIKE '%aguacate%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute UPDATE articles SET heroImage = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663072521459/Q8BeTaWP8ahBzzm2xVz4Wa/articles/callejon-aguacate-artistic.jpg' WHERE slug LIKE '%aguacate%';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 69
+}

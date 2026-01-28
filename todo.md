@@ -34,3 +34,8 @@
 - [x] Agregar CTAs de conversión dentro de los artículos (CTA con gradiente rust después del contenido)
 - [x] Implementar lazy loading en imágenes hero para mejorar rendimiento (DiarioCoyoacan y Hemeroteca)
 - [x] Generar 5-10 artículos adicionales ejecutando el generador automático (7 artículos totales en archivo)
+
+## Correcciones de Contenido e Imágenes
+- [x] Eliminar artículo de El Péndulo (ya no existe en Coyoacán)
+- [x] Cambiar imagen del Callejón del Aguacate a estilo más artístico y subjetivo (muro colonial con sombra y luz tenue de farol vintage)
+- [x] Ajustar estilo de imágenes: menos pretensioso, más atmosférico y artístico
