@@ -25,3 +25,7 @@
 ## Nuevos Problemas de SEO Reportados
 - [x] Reducir palabras clave de 13 a 6 enfocadas (Coyoacán, hospedaje CDMX, cultura México, gastronomía Coyoacán, SúperAnfitrión, turismo Ciudad de México)
 - [x] Agregar texto alternativo (alt) y aria-hidden a iconos decorativos (QR code con title, iconos con aria-hidden)
+
+## Nuevas Correcciones Solicitadas
+- [x] Corregir imagen del artículo del Jardín Centenario (nueva imagen fotorealista generada y subida a S3)
+- [x] Cambiar texto del botón "EDICIONES ANTERIORES" a "ARCHIVO" (más periodístico)

@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, slug, headlineEs, heroImage FROM articles WHERE slug LIKE '%jardin%' OR headlineEs LIKE '%Jardín Centenario%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, headlineEs, heroImage FROM articles WHERE slug LIKE '%jardin%' OR headlineEs LIKE '%Jardín Centenario%';",
+  "rows": [
+    {
+      "id": "30001",
+      "slug": "jardin-centenario-coyoacan",
+      "headlineEs": "Jardín Centenario: El Corazón Bohemio de Coyoacán y su Fuente de Coyotes",
+      "heroImage": "/images/placeholder-article.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\theadlineEs\theroImage\n30001\tjardin-centenario-coyoacan\tJardín Centenario: El Corazón Bohemio de Coyoacán y su Fuente de Coyotes\t/images/placeholder-article.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}
