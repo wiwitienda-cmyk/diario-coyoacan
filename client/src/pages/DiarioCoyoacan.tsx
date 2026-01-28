@@ -68,7 +68,7 @@ export default function DiarioCoyoacan() {
   useEffect(() => {
     const addAltToLeafletImages = () => {
       // Tiles del mapa
-      const tiles = document.querySelectorAll('.leaflet-tile-container img');
+      const tiles = document.querySelectorAll('.leaflet-tile');
       tiles.forEach(tile => {
         if (!tile.hasAttribute('alt')) {
           tile.setAttribute('alt', '');
@@ -86,9 +86,31 @@ export default function DiarioCoyoacan() {
       });
     };
     
-    // Ejecutar después de que el mapa se renderice
-    const timer = setTimeout(addAltToLeafletImages, 1000);
-    return () => clearTimeout(timer);
+    // Ejecutar múltiples veces para capturar tiles que cargan dinámicamente
+    addAltToLeafletImages();
+    const timer1 = setTimeout(addAltToLeafletImages, 100);
+    const timer2 = setTimeout(addAltToLeafletImages, 500);
+    const timer3 = setTimeout(addAltToLeafletImages, 1500);
+    
+    // Observer para detectar nuevos tiles que se agregan dinámicamente
+    const observer = new MutationObserver(() => {
+      addAltToLeafletImages();
+    });
+    
+    const mapContainer = document.querySelector('.leaflet-container');
+    if (mapContainer) {
+      observer.observe(mapContainer, {
+        childList: true,
+        subtree: true
+      });
+    }
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+      observer.disconnect();
+    };
   }, [currentArticle]);
   
   if (isLoading || isLoadingLatest || !currentArticle) {

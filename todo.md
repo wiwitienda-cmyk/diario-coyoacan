@@ -51,3 +51,6 @@
 
 ## Nuevo Problema de SEO Reportado
 - [x] Agregar texto alternativo (alt) a las 5 imágenes que faltan (tiles y sombra de Leaflet con alt="" y aria-hidden)
+
+## Nuevo Problema de SEO Reportado (Recurrente)
+- [x] Verificar y corregir las 5 imágenes sin texto alternativo en la página principal (corregido selector de useEffect: .leaflet-tile en lugar de .leaflet-tile-container img)
