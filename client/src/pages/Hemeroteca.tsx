@@ -9,16 +9,16 @@ export default function Hemeroteca() {
   const { data: articles, isLoading } = trpc.articles.list.useQuery();
 
   const t = lang === 'es' ? {
-    title: 'Archivo',
+    title: 'Artículos',
     subtitle: 'Todos los artículos del Diario Coyoacán',
     loading: 'Cargando archivo...',
     backToHome: 'Volver al Inicio',
     readMore: 'Leer Artículo',
     noArticles: 'No hay artículos disponibles',
   } : {
-    title: 'Archive',
+    title: 'Articles',
     subtitle: 'All articles from Diario Coyoacán',
-    loading: 'Loading archive...',
+    loading: 'Loading articles...',
     backToHome: 'Back to Home',
     readMore: 'Read Article',
     noArticles: 'No articles available',

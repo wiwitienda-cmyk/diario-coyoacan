@@ -39,3 +39,12 @@
 - [x] Eliminar artículo de El Péndulo (ya no existe en Coyoacán)
 - [x] Cambiar imagen del Callejón del Aguacate a estilo más artístico y subjetivo (muro colonial con sombra y luz tenue de farol vintage)
 - [x] Ajustar estilo de imágenes: menos pretensioso, más atmosférico y artístico
+
+## Transformación a Periodismo Auténtico
+- [x] Generar imagen subjetiva para Casa Azul/Frida: corazón sagrado con temática de sus pinturas
+- [x] Generar imagen subjetiva para Fonoteca: audífonos vintage años 60 con pátina de edad
+- [x] Generar imagen subjetiva para Jardín Centenario: zoom a la cruz colonial de 1721 con musgo
+- [x] Generar imagen subjetiva para Mercado: manos trabajadoras en blanco y negro, estilo documental
+- [x] Generar imagen subjetiva para Café Avellaneda: detalle íntimo del ritual de servir café
+- [x] Cambiar botón "ARCHIVO" a "ARTÍCULOS" en header (también actualizado en Hemeroteca)
+- [ ] Reescribir artículos con tono periodístico de reportaje (no blog ni promo)
