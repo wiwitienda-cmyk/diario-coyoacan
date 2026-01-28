@@ -107,6 +107,9 @@ export default function DiarioCoyoacan() {
     home: 'Inicio',
     reservations: 'Reservaciones',
     archive: 'ARCHIVO',
+    ctaTitle: '¿Quieres explorar Coyoacán?',
+    ctaText: 'Hospédate en el corazón de Coyoacán y descubre todos estos lugares increíbles a solo unos pasos de nuestras propiedades.',
+    ctaButton: 'Ver Alojamientos Disponibles',
     hoursWeek: currentArticle.hoursWeekEs,
     hoursSunday: currentArticle.hoursSundayEs,
   } : {
@@ -135,6 +138,9 @@ export default function DiarioCoyoacan() {
     home: 'Home',
     reservations: 'Reservations',
     archive: 'ARCHIVE',
+    ctaTitle: 'Want to explore Coyoacán?',
+    ctaText: 'Stay in the heart of Coyoacán and discover all these amazing places just steps away from our properties.',
+    ctaButton: 'View Available Accommodations',
     hoursWeek: currentArticle.hoursWeekEn,
     hoursSunday: currentArticle.hoursSundayEn,
   };
@@ -249,6 +255,7 @@ export default function DiarioCoyoacan() {
             <img 
               src={currentArticle.heroImage}
               alt={t.headline}
+              loading="lazy"
               className="relative w-full h-[400px] md:h-[500px] object-cover border-4 border-ink grayscale-[10%] group-hover:grayscale-0 transition-all duration-500"
             />
             <div className="absolute top-4 right-4 bg-rust text-white px-4 py-2 font-subhead uppercase text-sm border-2 border-ink rotate-3 shadow-[4px_4px_0px_0px_#1A1A1A]">
@@ -284,6 +291,22 @@ export default function DiarioCoyoacan() {
                 </p>
               </div>
             ))}
+          </div>
+
+          {/* Conversion CTA */}
+          <div className="bg-gradient-to-r from-rust to-orange-700 text-white border-4 border-ink p-8 neo-shadow my-12">
+            <div className="max-w-2xl mx-auto text-center">
+              <h3 className="text-3xl font-headline mb-4">{t.ctaTitle}</h3>
+              <p className="text-lg mb-6 font-body">{t.ctaText}</p>
+              <a
+                href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-white text-rust px-8 py-4 font-subhead uppercase text-lg hover:bg-newsprint transition-colors border-2 border-ink shadow-[6px_6px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_#1A1A1A]"
+              >
+                {t.ctaButton}
+              </a>
+            </div>
           </div>
 
           {/* Menu Highlights Grid */}

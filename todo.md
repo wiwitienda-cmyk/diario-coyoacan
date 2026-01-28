@@ -29,3 +29,8 @@
 ## Nuevas Correcciones Solicitadas
 - [x] Corregir imagen del artículo del Jardín Centenario (nueva imagen fotorealista generada y subida a S3)
 - [x] Cambiar texto del botón "EDICIONES ANTERIORES" a "ARCHIVO" (más periodístico)
+
+## Mejoras Aprobadas por el Usuario (SI A LAS TRES)
+- [x] Agregar CTAs de conversión dentro de los artículos (CTA con gradiente rust después del contenido)
+- [x] Implementar lazy loading en imágenes hero para mejorar rendimiento (DiarioCoyoacan y Hemeroteca)
+- [x] Generar 5-10 artículos adicionales ejecutando el generador automático (7 artículos totales en archivo)

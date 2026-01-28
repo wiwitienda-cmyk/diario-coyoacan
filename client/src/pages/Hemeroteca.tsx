@@ -96,6 +96,7 @@ export default function Hemeroteca() {
                         <img
                           src={article.heroImage}
                           alt={lang === 'es' ? article.headlineEs : article.headlineEn}
+                          loading="lazy"
                           className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500"
                         />
                         {/* Date Badge */}
