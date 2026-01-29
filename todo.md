@@ -58,3 +58,6 @@
 ## Nuevos Problemas de SEO Reportados
 - [x] Acortar meta description de 192 caracteres a 50-160 caracteres (ahora 145 caracteres)
 - [x] Verificar y corregir las 5 imágenes sin texto alternativo (MutationObserver funcionando correctamente, 0 imágenes sin alt)
+
+## Corrección de Link del Código QR
+- [x] Corregir URL del código QR de https://superanfitrion.com.mx/diario a https://diario-coyo.manus.space/

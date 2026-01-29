@@ -444,7 +444,7 @@ export default function DiarioCoyoacan() {
             </h3>
             <div className="flex justify-center bg-white p-4 border-2 border-ink">
               <QRCodeSVG 
-                value="https://superanfitrion.com.mx/diario" 
+                value="https://diario-coyo.manus.space/" 
                 size={180}
                 level="H"
                 includeMargin={true}
