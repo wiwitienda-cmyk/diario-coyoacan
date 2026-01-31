@@ -75,3 +75,8 @@
 - [x] Generar imagen periodística subjetiva para artículo de ruta alternativa de Coyoacán
 - [x] Adaptar contenido del artículo al formato de la base de datos
 - [x] Publicar artículo "Descubre Coyoacán: Ruta poco conocida para un día auténtico"
+
+## Banner Flotante de Conversión
+- [x] Diseñar banner flotante con descuento especial para lectores del Diario
+- [x] Implementar animación de entrada y funcionalidad de cierre
+- [x] Agregar enlace directo a página de reservas de SúperAnfitrión

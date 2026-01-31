@@ -9,6 +9,7 @@ import { trpc } from '@/lib/trpc';
 import { toast } from 'sonner';
 
 import SocialShareButtons from '@/components/SocialShareButtons';
+import { PromoBanner } from '@/components/PromoBanner';
 
 // Fix Leaflet marker icon issue
 import L from 'leaflet';
@@ -536,6 +537,9 @@ export default function DiarioCoyoacan() {
           </p>
         </div>
       </footer>
+      
+      {/* Banner flotante de conversión */}
+      <PromoBanner />
     </div>
   );
 }
