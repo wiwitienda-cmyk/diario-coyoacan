@@ -87,11 +87,13 @@ export default function DiarioCoyoacan() {
       });
     };
     
-    // Ejecutar múltiples veces para capturar tiles que cargan dinámicamente
+    // Ejecutar inmediatamente y múltiples veces para capturar tiles que cargan dinámicamente
     addAltToLeafletImages();
-    const timer1 = setTimeout(addAltToLeafletImages, 100);
-    const timer2 = setTimeout(addAltToLeafletImages, 500);
-    const timer3 = setTimeout(addAltToLeafletImages, 1500);
+    const timer1 = setTimeout(addAltToLeafletImages, 50);
+    const timer2 = setTimeout(addAltToLeafletImages, 200);
+    const timer3 = setTimeout(addAltToLeafletImages, 500);
+    const timer4 = setTimeout(addAltToLeafletImages, 1000);
+    const timer5 = setTimeout(addAltToLeafletImages, 2000);
     
     // Observer para detectar nuevos tiles que se agregan dinámicamente
     const observer = new MutationObserver(() => {
@@ -102,14 +104,26 @@ export default function DiarioCoyoacan() {
     if (mapContainer) {
       observer.observe(mapContainer, {
         childList: true,
-        subtree: true
+        subtree: true,
+        attributes: false
       });
     }
+    
+    // Agregar listener para evento de carga del mapa
+    const checkInterval = setInterval(() => {
+      const tiles = document.querySelectorAll('.leaflet-tile');
+      if (tiles.length > 0) {
+        addAltToLeafletImages();
+      }
+    }, 100);
     
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
+      clearTimeout(timer4);
+      clearTimeout(timer5);
+      clearInterval(checkInterval);
       observer.disconnect();
     };
   }, [currentArticle]);
@@ -394,6 +408,7 @@ export default function DiarioCoyoacan() {
                 zoom={16} 
                 scrollWheelZoom={false}
                 style={{ height: '100%', width: '100%' }}
+                aria-label={lang === 'es' ? 'Mapa de ubicación' : 'Location map'}
               >
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

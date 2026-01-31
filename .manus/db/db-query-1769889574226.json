@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE articles \nSET headlineEs = 'Feria del Mezcal y la Cerveza: Tlatelolco, Epicentro Cultural',\n    headlineEn = 'Mezcal and Beer Fair: Tlatelolco, Cultural Epicenter'\nWHERE dateISO = '2026-02-14';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute UPDATE articles \nSET headlineEs = 'Feria del Mezcal y la Cerveza: Tlatelolco, Epicentro Cultural',\n    headlineEn = 'Mezcal and Beer Fair: Tlatelolco, Cultural Epicenter'\nWHERE dateISO = '2026-02-14';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 54
+}

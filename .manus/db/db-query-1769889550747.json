@@ -1,0 +1,14 @@
+{
+  "query": "SELECT slug, headlineEs FROM articles WHERE headlineEs LIKE '%Feria%Mezcal%' LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, headlineEs FROM articles WHERE headlineEs LIKE '%Feria%Mezcal%' LIMIT 1;",
+  "rows": [
+    {
+      "slug": "feria-mezcal-cerveza-tlatelolco",
+      "headlineEs": "Feria del Mezcal y la Cerveza: Tlatelolco se Convierte en el Epicentro de la Cultura Destilada"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\theadlineEs\nferia-mezcal-cerveza-tlatelolco\tFeria del Mezcal y la Cerveza: Tlatelolco se Convierte en el Epicentro de la Cultura Destilada\n",
+  "stderr": "",
+  "execution_time_ms": 62
+}

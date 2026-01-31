@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, slug, dateISO, headlineEs FROM articles ORDER BY dateISO DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, dateISO, headlineEs FROM articles ORDER BY dateISO DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "90001",
+      "slug": "feria-mezcal-cerveza-tlatelolco",
+      "dateISO": "2026-02-14",
+      "headlineEs": "Feria del Mezcal y la Cerveza: Tlatelolco se Convierte en el Epicentro de la Cultura Destilada"
+    },
+    {
+      "id": "120002",
+      "slug": "descubre-coyoacan-ruta-poco-conocida-2026-01-31",
+      "dateISO": "2026-01-31",
+      "headlineEs": "Descubre Coyoacán: Ruta poco conocida para un día auténtico en la ciudad"
+    },
+    {
+      "id": "60002",
+      "slug": "callejon-del-aguacate-coyoacan",
+      "dateISO": "2026-01-28",
+      "headlineEs": "Callejón del Aguacate: Donde el Arte Urbano Rescata la Memoria de Coyoacán"
+    },
+    {
+      "id": "1",
+      "slug": "mercado-coyoacan",
+      "dateISO": "2026-01-28",
+      "headlineEs": "Mercado de Coyoacán: Colores, Sabores y las Tostadas Más Famosas"
+    },
+    {
+      "id": "30002",
+      "slug": "casa-azul-museo-frida-kahlo",
+      "dateISO": "2026-01-28",
+      "headlineEs": "Casa Azul: El Universo Íntimo de Frida Kahlo en el Corazón de Coyoacán"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\tdateISO\theadlineEs\n90001\tferia-mezcal-cerveza-tlatelolco\t2026-02-14\tFeria del Mezcal y la Cerveza: Tlatelolco se Convierte en el Epicentro de la Cultura Destilada\n120002\tdescubre-coyoacan-ruta-poco-conocida-2026-01-31\t2026-01-31\tDescubre Coyoacán: Ruta poco conocida para un día auténtico en la ciudad\n60002\tcallejon-del-aguacate-coyoacan\t2026-01-28\tCallejón del Aguacate: Donde el Arte Urbano Rescata la Memoria de Coyoacán\n1\tmercado-coyoacan\t2026-01-28\tMercado de Coyoacán: Colores, Sabores y las Tostadas Más Famosas\n30002\tcasa-azul-museo-frida-kahlo\t2026-01-28\tCasa Azul: El Universo Íntimo de Frida Kahlo en el Corazón de Coyoacán\n",
+  "stderr": "",
+  "execution_time_ms": 50
+}

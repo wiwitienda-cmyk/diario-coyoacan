@@ -90,3 +90,7 @@
 
 ## Cambio de Navegación: "Inicio" a "Home"
 - [x] Cambiar traducción española de "Inicio" a "Home" en DiarioCoyoacan.tsx
+
+## Optimización SEO
+- [x] Acortar encabezado H2 de 94 caracteres a 80 o menos (ahora 61 caracteres)
+- [x] Agregar texto alternativo (alt) a las 5 imágenes que no lo tienen

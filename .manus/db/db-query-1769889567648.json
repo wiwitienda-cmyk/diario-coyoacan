@@ -1,0 +1,50 @@
+{
+  "query": "SELECT id, slug, LEFT(headlineEs, 50) as headline FROM articles ORDER BY dateISO DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, LEFT(headlineEs, 50) as headline FROM articles ORDER BY dateISO DESC;",
+  "rows": [
+    {
+      "id": "90001",
+      "slug": "feria-mezcal-cerveza-tlatelolco",
+      "headline": "Feria del Mezcal y la Cerveza: Tlatelolco, Epicent"
+    },
+    {
+      "id": "120002",
+      "slug": "descubre-coyoacan-ruta-poco-conocida-2026-01-31",
+      "headline": "Descubre Coyoacán: Ruta poco conocida para un día "
+    },
+    {
+      "id": "1",
+      "slug": "mercado-coyoacan",
+      "headline": "Mercado de Coyoacán: Colores, Sabores y las Tostad"
+    },
+    {
+      "id": "30001",
+      "slug": "jardin-centenario-coyoacan",
+      "headline": "Jardín Centenario: El Corazón Bohemio de Coyoacán "
+    },
+    {
+      "id": "30002",
+      "slug": "casa-azul-museo-frida-kahlo",
+      "headline": "Casa Azul: El Universo Íntimo de Frida Kahlo en el"
+    },
+    {
+      "id": "60002",
+      "slug": "callejon-del-aguacate-coyoacan",
+      "headline": "Callejón del Aguacate: Donde el Arte Urbano Rescat"
+    },
+    {
+      "id": "60005",
+      "slug": "fonoteca-nacional",
+      "headline": "Fonoteca Nacional: El Tesoro Sonoro de México Resg"
+    },
+    {
+      "id": "2",
+      "slug": "cafe-avellaneda",
+      "headline": "Café Avellaneda: La Resistencia del Café de Barrio"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\theadline\n90001\tferia-mezcal-cerveza-tlatelolco\tFeria del Mezcal y la Cerveza: Tlatelolco, Epicent\n120002\tdescubre-coyoacan-ruta-poco-conocida-2026-01-31\tDescubre Coyoacán: Ruta poco conocida para un día \n1\tmercado-coyoacan\tMercado de Coyoacán: Colores, Sabores y las Tostad\n30001\tjardin-centenario-coyoacan\tJardín Centenario: El Corazón Bohemio de Coyoacán \n30002\tcasa-azul-museo-frida-kahlo\tCasa Azul: El Universo Íntimo de Frida Kahlo en el\n60002\tcallejon-del-aguacate-coyoacan\tCallejón del Aguacate: Donde el Arte Urbano Rescat\n60005\tfonoteca-nacional\tFonoteca Nacional: El Tesoro Sonoro de México Resg\n2\tcafe-avellaneda\tCafé Avellaneda: La Resistencia del Café de Barrio\n",
+  "stderr": "",
+  "execution_time_ms": 52
+}
