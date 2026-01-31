@@ -94,3 +94,8 @@
 ## Optimización SEO
 - [x] Acortar encabezado H2 de 94 caracteres a 80 o menos (ahora 61 caracteres)
 - [x] Agregar texto alternativo (alt) a las 5 imágenes que no lo tienen
+
+## SEO Avanzado (Sin tocar imágenes ni otros elementos)
+- [x] Implementar Schema markup JSON-LD para artículos
+- [x] Crear endpoint para sitemap XML dinámico con todos los artículos
+- [x] Optimizar meta tags Open Graph por artículo (mejorar los existentes)

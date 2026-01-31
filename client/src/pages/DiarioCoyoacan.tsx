@@ -252,8 +252,14 @@ export default function DiarioCoyoacan() {
         <meta property="og:site_name" content="Diario Coyoacán" />
         <meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
         <meta property="article:published_time" content={currentArticle.createdAt.toISOString()} />
+        <meta property="article:modified_time" content={currentArticle.updatedAt.toISOString()} />
         <meta property="article:author" content="Diario Coyoacán" />
         <meta property="article:section" content={t.category} />
+        <meta property="article:tag" content="Coyoacán" />
+        <meta property="article:tag" content="CDMX" />
+        <meta property="article:tag" content="turismo" />
+        <meta property="article:tag" content="gastronomía" />
+        <meta property="og:image:alt" content={`Imagen del artículo: ${t.headline}`} />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -261,13 +267,63 @@ export default function DiarioCoyoacan() {
         <meta name="twitter:title" content={t.headline} />
         <meta name="twitter:description" content={t.summary} />
         <meta name="twitter:image" content={currentArticle.heroImage} />
+        <meta name="twitter:image:alt" content={`Imagen del artículo: ${t.headline}`} />
         <meta name="twitter:site" content="@DiarioCoyoacan" />
         <meta name="twitter:creator" content="@DiarioCoyoacan" />
+        <meta name="twitter:label1" content="Tiempo de lectura" />
+        <meta name="twitter:data1" content="5 min" />
         
         {/* Additional SEO */}
         <meta name="keywords" content="Coyoacán, hospedaje CDMX, cultura México, gastronomía Coyoacán, SúperAnfitrión, turismo Ciudad de México" />
         <meta name="author" content="Diario Coyoacán" />
         <link rel="canonical" content={shareUrl} />
+        
+        {/* Schema.org JSON-LD for Article */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            "headline": t.headline,
+            "description": t.summary,
+            "image": {
+              "@type": "ImageObject",
+              "url": currentArticle.heroImage,
+              "width": 1200,
+              "height": 630
+            },
+            "datePublished": currentArticle.createdAt.toISOString(),
+            "dateModified": currentArticle.updatedAt.toISOString(),
+            "author": {
+              "@type": "Organization",
+              "name": "Diario Coyoacán",
+              "url": "https://diario-coyo.manus.space"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SúperAnfitrión Coyoacán",
+              "url": "https://superanfitrion.com.mx",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://superanfitrion.com.mx/logo.png"
+              }
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": shareUrl
+            },
+            "articleSection": t.category,
+            "inLanguage": lang === 'es' ? 'es-MX' : 'en-US',
+            "about": {
+              "@type": "Place",
+              "name": currentArticle.locationAddress,
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": currentArticle.locationLat,
+                "longitude": currentArticle.locationLng
+              }
+            }
+          })}
+        </script>
       </Helmet>
 
       {/* Marquee Header */}
