@@ -61,3 +61,12 @@
 
 ## Corrección de Link del Código QR
 - [x] Corregir URL del código QR de https://superanfitrion.com.mx/diario a https://diario-coyo.manus.space/
+
+## Materiales Promocionales con QR para Imprimir
+- [ ] Crear diseño de promo elegante para habitaciones de hotel (alta gama, sofisticado)
+- [ ] Crear diseño de posavasos creativos para cafeterías (llamativo, irresistible, que genere escaneos)
+
+## Artículo de Evento Actual (Feria del Mezcal y la Cerveza)
+- [x] Generar imagen periodística subjetiva para artículo de la Feria del Mezcal (copas de mezcal con luz cálida)
+- [x] Crear artículo periodístico estilo El País sobre la Feria del Mezcal y la Cerveza (14-15 feb, Tlatelolco)
+- [x] Artículo configurado como más reciente (aparece automáticamente en primera página por fecha)
