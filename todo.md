@@ -70,3 +70,8 @@
 - [x] Generar imagen periodística subjetiva para artículo de la Feria del Mezcal (copas de mezcal con luz cálida)
 - [x] Crear artículo periodístico estilo El País sobre la Feria del Mezcal y la Cerveza (14-15 feb, Tlatelolco)
 - [x] Artículo configurado como más reciente (aparece automáticamente en primera página por fecha)
+
+## Nuevo Artículo: Ruta Poco Conocida de Coyoacán
+- [x] Generar imagen periodística subjetiva para artículo de ruta alternativa de Coyoacán
+- [x] Adaptar contenido del artículo al formato de la base de datos
+- [x] Publicar artículo "Descubre Coyoacán: Ruta poco conocida para un día auténtico"
