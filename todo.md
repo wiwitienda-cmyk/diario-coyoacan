@@ -87,3 +87,6 @@
 - [x] Implementar sistema de generación automática de artículos usando diario-coyoacan-generator skill
 - [x] Agregar A/B testing al banner con diferentes tiempos de aparición
 - [x] Agregar A/B testing al banner con diferentes mensajes de descuento
+
+## Cambio de Navegación: "Inicio" a "Home"
+- [x] Cambiar traducción española de "Inicio" a "Home" en DiarioCoyoacan.tsx

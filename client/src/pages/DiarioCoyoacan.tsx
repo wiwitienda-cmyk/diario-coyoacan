@@ -154,7 +154,7 @@ export default function DiarioCoyoacan() {
     previousEditions: 'Artículos Anteriores',
     recommended: 'Recomendado',
     scanCode: 'Escanea para llevar',
-    home: 'Inicio',
+    home: 'Home',
     reservations: 'Reservaciones',
     archive: 'NOTICIAS',
     ctaTitle: '¿Quieres explorar Coyoacán?',
