@@ -1,0 +1,45 @@
+{
+  "query": "SELECT id, slug, heroImage FROM articles ORDER BY dateISO DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, heroImage FROM articles ORDER BY dateISO DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "90001",
+      "slug": "feria-mezcal-cerveza-tlatelolco",
+      "heroImage": "/images/feria-mezcal-cerveza.jpg"
+    },
+    {
+      "id": "1",
+      "slug": "mercado-coyoacan",
+      "heroImage": "/images/mercado-atmospheric.jpg"
+    },
+    {
+      "id": "30001",
+      "slug": "jardin-centenario-coyoacan",
+      "heroImage": "/images/jardin-cross-artistic.jpg"
+    },
+    {
+      "id": "60002",
+      "slug": "callejon-del-aguacate-coyoacan",
+      "heroImage": "/images/callejon-aguacate-artistic.jpg"
+    },
+    {
+      "id": "60005",
+      "slug": "fonoteca-nacional",
+      "heroImage": "/images/fonoteca-headphones-artistic.jpg"
+    },
+    {
+      "id": "30002",
+      "slug": "casa-azul-museo-frida-kahlo",
+      "heroImage": "/images/frida-heart-artistic.jpg"
+    },
+    {
+      "id": "2",
+      "slug": "cafe-avellaneda",
+      "heroImage": "/images/cafe-detail-artistic.jpg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\theroImage\n90001\tferia-mezcal-cerveza-tlatelolco\t/images/feria-mezcal-cerveza.jpg\n1\tmercado-coyoacan\t/images/mercado-atmospheric.jpg\n30001\tjardin-centenario-coyoacan\t/images/jardin-cross-artistic.jpg\n60002\tcallejon-del-aguacate-coyoacan\t/images/callejon-aguacate-artistic.jpg\n60005\tfonoteca-nacional\t/images/fonoteca-headphones-artistic.jpg\n30002\tcasa-azul-museo-frida-kahlo\t/images/frida-heart-artistic.jpg\n2\tcafe-avellaneda\t/images/cafe-detail-artistic.jpg\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

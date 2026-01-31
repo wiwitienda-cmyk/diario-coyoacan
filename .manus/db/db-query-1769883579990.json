@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE articles SET heroImage = CONCAT('/images/', SUBSTRING_INDEX(heroImage, '/', -1)) WHERE heroImage LIKE 'https://d2xsxph8kpxj0f.cloudfront.net%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute UPDATE articles SET heroImage = CONCAT('/images/', SUBSTRING_INDEX(heroImage, '/', -1)) WHERE heroImage LIKE 'https://d2xsxph8kpxj0f.cloudfront.net%';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 65
+}
