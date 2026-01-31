@@ -7,19 +7,55 @@ import { useEffect, useState } from "react";
  * - Se puede cerrar y no vuelve a aparecer en la sesión
  * - Diseño coherente con el estilo periodístico del sitio
  */
+// Variantes de A/B testing
+const VARIANTS = [
+  {
+    id: 'variant-a',
+    delay: 2000, // 2 segundos
+    discount: '15%',
+    code: 'DIARIO15',
+    title: '15% de Descuento para Lectores del Diario',
+    description: 'Hospédate en el corazón de Coyoacán y vive la experiencia local que acabas de leer. Usa el código',
+  },
+  {
+    id: 'variant-b',
+    delay: 5000, // 5 segundos
+    discount: '20%',
+    code: 'PRIMERA20',
+    title: '20% de Descuento en tu Primera Noche',
+    description: 'Reserva ahora y obtén 20% de descuento en tu primera noche en Coyoacán. Usa el código',
+  },
+  {
+    id: 'variant-c',
+    delay: 3000, // 3 segundos (scroll 50%)
+    discount: '15%',
+    code: 'DIARIO15',
+    title: 'Oferta Exclusiva: 15% de Descuento',
+    description: 'Descubre Coyoacán desde nuestras propiedades. Reserva con el código',
+  },
+];
+
 export function PromoBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [variant, setVariant] = useState(VARIANTS[0]);
 
   useEffect(() => {
     // Verificar si el banner ya fue cerrado en esta sesión
     const wasClosed = sessionStorage.getItem("promoBannerClosed");
     if (wasClosed) return;
 
-    // Mostrar el banner después de 3 segundos
+    // Seleccionar variante aleatoria (A/B testing)
+    const randomVariant = VARIANTS[Math.floor(Math.random() * VARIANTS.length)];
+    setVariant(randomVariant);
+
+    // Guardar variante en sessionStorage para analytics
+    sessionStorage.setItem("promoBannerVariant", randomVariant.id);
+
+    // Mostrar el banner después del delay de la variante
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 3000);
+    }, randomVariant.delay);
 
     return () => clearTimeout(timer);
   }, []);
@@ -56,11 +92,11 @@ export function PromoBanner() {
             Oferta Exclusiva
           </div>
           <h3 className="font-headline text-2xl leading-tight mb-3">
-            15% de Descuento para Lectores del Diario
+            {variant.title}
           </h3>
           <p className="font-body text-sm mb-4 opacity-95">
-            Hospédate en el corazón de Coyoacán y vive la experiencia local que
-            acabas de leer. Usa el código <strong className="font-subhead">DIARIO15</strong> al reservar.
+            {variant.description}{' '}
+            <strong className="font-subhead">{variant.code}</strong> al reservar.
           </p>
           <a
             href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"

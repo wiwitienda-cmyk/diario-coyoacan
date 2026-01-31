@@ -63,8 +63,8 @@
 - [x] Corregir URL del código QR de https://superanfitrion.com.mx/diario a https://diario-coyo.manus.space/
 
 ## Materiales Promocionales con QR para Imprimir
-- [ ] Crear diseño de promo elegante para habitaciones de hotel (alta gama, sofisticado)
-- [ ] Crear diseño de posavasos creativos para cafeterías (llamativo, irresistible, que genere escaneos)
+- [x] Crear diseño de promo elegante para habitaciones de hotel (alta gama, sofisticado)
+- [x] Crear diseño de posavasos creativos para cafeterías (llamativo, irresistible, que genere escaneos)
 
 ## Artículo de Evento Actual (Feria del Mezcal y la Cerveza)
 - [x] Generar imagen periodística subjetiva para artículo de la Feria del Mezcal (copas de mezcal con luz cálida)
@@ -80,3 +80,10 @@
 - [x] Diseñar banner flotante con descuento especial para lectores del Diario
 - [x] Implementar animación de entrada y funcionalidad de cierre
 - [x] Agregar enlace directo a página de reservas de SúperAnfitrión
+
+## Nuevas Mejoras Aprobadas (SI A TODO)
+- [x] Crear diseño de coasters creativos para cafeterías con código QR
+- [x] Crear diseño de material promocional de alta gama para hoteles
+- [x] Implementar sistema de generación automática de artículos usando diario-coyoacan-generator skill
+- [x] Agregar A/B testing al banner con diferentes tiempos de aparición
+- [x] Agregar A/B testing al banner con diferentes mensajes de descuento
