@@ -104,3 +104,6 @@
 - [x] Adaptar SQL del artículo al schema de la base de datos actual (articles table)
 - [x] Generar imagen periodística subjetiva para el artículo
 - [x] Publicar artículo en la base de datos
+
+## Poner Artículo en Primera Plana
+- [x] Cambiar fecha del artículo "Domingos Alternativos" para que aparezca en la primera plana
