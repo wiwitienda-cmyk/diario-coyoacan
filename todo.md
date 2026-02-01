@@ -99,3 +99,8 @@
 - [x] Implementar Schema markup JSON-LD para artículos
 - [x] Crear endpoint para sitemap XML dinámico con todos los artículos
 - [x] Optimizar meta tags Open Graph por artículo (mejorar los existentes)
+
+## Publicar Artículo: Domingos Alternativos en Coyoacán (2026-02-01)
+- [x] Adaptar SQL del artículo al schema de la base de datos actual (articles table)
+- [x] Generar imagen periodística subjetiva para el artículo
+- [x] Publicar artículo en la base de datos
