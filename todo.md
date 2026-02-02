@@ -132,3 +132,12 @@
 - [x] Diseñar y agregar top header con WhatsApp (5511427252), correo (superanfitrioncoyoacan@gmail.com), crear cuenta, y alojamientos en Coyoacán
 - [x] Enlazar botón "Alojamientos en Coyoacán" a página de Lodgify
 - [x] Verificar diseño responsive del top header
+
+## Problema Crítico de SEO (Recurrente - Máxima Prioridad)
+- [ ] Investigar qué herramienta de SEO está usando el usuario para detectar el problema
+- [ ] Implementar solución alternativa: configurar Leaflet para agregar alt text en la creación de tiles
+- [ ] Probar con múltiples herramientas SEO (Lighthouse, SEO Checker, Google Search Console)
+- [ ] Verificar que TODAS las imágenes tengan alt text visible para checkers de SEO
+
+## Actualizar Enlace de "Crear Cuenta"
+- [x] Cambiar URL del botón "Crear cuenta" de Lodgify a https://superanfitrion.com.mx/acceso-huespedes

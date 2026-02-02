@@ -366,7 +366,7 @@ export default function DiarioCoyoacan() {
             </a>
             <span className="text-gray-400">|</span>
             <a 
-              href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades" 
+              href="https://superanfitrion.com.mx/acceso-huespedes" 
               target="_blank" 
               rel="noopener noreferrer"
               className="font-subhead uppercase text-xs hover:text-rust transition-colors"
@@ -520,6 +520,16 @@ export default function DiarioCoyoacan() {
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  className="leaflet-tile-layer"
+                  eventHandlers={{
+                    tileload: (e: any) => {
+                      // Agregar alt text INMEDIATAMENTE cuando cada tile se carga
+                      if (e.tile && !e.tile.hasAttribute('alt')) {
+                        e.tile.setAttribute('alt', '');
+                        e.tile.setAttribute('aria-hidden', 'true');
+                      }
+                    }
+                  }}
                 />
                 <Marker position={[parseFloat(currentArticle.locationLat), parseFloat(currentArticle.locationLng)]}>
                   <Popup>
