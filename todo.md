@@ -107,3 +107,9 @@
 
 ## Poner Artículo en Primera Plana
 - [x] Cambiar fecha del artículo "Domingos Alternativos" para que aparezca en la primera plana
+
+## Publicar Nuevo Artículo del Diario Coyoacán
+- [x] Descomprimir y revisar archivo ZIP con el nuevo artículo
+- [x] Generar imagen periodística subjetiva para el artículo
+- [x] Adaptar SQL al schema de la base de datos actual
+- [x] Publicar artículo en la base de datos

@@ -1,0 +1,9 @@
+{
+  "query": "DELETE FROM articles WHERE slug = 'agenda-cultural-eventos-locales-imperdibles-esta-semana-en-coyoacan-2026-02-02';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute DELETE FROM articles WHERE slug = 'agenda-cultural-eventos-locales-imperdibles-esta-semana-en-coyoacan-2026-02-02';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 65
+}
