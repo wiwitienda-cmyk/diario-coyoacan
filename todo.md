@@ -122,3 +122,8 @@
 ## Solucionar Problema de SEO: Imágenes sin Alt Text
 - [x] Implementar solución robusta para agregar alt="" automáticamente a imágenes de Leaflet
 - [x] Verificar que las 7 imágenes del mapa ahora tengan texto alternativo
+
+## Nuevo Problema de SEO Reportado (Recurrente - Crítico)
+- [x] Diagnosticar por qué 5 de 7 imágenes siguen sin texto alternativo según checker de SEO
+- [x] Implementar solución definitiva más agresiva para agregar alt text a imágenes de Leaflet
+- [x] Verificar que todas las imágenes tengan alt text correctamente

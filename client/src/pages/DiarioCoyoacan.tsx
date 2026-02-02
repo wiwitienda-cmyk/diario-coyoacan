@@ -65,55 +65,57 @@ export default function DiarioCoyoacan() {
 
   const currentArticle = articleSlug ? article : latestArticle;
   
-  // Agregar alt text a imágenes de Leaflet para SEO (solución robusta)
+  // SOLUCIÓN DEFINITIVA: Interceptar creación de elementos img de Leaflet ANTES de que se agreguen al DOM
   useEffect(() => {
+    // Sobrescribir el método createElement de Leaflet para agregar alt text INMEDIATAMENTE
+    const originalCreateElement = document.createElement.bind(document);
+    
+    // @ts-ignore - Monkey patching para interceptar creación de imágenes
+    document.createElement = function(tagName: string, options?: any) {
+      const element = originalCreateElement(tagName, options);
+      
+      // Si es una imagen, agregar alt text INMEDIATAMENTE
+      if (tagName.toLowerCase() === 'img') {
+        // Usar setTimeout(0) para agregar atributos después de que Leaflet configure la imagen
+        setTimeout(() => {
+          if (!element.hasAttribute('alt')) {
+            element.setAttribute('alt', '');
+          }
+          if (!element.hasAttribute('aria-hidden')) {
+            element.setAttribute('aria-hidden', 'true');
+          }
+        }, 0);
+      }
+      
+      return element;
+    };
+    
+    // Función de respaldo para agregar alt text a imágenes existentes
     const addAltToLeafletImages = () => {
-      // Tiles del mapa
-      const tiles = document.querySelectorAll('.leaflet-tile, .leaflet-tile-container img, img[src*="tile.openstreetmap.org"]');
-      tiles.forEach(tile => {
-        if (!tile.hasAttribute('alt')) {
-          tile.setAttribute('alt', '');
-          tile.setAttribute('aria-hidden', 'true');
-          tile.setAttribute('role', 'presentation');
-        }
-      });
-      
-      // Sombra del marcador e iconos
-      const decorativeImages = document.querySelectorAll('.leaflet-marker-shadow, .leaflet-marker-icon img, img[src*="marker-shadow"], img[src*="marker-icon"]');
-      decorativeImages.forEach(img => {
-        if (!img.hasAttribute('alt')) {
-          img.setAttribute('alt', '');
-          img.setAttribute('aria-hidden', 'true');
-          img.setAttribute('role', 'presentation');
-        }
-      });
-      
-      // TODAS las imágenes dentro del contenedor de Leaflet
-      const allMapImages = document.querySelectorAll('.leaflet-container img, .leaflet-pane img');
+      const allMapImages = document.querySelectorAll('.leaflet-container img, .leaflet-pane img, .leaflet-tile, img[src*="tile.openstreetmap.org"], img[src*="marker"]');
       allMapImages.forEach(img => {
         if (!img.hasAttribute('alt')) {
           img.setAttribute('alt', '');
+        }
+        if (!img.hasAttribute('aria-hidden')) {
           img.setAttribute('aria-hidden', 'true');
-          img.setAttribute('role', 'presentation');
         }
       });
     };
     
-    // Ejecutar INMEDIATAMENTE antes de que el mapa se renderice
+    // Ejecutar inmediatamente
     addAltToLeafletImages();
     
-    // Ejecutar múltiples veces en intervalos muy cortos
-    const timers: NodeJS.Timeout[] = [];
-    for (let i = 0; i < 50; i++) {
-      timers.push(setTimeout(addAltToLeafletImages, i * 50));
-    }
+    // Ejecutar múltiples veces en los primeros 100ms
+    const timers = [0, 1, 5, 10, 20, 50, 100, 200, 500, 1000].map(delay => 
+      setTimeout(addAltToLeafletImages, delay)
+    );
     
-    // Observer MUY agresivo para detectar CUALQUIER cambio en el DOM
-    const observer = new MutationObserver((mutations) => {
+    // MutationObserver como respaldo
+    const observer = new MutationObserver(() => {
       addAltToLeafletImages();
     });
     
-    // Observar TODO el documento
     observer.observe(document.body, {
       childList: true,
       subtree: true,
@@ -121,14 +123,10 @@ export default function DiarioCoyoacan() {
       attributeFilter: ['src', 'class']
     });
     
-    // Intervalo continuo cada 50ms durante los primeros 5 segundos
-    const checkInterval = setInterval(addAltToLeafletImages, 50);
-    const stopInterval = setTimeout(() => clearInterval(checkInterval), 5000);
-    
     return () => {
+      // Restaurar createElement original
+      document.createElement = originalCreateElement;
       timers.forEach(timer => clearTimeout(timer));
-      clearTimeout(stopInterval);
-      clearInterval(checkInterval);
       observer.disconnect();
     };
   }, [currentArticle]);
