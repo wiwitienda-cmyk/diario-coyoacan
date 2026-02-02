@@ -141,3 +141,7 @@
 
 ## Actualizar Enlace de "Crear Cuenta"
 - [x] Cambiar URL del botón "Crear cuenta" de Lodgify a https://superanfitrion.com.mx/acceso-huespedes
+
+## Agregar Botón de Llamada Directa
+- [x] Agregar botón de llamada directa con tel:5511427252 en el top header
+- [x] Verificar que funcione correctamente en dispositivos móviles
