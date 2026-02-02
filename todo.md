@@ -113,3 +113,8 @@
 - [x] Generar imagen periodística subjetiva para el artículo
 - [x] Adaptar SQL al schema de la base de datos actual
 - [x] Publicar artículo en la base de datos
+
+## Reemplazar Imagen del Artículo de Agenda Cultural
+- [x] Buscar archivo diario-coyoacan-eventos-culturales-feb-02-2026.png en el sistema
+- [x] Copiar imagen al directorio /public/images/
+- [x] Actualizar base de datos con la nueva ruta de imagen
