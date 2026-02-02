@@ -127,3 +127,8 @@
 - [x] Diagnosticar por qué 5 de 7 imágenes siguen sin texto alternativo según checker de SEO
 - [x] Implementar solución definitiva más agresiva para agregar alt text a imágenes de Leaflet
 - [x] Verificar que todas las imágenes tengan alt text correctamente
+
+## Agregar Top Header con Información de Contacto
+- [x] Diseñar y agregar top header con WhatsApp (5511427252), correo (superanfitrioncoyoacan@gmail.com), crear cuenta, y alojamientos en Coyoacán
+- [x] Enlazar botón "Alojamientos en Coyoacán" a página de Lodgify
+- [x] Verificar diseño responsive del top header
