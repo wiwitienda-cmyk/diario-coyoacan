@@ -65,64 +65,69 @@ export default function DiarioCoyoacan() {
 
   const currentArticle = articleSlug ? article : latestArticle;
   
-  // Agregar alt text a imágenes de Leaflet para SEO
+  // Agregar alt text a imágenes de Leaflet para SEO (solución robusta)
   useEffect(() => {
     const addAltToLeafletImages = () => {
       // Tiles del mapa
-      const tiles = document.querySelectorAll('.leaflet-tile');
+      const tiles = document.querySelectorAll('.leaflet-tile, .leaflet-tile-container img, img[src*="tile.openstreetmap.org"]');
       tiles.forEach(tile => {
         if (!tile.hasAttribute('alt')) {
           tile.setAttribute('alt', '');
           tile.setAttribute('aria-hidden', 'true');
+          tile.setAttribute('role', 'presentation');
         }
       });
       
-      // Sombra del marcador
-      const shadows = document.querySelectorAll('.leaflet-marker-shadow');
-      shadows.forEach(shadow => {
-        if (!shadow.hasAttribute('alt')) {
-          shadow.setAttribute('alt', '');
-          shadow.setAttribute('aria-hidden', 'true');
+      // Sombra del marcador e iconos
+      const decorativeImages = document.querySelectorAll('.leaflet-marker-shadow, .leaflet-marker-icon img, img[src*="marker-shadow"], img[src*="marker-icon"]');
+      decorativeImages.forEach(img => {
+        if (!img.hasAttribute('alt')) {
+          img.setAttribute('alt', '');
+          img.setAttribute('aria-hidden', 'true');
+          img.setAttribute('role', 'presentation');
+        }
+      });
+      
+      // TODAS las imágenes dentro del contenedor de Leaflet
+      const allMapImages = document.querySelectorAll('.leaflet-container img, .leaflet-pane img');
+      allMapImages.forEach(img => {
+        if (!img.hasAttribute('alt')) {
+          img.setAttribute('alt', '');
+          img.setAttribute('aria-hidden', 'true');
+          img.setAttribute('role', 'presentation');
         }
       });
     };
     
-    // Ejecutar inmediatamente y múltiples veces para capturar tiles que cargan dinámicamente
+    // Ejecutar INMEDIATAMENTE antes de que el mapa se renderice
     addAltToLeafletImages();
-    const timer1 = setTimeout(addAltToLeafletImages, 50);
-    const timer2 = setTimeout(addAltToLeafletImages, 200);
-    const timer3 = setTimeout(addAltToLeafletImages, 500);
-    const timer4 = setTimeout(addAltToLeafletImages, 1000);
-    const timer5 = setTimeout(addAltToLeafletImages, 2000);
     
-    // Observer para detectar nuevos tiles que se agregan dinámicamente
-    const observer = new MutationObserver(() => {
+    // Ejecutar múltiples veces en intervalos muy cortos
+    const timers: NodeJS.Timeout[] = [];
+    for (let i = 0; i < 50; i++) {
+      timers.push(setTimeout(addAltToLeafletImages, i * 50));
+    }
+    
+    // Observer MUY agresivo para detectar CUALQUIER cambio en el DOM
+    const observer = new MutationObserver((mutations) => {
       addAltToLeafletImages();
     });
     
-    const mapContainer = document.querySelector('.leaflet-container');
-    if (mapContainer) {
-      observer.observe(mapContainer, {
-        childList: true,
-        subtree: true,
-        attributes: false
-      });
-    }
+    // Observar TODO el documento
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['src', 'class']
+    });
     
-    // Agregar listener para evento de carga del mapa
-    const checkInterval = setInterval(() => {
-      const tiles = document.querySelectorAll('.leaflet-tile');
-      if (tiles.length > 0) {
-        addAltToLeafletImages();
-      }
-    }, 100);
+    // Intervalo continuo cada 50ms durante los primeros 5 segundos
+    const checkInterval = setInterval(addAltToLeafletImages, 50);
+    const stopInterval = setTimeout(() => clearInterval(checkInterval), 5000);
     
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      clearTimeout(timer4);
-      clearTimeout(timer5);
+      timers.forEach(timer => clearTimeout(timer));
+      clearTimeout(stopInterval);
       clearInterval(checkInterval);
       observer.disconnect();
     };

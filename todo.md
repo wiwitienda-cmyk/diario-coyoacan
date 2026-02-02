@@ -118,3 +118,7 @@
 - [x] Buscar archivo diario-coyoacan-eventos-culturales-feb-02-2026.png en el sistema
 - [x] Copiar imagen al directorio /public/images/
 - [x] Actualizar base de datos con la nueva ruta de imagen
+
+## Solucionar Problema de SEO: Imágenes sin Alt Text
+- [x] Implementar solución robusta para agregar alt="" automáticamente a imágenes de Leaflet
+- [x] Verificar que las 7 imágenes del mapa ahora tengan texto alternativo
