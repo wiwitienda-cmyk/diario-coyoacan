@@ -145,3 +145,8 @@
 ## Agregar Botón de Llamada Directa
 - [x] Agregar botón de llamada directa con tel:5511427252 en el top header
 - [x] Verificar que funcione correctamente en dispositivos móviles
+
+## Publicar Artículo del Café en Coyoacán
+- [x] Subir imagen del café a S3
+- [x] Insertar nuevo artículo en la base de datos
+- [x] Verificar que el artículo se muestre correctamente en la página

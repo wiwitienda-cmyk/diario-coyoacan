@@ -1,53 +1,57 @@
 export const articleData = {
-  slug: "cafe-avellaneda-un-rincon-autentico-para-cafe-y-antojos-en-coyoacan-2026-01-27",
-  headline: "Café Avellaneda: Un rincón auténtico para café y antojos en Coyoacán",
-  summary: "Descubre Café Avellaneda, un local emblemático en Coyoacán donde el café de especialidad y la atmósfera bohemia se combinan para una experiencia auténtica y accesible.",
+  slug: "corazon-coyoacan-cafe-tradicion-vanguardia",
+  headline: "El Corazón de Coyoacán Late a Ritmo de Café: De la Tradición a la Vanguardia",
+  summary: "Coyoacán se consolida como epicentro cafetero donde conviven la tradición del Café El Jarocho y la innovación de las nuevas barras de especialidad.",
   category: "Gastronomía",
-  date: "27 de enero de 2026",
+  date: "4 de febrero de 2026",
   weather: {
-    condition: "Lluvioso",
-    temp: 27
+    condition: "Soleado",
+    temp: 19
   },
   location: {
-    address: "Higuera 40, Coyoacán, CDMX",
+    address: "Coyoacán, Ciudad de México",
     lat: 19.3495, 
     lng: -99.1625,
     mapsUrl: "https://goo.gl/maps/xyz" // Placeholder
   },
   hours: {
-    week: "08:00 - 18:00",
-    sunday: "09:00 - 15:00"
+    week: "Horarios variables según evento",
+    sunday: "Horarios variables según evento"
   },
   menuHighlights: [
     {
-      item: "Café filtrado V60",
-      price: "$40 - $70",
-      desc: "Granos de Oaxaca, notas cítricas."
+      item: "Café de Olla (El Jarocho)",
+      price: "$35",
+      desc: "Tradicional, con canela y piloncillo."
     },
     {
-      item: "Espresso Doble",
-      price: "$45",
-      desc: "Intenso y perfectamente equilibrado."
+      item: "Espresso de Especialidad",
+      price: "$50 - $80",
+      desc: "Granos selectos, métodos modernos."
     },
     {
-      item: "Panqué de Naranja",
-      price: "$45",
-      desc: "Con chocolate, dulce y fresco."
+      item: "Pan Dulce Casero",
+      price: "$25 - $40",
+      desc: "Recién horneado, tradicional."
     },
     {
-      item: "Sándwich Panela",
+      item: "Torta Especial (El Jarocho)",
       price: "$60",
-      desc: "Con aguacate y jitomate."
+      desc: "Con salsa secreta legendaria."
     }
   ],
   content: [
     {
-      title: "Ambiente",
-      text: "Desde que cruzas su puerta, te envuelve un ambiente íntimo y relajado que invita a sentarse, leer o platicar. Sus paredes decoradas con arte local y fotografías en blanco y negro crean una atmósfera bohemia y cálida."
+      title: "La Leyenda del Jarocho: Más de 70 Años de Tradición",
+      text: "Hablar de café en Coyoacán es hablar del Café El Jarocho. Fundado en 1953 por Bertha Paredes y Gil Romero, este icónico establecimiento ha sido testigo y protagonista de la historia del barrio. Lo que comenzó como una modesta tienda de productos veracruzanos en la calle Aguayo, se transformó en la primera barra de café de su tipo en la ciudad, un concepto revolucionario para la época que recuperaba la preparación artesanal del sur de México. El Jarocho no es solo una cafetería, es una institución. Sus filas interminables, sus vasos de unicel humeantes y sus inconfundibles banquitas verdes forman parte del imaginario colectivo de la capital."
     },
     {
-      title: "La Experiencia",
-      text: "Café Avellaneda es más que un lugar para tomar café; es una experiencia que conecta al visitante con la cultura cafetalera mexicana y el espíritu de Coyoacán, lejos de las aglomeraciones."
+      title: "La Nueva Ola: El Café de Especialidad Conquista Coyoacán",
+      text: "En los últimos años, una nueva ola de cafeterías ha llegado a Coyoacán para complementar la oferta tradicional. Estos nuevos espacios, conocidos como barras de especialidad, proponen una experiencia diferente, centrada en la calidad del grano, los métodos de extracción y el conocimiento profundo del producto. Lugares como Maratea, Boicot Café, La Mano, Café Negro, La Panera, El Olvidado, Fortunata Café y Kahwen Coffee están redefiniendo el consumo de café en la zona. Estos nuevos templos del café no solo ofrecen bebidas excepcionales, sino que también se han convertido en puntos de encuentro social y cultural."
+    },
+    {
+      title: "Un Barrio para Descubrir Caminando",
+      text: "Coyoacán es un barrio que se descubre a pie, con calma y curiosidad. Cada esquina guarda una historia, cada café ofrece una experiencia distinta. Para los visitantes que desean sumergirse completamente en la vida del barrio, hospedarse en Coyoacán es la mejor opción. SúperAnfitrión Coyoacán ofrece alojamientos cuidadosamente seleccionados que permiten vivir como un local, despertarse con el aroma del café de la esquina y explorar la zona sin prisas. Desde departamentos acogedores hasta casas con jardín, cada espacio está diseñado para que los huéspedes se sientan en casa mientras descubren los secretos mejor guardados del barrio."
     }
   ]
 };
