@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, slug, dateISO, headlineEs FROM articles ORDER BY dateISO DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, dateISO, headlineEs FROM articles ORDER BY dateISO DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "180002",
+      "slug": "agenda-cultural-eventos-locales-imperdibles-esta-semana-en-coyoacan-2026-02-02",
+      "dateISO": "2026-02-16",
+      "headlineEs": "Agenda cultural: eventos locales imperdibles esta semana en Coyoacán"
+    },
+    {
+      "id": "150001",
+      "slug": "domingos-alternativos-en-coyoacan-eventos-locales-para-redescubrir-el-barrio-2026-02-01",
+      "dateISO": "2026-02-15",
+      "headlineEs": "Domingos alternativos en Coyoacán: eventos locales para redescubrir el barrio"
+    },
+    {
+      "id": "90001",
+      "slug": "feria-mezcal-cerveza-tlatelolco",
+      "dateISO": "2026-02-14",
+      "headlineEs": "Feria del Mezcal y la Cerveza: Tlatelolco, Epicentro Cultural"
+    },
+    {
+      "id": "210001",
+      "slug": "corazon-coyoacan-cafe-tradicion-vanguardia",
+      "dateISO": "2026-02-04",
+      "headlineEs": "El Corazón de Coyoacán Late a Ritmo de Café: De la Tradición a la Vanguardia"
+    },
+    {
+      "id": "120002",
+      "slug": "descubre-coyoacan-ruta-poco-conocida-2026-01-31",
+      "dateISO": "2026-01-31",
+      "headlineEs": "Descubre Coyoacán: Ruta poco conocida para un día auténtico en la ciudad"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\tdateISO\theadlineEs\n180002\tagenda-cultural-eventos-locales-imperdibles-esta-semana-en-coyoacan-2026-02-02\t2026-02-16\tAgenda cultural: eventos locales imperdibles esta semana en Coyoacán\n150001\tdomingos-alternativos-en-coyoacan-eventos-locales-para-redescubrir-el-barrio-2026-02-01\t2026-02-15\tDomingos alternativos en Coyoacán: eventos locales para redescubrir el barrio\n90001\tferia-mezcal-cerveza-tlatelolco\t2026-02-14\tFeria del Mezcal y la Cerveza: Tlatelolco, Epicentro Cultural\n210001\tcorazon-coyoacan-cafe-tradicion-vanguardia\t2026-02-04\tEl Corazón de Coyoacán Late a Ritmo de Café: De la Tradición a la Vanguardia\n120002\tdescubre-coyoacan-ruta-poco-conocida-2026-01-31\t2026-01-31\tDescubre Coyoacán: Ruta poco conocida para un día auténtico en la ciudad\n",
+  "stderr": "",
+  "execution_time_ms": 340
+}

@@ -150,3 +150,8 @@
 - [x] Subir imagen del café a S3
 - [x] Insertar nuevo artículo en la base de datos
 - [x] Verificar que el artículo se muestre correctamente en la página
+
+## Artículo del Café No Aparece en Primera Plana
+- [x] Diagnosticar por qué el artículo no aparece como el más reciente en la página principal
+- [x] Corregir ordenamiento o fecha del artículo
+- [x] Verificar que aparezca correctamente en la primera plana
