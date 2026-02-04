@@ -10,6 +10,8 @@ import { toast } from 'sonner';
 
 import SocialShareButtons from '@/components/SocialShareButtons';
 import { PromoBanner } from '@/components/PromoBanner';
+import { RelatedArticles } from '@/components/RelatedArticles';
+import { WhatsAppWidget } from '@/components/WhatsAppWidget';
 
 // Fix Leaflet marker icon issue
 import L from 'leaflet';
@@ -512,6 +514,22 @@ export default function DiarioCoyoacan() {
           </div>
           
 
+          {/* Related Articles */}
+          {allArticles && (
+            <RelatedArticles 
+              currentArticleSlug={currentArticle.slug}
+              currentCategory={lang === 'es' ? currentArticle.categoryEs : currentArticle.categoryEn}
+              allArticles={allArticles.map(art => ({
+                slug: art.slug,
+                headlineEs: art.headlineEs,
+                summaryEs: art.summaryEs,
+                heroImage: art.heroImage,
+                categoryEs: art.categoryEs,
+                dateEs: art.dateEs
+              }))}
+            />
+          )}
+
         </section>
 
         {/* Sidebar / Info Panel */}
@@ -682,6 +700,9 @@ export default function DiarioCoyoacan() {
       
       {/* Banner flotante de conversión */}
       <PromoBanner />
+      
+      {/* Widget flotante de WhatsApp */}
+      <WhatsAppWidget />
     </div>
   );
 }

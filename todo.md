@@ -155,3 +155,13 @@
 - [x] Diagnosticar por qué el artículo no aparece como el más reciente en la página principal
 - [x] Corregir ordenamiento o fecha del artículo
 - [x] Verificar que aparezca correctamente en la primera plana
+
+## Implementar Sistema de Artículos Relacionados
+- [x] Crear componente de artículos relacionados
+- [x] Implementar lógica para seleccionar artículos similares por categoría
+- [x] Agregar sección al final de cada artículo
+
+## Implementar Widget Flotante de WhatsApp
+- [x] Crear componente de botón flotante de WhatsApp con enlace a 5511427252
+- [x] Agregar estilos y animaciones para el widget
+- [x] Integrar widget en todas las páginas del sitio
