@@ -165,3 +165,12 @@
 - [x] Crear componente de botón flotante de WhatsApp con enlace a 5511427252
 - [x] Agregar estilos y animaciones para el widget
 - [x] Integrar widget en todas las páginas del sitio
+
+## Solucionar Error de Anidación de Enlaces
+- [x] Identificar dónde está el elemento <a> anidado dentro de otro <a>
+- [x] Corregir la estructura HTML para eliminar la anidación
+- [x] Verificar que el error desaparezca en la consola
+
+## Agregar Enlace al Blog de SuperAnfitrión en Header
+- [x] Agregar botón "BLOG" en el header junto a "NOTICIAS" que enlace a https://superanfitrion.com.mx/blog
+- [x] Verificar que el enlace funcione correctamente
