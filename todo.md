@@ -181,3 +181,7 @@
 - [x] Crear/seleccionar imagen artística y subjetiva para el artículo
 - [x] Publicar artículo en la base de datos con fecha de hoy
 - [x] Verificar que aparezca como artículo destacado en la primera plana (nota: el artículo del café del 17 de febrero es el más reciente, el del museo del 10 de febrero aparece en la lista)
+
+## Artículo del Museo No Aparece en Primera Plana
+- [x] Actualizar fecha del artículo del museo a una fecha más reciente que 2026-02-17
+- [x] Verificar que el artículo del museo aparezca como destacado en la primera plana
