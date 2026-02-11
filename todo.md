@@ -174,3 +174,10 @@
 ## Agregar Enlace al Blog de SuperAnfitrión en Header
 - [x] Agregar botón "BLOG" en el header junto a "NOTICIAS" que enlace a https://superanfitrion.com.mx/blog
 - [x] Verificar que el enlace funcione correctamente
+
+## Generar y Publicar Artículo Diario (10 de febrero de 2026 - Lunes)
+- [x] Investigar eventos y lugares actuales en Coyoacán/CDMX
+- [x] Generar artículo periodístico con tono reporteril
+- [x] Crear/seleccionar imagen artística y subjetiva para el artículo
+- [x] Publicar artículo en la base de datos con fecha de hoy
+- [x] Verificar que aparezca como artículo destacado en la primera plana (nota: el artículo del café del 17 de febrero es el más reciente, el del museo del 10 de febrero aparece en la lista)
