@@ -185,3 +185,10 @@
 ## Artículo del Museo No Aparece en Primera Plana
 - [x] Actualizar fecha del artículo del museo a una fecha más reciente que 2026-02-17
 - [x] Verificar que el artículo del museo aparezca como destacado en la primera plana
+
+## Generar Artículo Diario con Skill del Diario Coyoacán
+- [x] Extraer y revisar archivo ZIP con la skill
+- [x] Investigar eventos actuales en Coyoacán/CDMX para hoy (miércoles 11 de febrero)
+- [x] Generar artículo periodístico con imagen artística (Museo Diego Rosales)
+- [x] Publicar artículo en la base de datos con fecha actual (2026-02-19)
+- [x] Verificar que aparezca en la primera plana
