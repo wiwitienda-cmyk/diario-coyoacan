@@ -192,3 +192,10 @@
 - [x] Generar artículo periodístico con imagen artística (Museo Diego Rosales)
 - [x] Publicar artículo en la base de datos con fecha actual (2026-02-19)
 - [x] Verificar que aparezca en la primera plana
+
+## Publicar Última Noticia de Hoy en Primera Plana
+- [x] Extraer archivo ZIP con la noticia generada
+- [x] Revisar contenido del artículo (texto bilingüe e imagen)
+- [x] Subir imagen a S3
+- [x] Insertar artículo en la base de datos
+- [x] Verificar que aparezca en la primera plana
