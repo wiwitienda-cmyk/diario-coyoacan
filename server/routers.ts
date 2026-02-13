@@ -40,12 +40,69 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         return await addSubscriber(input.email);
       }),
+    preview: publicProcedure
+      .query(async () => {
+        // Get latest article
+        const article = await getLatestArticle();
+        if (!article) {
+          throw new Error("No article found");
+        }
+
+        // Return article data and preview URL
+        const baseUrl = "https://diario-coyo.manus.space";
+        const articleUrl = `${baseUrl}/diario?slug=${article.slug}`;
+        
+        return {
+          article: {
+            headline: article.headlineEs,
+            summary: article.summaryEs,
+            heroImage: article.heroImage,
+            slug: article.slug,
+            category: article.categoryEs,
+            date: article.dateISO,
+          },
+          articleUrl,
+          subscriberCount: (await getAllSubscribers()).length,
+        };
+      }),
+    validateUrl: publicProcedure
+      .input(z.object({ url: z.string().url() }))
+      .query(async ({ input }) => {
+        try {
+          const response = await fetch(input.url, { method: 'HEAD' });
+          return {
+            valid: response.ok,
+            status: response.status,
+            url: input.url,
+          };
+        } catch (error) {
+          return {
+            valid: false,
+            status: 0,
+            url: input.url,
+            error: error instanceof Error ? error.message : 'Unknown error',
+          };
+        }
+      }),
     sendDaily: publicProcedure
       .mutation(async () => {
         // Get latest article
         const article = await getLatestArticle();
         if (!article) {
           throw new Error("No article found to send");
+        }
+
+        // Validate article URL before sending
+        const baseUrl = "https://diario-coyo.manus.space";
+        const articleUrl = `${baseUrl}/diario?slug=${article.slug}`;
+        
+        try {
+          const response = await fetch(articleUrl, { method: 'HEAD' });
+          if (!response.ok) {
+            throw new Error(`Article URL is not accessible (HTTP ${response.status}). Please verify the article exists at: ${articleUrl}`);
+          }
+        } catch (error) {
+          throw new Error(`Failed to validate article URL: ${error instanceof Error ? error.message : 'Unknown error'}. URL: ${articleUrl}`);
         }
 
         // Get all subscribers
