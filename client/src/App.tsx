@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import DiarioCoyoacan from "./pages/DiarioCoyoacan";
 import Hemeroteca from "./pages/Hemeroteca";
+import AdminNewsletter from "./pages/AdminNewsletter";
 import { HelmetProvider } from 'react-helmet-async';
 
 function Router() {
@@ -15,6 +16,7 @@ function Router() {
       <Route path={"/diario"} component={DiarioCoyoacan} />
       <Route path={"/hemeroteca"} component={Hemeroteca} />
       <Route path={"/archivo"} component={Hemeroteca} />
+      <Route path={"/admin/newsletter"} component={AdminNewsletter} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

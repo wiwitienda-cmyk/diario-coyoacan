@@ -199,3 +199,11 @@
 - [x] Subir imagen a S3
 - [x] Insertar artículo en la base de datos
 - [x] Verificar que aparezca en la primera plana
+
+## Implementar Sistema de Newsletter Automático
+- [x] Crear función de envío de newsletter con Resend API
+- [x] Diseñar template HTML responsive para el email del artículo diario
+- [x] Implementar procedimiento tRPC para enviar newsletter manualmente
+- [x] Crear endpoint/botón en el admin para enviar newsletter
+- [ ] Probar envío de newsletter con suscriptores de prueba
+- [ ] Verificar que el email se vea correctamente en diferentes clientes
