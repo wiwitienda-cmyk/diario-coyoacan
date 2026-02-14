@@ -213,3 +213,10 @@
 - [x] Implementar botón de Vista Previa en panel de administración
 - [x] Implementar validación automática de URL antes de enviar
 - [x] Agregar formulario de suscripción al newsletter en el footer del sitio
+
+## Publicar Nuevo Artículo del Diario Coyoacán
+- [x] Extraer y revisar archivo ZIP con el nuevo artículo
+- [x] Generar imagen periodística subjetiva para el artículo
+- [x] Publicar artículo en la base de datos como primera plana
+- [x] Verificar que el artículo aparezca correctamente en la primera plana
+- [x] Corregir lógica de selección de artículo más reciente (ordenar por createdAt DESC)
