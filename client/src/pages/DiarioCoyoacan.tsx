@@ -690,14 +690,61 @@ export default function DiarioCoyoacan() {
 
       {/* Footer */}
       <footer className="bg-ink text-newsprint py-12 mt-12 border-t-8 border-rust">
-        <div className="max-w-7xl mx-auto px-8 text-center">
-          <h2 className="text-4xl font-headline mb-4">Diario Coyoacán</h2>
-          <p className="font-subhead uppercase tracking-widest text-sm opacity-70 mb-8">
-            {lang === 'es' ? 'Periodismo local • Cultura • Gastronomía' : 'Local Journalism • Culture • Gastronomy'}
-          </p>
-          <p className="text-xs font-mono opacity-50">
-            &copy; 2026 Diario Coyoacán. {lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
-          </p>
+        <div className="max-w-7xl mx-auto px-8">
+          {/* Newsletter Subscription */}
+          <div className="max-w-2xl mx-auto mb-12">
+            <div className="bg-newsprint text-ink p-8 border-4 border-rust neo-shadow">
+              <h3 className="text-2xl font-headline mb-3 text-center">
+                {lang === 'es' ? '📨 Suscríbete al Newsletter' : '📨 Subscribe to Newsletter'}
+              </h3>
+              <p className="text-sm font-body mb-6 text-center opacity-80">
+                {lang === 'es' 
+                  ? 'Recibe las noticias más importantes de Coyoacán directamente en tu correo cada día.'
+                  : 'Get the most important news from Coyoacán directly to your email every day.'}
+              </p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!email || !email.includes('@')) {
+                    toast.error(lang === 'es' ? 'Por favor ingresa un email válido' : 'Please enter a valid email');
+                    return;
+                  }
+                  
+                  subscribeMutation.mutate({ email });
+                }}
+                className="flex flex-col sm:flex-row gap-3"
+              >
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={lang === 'es' ? 'Tu correo electrónico' : 'Your email address'}
+                  className="flex-1 px-4 py-3 border-2 border-ink font-body text-sm focus:outline-none focus:ring-2 focus:ring-rust"
+                  disabled={subscribeMutation.isPending}
+                />
+                <button
+                  type="submit"
+                  disabled={subscribeMutation.isPending}
+                  className="px-6 py-3 bg-rust text-white border-2 border-ink font-subhead uppercase text-sm hover:bg-ink transition-colors shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1A1A1A] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                >
+                  {subscribeMutation.isPending 
+                    ? (lang === 'es' ? 'Enviando...' : 'Sending...') 
+                    : (lang === 'es' ? 'Suscribirse' : 'Subscribe')}
+                </button>
+              </form>
+            </div>
+          </div>
+
+          {/* Footer Info */}
+          <div className="text-center">
+            <h2 className="text-4xl font-headline mb-4">Diario Coyoacán</h2>
+            <p className="font-subhead uppercase tracking-widest text-sm opacity-70 mb-8">
+              {lang === 'es' ? 'Periodismo local • Cultura • Gastronomía' : 'Local Journalism • Culture • Gastronomy'}
+            </p>
+            <p className="text-xs font-mono opacity-50">
+              &copy; 2026 Diario Coyoacán. {lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+            </p>
+          </div>
         </div>
       </footer>
       

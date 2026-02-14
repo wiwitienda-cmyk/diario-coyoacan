@@ -205,5 +205,11 @@
 - [x] Diseñar template HTML responsive para el email del artículo diario
 - [x] Implementar procedimiento tRPC para enviar newsletter manualmente
 - [x] Crear endpoint/botón en el admin para enviar newsletter
-- [ ] Probar envío de newsletter con suscriptores de prueba
-- [ ] Verificar que el email se vea correctamente en diferentes clientes
+- [x] Probar envío de newsletter con suscriptores de prueba
+- [x] Verificar que el email se vea correctamente en diferentes clientes
+- [x] Configurar API key de Resend
+- [x] Verificar dominio superanfitrion.com.mx en Resend
+- [x] Agregar registros DNS en Hostinger
+- [x] Implementar botón de Vista Previa en panel de administración
+- [x] Implementar validación automática de URL antes de enviar
+- [x] Agregar formulario de suscripción al newsletter en el footer del sitio
