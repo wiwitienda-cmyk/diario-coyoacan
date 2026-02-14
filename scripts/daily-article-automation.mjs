@@ -21,10 +21,9 @@ import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import { articles } from '../drizzle/schema.ts';
 import * as dotenv from 'dotenv';
-import { invokeLLM } from '../server/_core/llm.js';
-import { generateImage } from '../server/_core/imageGeneration.js';
-import { storagePut } from '../server/storage.js';
-import fetch from 'node-fetch';
+import { invokeLLM } from '../server/_core/llm.ts';
+import { generateImage } from '../server/_core/imageGeneration.ts';
+import { storagePut } from '../server/storage.ts';
 
 dotenv.config();
 
