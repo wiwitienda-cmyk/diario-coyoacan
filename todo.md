@@ -282,3 +282,9 @@
 - [x] Ajustar estrategia para destacar beneficios reales (cultura, seguridad, experiencia)
 - [x] Ser honesto sobre tráfico del Mundial - destacar Metro como ventaja vs autos
 - [x] Destacar Metro Línea 2 como alternativa confiable vs tráfico
+
+## Navegación Landing Page Mundial 2026
+- [x] Agregar header con logo SúperAnfitrión
+- [x] Agregar menú: Home (superanfitrion.com.mx), Blog (/diario), Reservaciones (Lodgify)
+- [x] Hacer header sticky para fácil navegación
+- [x] Versión móvil responsive

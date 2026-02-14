@@ -70,6 +70,64 @@ export default function HospedajeMundial2026() {
         </script>
       </Helmet>
 
+      {/* Header con Navegación */}
+      <header className="sticky top-0 z-50 bg-white border-b-2 border-ink shadow-md">
+        <div className="container max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+          {/* Logo */}
+          <a href="https://superanfitrion.com.mx/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <div className="w-12 h-12 bg-gradient-to-br from-green-700 to-green-900 rounded-full flex items-center justify-center text-white font-headline text-xl">
+              SA
+            </div>
+            <div>
+              <h1 className="font-headline text-xl text-ink leading-none">SúperAnfitrión</h1>
+              <p className="text-xs text-gray-600 font-subhead uppercase tracking-wider">Coyoacán</p>
+            </div>
+          </a>
+
+          {/* Navegación */}
+          <nav className="hidden md:flex items-center gap-6">
+            <a 
+              href="https://superanfitrion.com.mx/" 
+              className="font-subhead uppercase text-sm text-ink hover:text-green-700 transition-colors"
+            >
+              Home
+            </a>
+            <a 
+              href="/diario" 
+              className="font-subhead uppercase text-sm text-ink hover:text-green-700 transition-colors"
+            >
+              Blog
+            </a>
+            <a 
+              href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-rust text-white px-6 py-2 font-subhead uppercase text-sm hover:bg-orange-700 transition-colors border-2 border-ink shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_#1A1A1A]"
+            >
+              Reservaciones
+            </a>
+          </nav>
+
+          {/* Menú Móvil */}
+          <div className="md:hidden flex gap-2">
+            <a 
+              href="/diario" 
+              className="px-4 py-2 border-2 border-ink font-subhead uppercase text-xs hover:bg-gray-100 transition-colors"
+            >
+              Blog
+            </a>
+            <a 
+              href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-rust text-white px-4 py-2 font-subhead uppercase text-xs hover:bg-orange-700 transition-colors border-2 border-ink"
+            >
+              Reservar
+            </a>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-green-700 to-green-900 text-white py-20 px-4">
         <div className="container max-w-6xl mx-auto">
