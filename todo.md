@@ -275,3 +275,10 @@
 - [ ] Crear popup de salida con descuento especial
 - [ ] Optimizar velocidad de carga (lazy loading, CDN, compresión)
 - [ ] A/B testing de CTAs del Mundial 2026
+
+## Corrección de Información Falsa (Distancia al Estadio Azteca)
+- [x] Actualizar landing page: cambiar "15 min" a "20-25 min en transporte público"
+- [x] Corregir textos promocionales en blog
+- [x] Ajustar estrategia para destacar beneficios reales (cultura, seguridad, experiencia)
+- [x] Ser honesto sobre tráfico del Mundial - destacar Metro como ventaja vs autos
+- [x] Destacar Metro Línea 2 como alternativa confiable vs tráfico

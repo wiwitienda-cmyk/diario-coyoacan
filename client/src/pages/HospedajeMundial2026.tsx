@@ -131,8 +131,8 @@ export default function HospedajeMundial2026() {
                       <MapPin className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="font-subhead font-bold">15 min al Estadio Azteca</h3>
-                      <p className="text-sm text-white/80">Transporte directo en Metro</p>
+                      <h3 className="font-subhead font-bold">20-25 min al Estadio Azteca</h3>
+                      <p className="text-sm text-white/80">Metro Línea 2 directo (evita tráfico)</p>
                     </div>
                   </div>
                   
@@ -181,7 +181,7 @@ export default function HospedajeMundial2026() {
               <MapPin className="w-12 h-12 text-green-700 mb-4" />
               <h3 className="text-xl font-subhead font-bold mb-3">Ubicación Estratégica</h3>
               <p className="text-gray-700">
-                A 15 minutos del Estadio Azteca en Metro (Línea 2). Cerca de restaurantes, cafés, museos y la vida cultural de la CDMX.
+                A 20-25 minutos del Estadio Azteca en Metro (Línea 2). Evita el tráfico del Mundial con transporte público confiable. Además, disfruta de restaurantes, cafés, museos y la vida cultural de Coyoacán.
               </p>
             </Card>
             
