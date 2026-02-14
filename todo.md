@@ -234,8 +234,25 @@
 - [ ] PROBLEMA: La imagen NO se muestra en el sitio (cuadro negro) - requiere investigación adicional del componente de React
 
 ## Corregir Problema de Renderizado de Imagen Hero
-- [ ] Investigar el componente de React que renderiza la imagen hero del artículo
-- [ ] Identificar por qué la imagen no se muestra (cuadro negro)
-- [ ] Corregir el problema de renderizado de imagen
-- [ ] Verificar que la imagen se muestre correctamente en el sitio web
-- [ ] Crear checkpoint con la corrección implementada
+- [x] Investigar el componente de React que renderiza la imagen hero del artículo
+- [x] Identificar por qué la imagen no se muestra (cuadro negro) - URL incorrecta en BD
+- [x] Corregir el problema de renderizado de imagen - actualizada URL en base de datos
+- [x] Verificar que la imagen se muestre correctamente en el sitio web
+- [x] Crear checkpoint con la corrección implementada
+
+## Automatización Diaria del Diario Coyoacán (Periodismo)
+- [x] Actualizar skill diario-coyoacan-generator para enfoque periodístico (no turismo)
+- [x] Agregar fuentes prioritarias: La Jornada, El Universal, El Proceso, influencers pro-4T
+- [x] Implementar búsqueda y citación de fuentes en artículos
+- [x] Crear script de automatización diaria (daily-article-automation.mjs)
+- [x] Implementar generación de imágenes subjetivas "bajo la lupa" con perspectiva editorial
+- [x] Configurar cron job para ejecución diaria automática (7:00 AM todos los días)
+- [x] Integrar envío automático de newsletter después de publicar
+- [ ] Probar sistema completo end-to-end
+
+## Estrategia SEO Mundial 2026
+- [x] Agregar menciones del Mundial 2026 en todos los artículos generados
+- [x] Incluir keywords SEO: Mundial 2026, Coyoacán hospedaje Mundial, alojamiento Mundial 2026
+- [x] Agregar sección publicitaria del Mundial 2026 al final de cada artículo (CTA verde con ⚽)
+- [x] Optimizar meta tags con keywords del Mundial 2026 (incluido en contenido)
+- [x] Actualizar script de automatización para incluir contexto del Mundial

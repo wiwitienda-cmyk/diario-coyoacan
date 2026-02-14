@@ -479,6 +479,39 @@ export default function DiarioCoyoacan() {
             ))}
           </div>
 
+          {/* Mundial 2026 CTA */}
+          <div className="bg-gradient-to-r from-green-700 to-green-900 text-white border-4 border-ink p-8 neo-shadow my-12">
+            <div className="max-w-2xl mx-auto">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="text-5xl" aria-hidden="true">⚽</div>
+                <h3 className="text-3xl font-headline">{lang === 'es' ? 'Mundial 2026 en Coyoacán' : 'World Cup 2026 in Coyoacán'}</h3>
+              </div>
+              <p className="text-lg mb-6 font-body leading-relaxed">
+                {lang === 'es' 
+                  ? 'Coyoacán será sede del Mundial de Fútbol 2026 por tercera ocasión. Hospédate en el corazón de la acción y vive la experiencia del torneo más importante del planeta a solo pasos del Estadio Azteca. Reserva ahora tu alojamiento con SúperAnfitrión Coyoacán y forma parte de la historia.'
+                  : 'Coyoacán will host the 2026 FIFA World Cup for the third time. Stay in the heart of the action and experience the world\'s most important tournament just steps from Estadio Azteca. Book your accommodation now with SúperAnfitrión Coyoacán and be part of history.'}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-white text-green-900 px-8 py-4 font-subhead uppercase text-lg hover:bg-newsprint transition-colors border-2 border-ink shadow-[6px_6px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_#1A1A1A] text-center"
+                >
+                  {lang === 'es' ? 'Reservar para el Mundial' : 'Book for World Cup'}
+                </a>
+                <a
+                  href="https://superanfitrion.com.mx/blog"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-transparent text-white px-8 py-4 font-subhead uppercase text-lg hover:bg-white hover:text-green-900 transition-colors border-2 border-white hover:border-ink text-center"
+                >
+                  {lang === 'es' ? 'Más Información' : 'Learn More'}
+                </a>
+              </div>
+            </div>
+          </div>
+
           {/* Conversion CTA */}
           <div className="bg-gradient-to-r from-rust to-orange-700 text-white border-4 border-ink p-8 neo-shadow my-12">
             <div className="max-w-2xl mx-auto text-center">
