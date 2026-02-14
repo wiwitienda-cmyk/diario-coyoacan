@@ -220,3 +220,9 @@
 - [x] Publicar artículo en la base de datos como primera plana
 - [x] Verificar que el artículo aparezca correctamente en la primera plana
 - [x] Corregir lógica de selección de artículo más reciente (ordenar por createdAt DESC)
+
+## Publicar Artículo sobre Inversión en Seguridad de Coyoacán ante Mundial 2026
+- [ ] Generar imagen subjetiva artística de balón viejo y pie de niño con tenis desgastados (omitida por solicitud del usuario)
+- [x] Adaptar contenido del artículo al formato periodístico del Diario Coyoacán
+- [x] Publicar artículo en la base de datos como primera plana
+- [x] Verificar publicación en el sitio web
