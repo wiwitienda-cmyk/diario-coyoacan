@@ -388,6 +388,71 @@ export default function HospedajeMundial2026() {
         </div>
       </section>
 
+      {/* Botones de Navegación con Diagonales */}
+      <section className="bg-gradient-to-b from-green-900 to-ink py-12 px-4">
+        <div className="container max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {/* Botón: Regresar Arriba */}
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="group relative bg-white text-ink p-6 border-4 border-ink transform hover:scale-105 transition-all shadow-[8px_8px_0px_0px_#1A1A1A] hover:shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[4px] hover:translate-y-[4px]"
+              style={{ transform: 'skewY(-2deg)' }}
+            >
+              <div style={{ transform: 'skewY(2deg)' }} className="flex flex-col items-center gap-2">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+                <span className="font-subhead uppercase text-sm font-bold">Arriba</span>
+              </div>
+            </button>
+
+            {/* Botón: Home */}
+            <a
+              href="https://superanfitrion.com.mx/"
+              className="group relative bg-rust text-white p-6 border-4 border-ink transform hover:scale-105 transition-all shadow-[8px_8px_0px_0px_#1A1A1A] hover:shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[4px] hover:translate-y-[4px]"
+              style={{ transform: 'skewY(2deg)' }}
+            >
+              <div style={{ transform: 'skewY(-2deg)' }} className="flex flex-col items-center gap-2">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span className="font-subhead uppercase text-sm font-bold">Home</span>
+              </div>
+            </a>
+
+            {/* Botón: Blog */}
+            <a
+              href="/diario"
+              className="group relative bg-white text-ink p-6 border-4 border-ink transform hover:scale-105 transition-all shadow-[8px_8px_0px_0px_#1A1A1A] hover:shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[4px] hover:translate-y-[4px]"
+              style={{ transform: 'skewY(-2deg)' }}
+            >
+              <div style={{ transform: 'skewY(2deg)' }} className="flex flex-col items-center gap-2">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+                <span className="font-subhead uppercase text-sm font-bold">Blog</span>
+              </div>
+            </a>
+
+            {/* Botón: Reservaciones */}
+            <a
+              href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative bg-green-700 text-white p-6 border-4 border-ink transform hover:scale-105 transition-all shadow-[8px_8px_0px_0px_#1A1A1A] hover:shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[4px] hover:translate-y-[4px]"
+              style={{ transform: 'skewY(2deg)' }}
+            >
+              <div style={{ transform: 'skewY(-2deg)' }} className="flex flex-col items-center gap-2">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span className="font-subhead uppercase text-sm font-bold">Reservar</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-ink text-newsprint py-8 px-4">
         <div className="container max-w-6xl mx-auto text-center">

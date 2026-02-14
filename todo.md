@@ -288,3 +288,12 @@
 - [x] Agregar menú: Home (superanfitrion.com.mx), Blog (/diario), Reservaciones (Lodgify)
 - [x] Hacer header sticky para fácil navegación
 - [x] Versión móvil responsive
+
+## Botones de Navegación en Footer (Diseño Diagonal)
+- [x] Agregar botón "Regresar arriba" con scroll suave
+- [x] Agregar botón "Home" → superanfitrion.com.mx
+- [x] Agregar botón "Blog" → /diario
+- [x] Agregar botón "Reservaciones" → Lodgify
+- [x] Aplicar diseño diagonal/inclinado (transform: skewY)
+- [x] Estilo neo-brutal con sombras y bordes gruesos
+- [x] Grid responsive: 2 columnas en móvil, 4 en desktop
