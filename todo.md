@@ -226,3 +226,16 @@
 - [x] Adaptar contenido del artículo al formato periodístico del Diario Coyoacán
 - [x] Publicar artículo en la base de datos como primera plana
 - [x] Verificar publicación en el sitio web
+
+## Generar Imagen para Artículo de Seguridad en Coyoacán
+- [x] Generar imagen subjetiva artística de balón viejo desinflado con pie de niño en calle de Coyoacán
+- [x] Subir imagen a S3 y obtener URL del CDN
+- [x] Actualizar artículo en la base de datos con la nueva URL de imagen
+- [ ] PROBLEMA: La imagen NO se muestra en el sitio (cuadro negro) - requiere investigación adicional del componente de React
+
+## Corregir Problema de Renderizado de Imagen Hero
+- [ ] Investigar el componente de React que renderiza la imagen hero del artículo
+- [ ] Identificar por qué la imagen no se muestra (cuadro negro)
+- [ ] Corregir el problema de renderizado de imagen
+- [ ] Verificar que la imagen se muestre correctamente en el sitio web
+- [ ] Crear checkpoint con la corrección implementada

@@ -1,0 +1,16 @@
+{
+  "query": "SELECT slug, heroImage, headlineEs, createdAt FROM articles WHERE slug = 'coyoacan-invierte-21-mdp-seguridad-mundial-2026-contingencia-ambiental' LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, heroImage, headlineEs, createdAt FROM articles WHERE slug = 'coyoacan-invierte-21-mdp-seguridad-mundial-2026-contingencia-ambiental' LIMIT 1;",
+  "rows": [
+    {
+      "slug": "coyoacan-invierte-21-mdp-seguridad-mundial-2026-contingencia-ambiental",
+      "heroImage": "https://storage.manus.im/7d4a3b1e-f9c2-4a8e-b3d1-5e6f7a8b9c0d/agenda-cultural-cdmx-feb-2026.png",
+      "headlineEs": "Coyoacán invierte 21 mdp en seguridad y enfrenta contingencia ambiental; refuerza transporte y coordinación con Álvaro Obregón",
+      "createdAt": "2026-02-14 00:57:01"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\theroImage\theadlineEs\tcreatedAt\ncoyoacan-invierte-21-mdp-seguridad-mundial-2026-contingencia-ambiental\thttps://storage.manus.im/7d4a3b1e-f9c2-4a8e-b3d1-5e6f7a8b9c0d/agenda-cultural-cdmx-feb-2026.png\tCoyoacán invierte 21 mdp en seguridad y enfrenta contingencia ambiental; refuerza transporte y coordinación con Álvaro Obregón\t2026-02-14 00:57:01\n",
+  "stderr": "",
+  "execution_time_ms": 1500
+}

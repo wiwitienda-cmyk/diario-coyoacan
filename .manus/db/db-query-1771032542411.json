@@ -1,0 +1,31 @@
+{
+  "query": "SELECT id, slug, headlineEs, heroImage, createdAt FROM articles ORDER BY createdAt DESC LIMIT 3;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, headlineEs, heroImage, createdAt FROM articles ORDER BY createdAt DESC LIMIT 3;",
+  "rows": [
+    {
+      "id": "330002",
+      "slug": "coyoacan-invierte-21-mdp-seguridad-mundial-2026-contingencia-ambiental",
+      "headlineEs": "Coyoacán invierte 21 mdp en seguridad y enfrenta contingencia ambiental; refuerza transporte y coordinación con Álvaro Obregón",
+      "heroImage": "https://storage.manus.im/7d4a3b1e-f9c2-4a8e-b3d1-5e6f7a8b9c0d/agenda-cultural-cdmx-feb-2026.png",
+      "createdAt": "2026-02-14 00:57:01"
+    },
+    {
+      "id": "330001",
+      "slug": "agenda-cultural-cdmx-eventos-destacados-13-15-febrero-coyoacan-2026",
+      "headlineEs": "Agenda cultural en CDMX: eventos destacados del 13 al 15 de febrero en Coyoacán y zonas aledañas",
+      "heroImage": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663072521459/wkHieBvDdvIyWHYl.png",
+      "createdAt": "2026-02-14 00:41:50"
+    },
+    {
+      "id": "300001",
+      "slug": "coyoacan-reafirma-legado-cultural-festival-cafe-cacao-chocolate-2026-02-12",
+      "headlineEs": "Coyoacán reafirma su legado cultural con Festival de Café, Cacao y Chocolate Mexicano",
+      "heroImage": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663072521459/beWuTyxeIQMYrOIJ.png",
+      "createdAt": "2026-02-12 16:58:05"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\theadlineEs\theroImage\tcreatedAt\n330002\tcoyoacan-invierte-21-mdp-seguridad-mundial-2026-contingencia-ambiental\tCoyoacán invierte 21 mdp en seguridad y enfrenta contingencia ambiental; refuerza transporte y coordinación con Álvaro Obregón\thttps://storage.manus.im/7d4a3b1e-f9c2-4a8e-b3d1-5e6f7a8b9c0d/agenda-cultural-cdmx-feb-2026.png\t2026-02-14 00:57:01\n330001\tagenda-cultural-cdmx-eventos-destacados-13-15-febrero-coyoacan-2026\tAgenda cultural en CDMX: eventos destacados del 13 al 15 de febrero en Coyoacán y zonas aledañas\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663072521459/wkHieBvDdvIyWHYl.png\t2026-02-14 00:41:50\n300001\tcoyoacan-reafirma-legado-cultural-festival-cafe-cacao-chocolate-2026-02-12\tCoyoacán reafirma su legado cultural con Festival de Café, Cacao y Chocolate Mexicano\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663072521459/beWuTyxeIQMYrOIJ.png\t2026-02-12 16:58:05\n",
+  "stderr": "",
+  "execution_time_ms": 1522
+}
