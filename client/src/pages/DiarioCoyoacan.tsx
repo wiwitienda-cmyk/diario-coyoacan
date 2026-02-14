@@ -491,22 +491,20 @@ export default function DiarioCoyoacan() {
                   ? 'Coyoacán será sede del Mundial de Fútbol 2026 por tercera ocasión. Hospédate en el corazón de la acción y vive la experiencia del torneo más importante del planeta a solo pasos del Estadio Azteca. Reserva ahora tu alojamiento con SúperAnfitrión Coyoacán y forma parte de la historia.'
                   : 'Coyoacán will host the 2026 FIFA World Cup for the third time. Stay in the heart of the action and experience the world\'s most important tournament just steps from Estadio Azteca. Book your accommodation now with SúperAnfitrión Coyoacán and be part of history.'}
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-white text-green-900 px-8 py-4 font-subhead uppercase text-lg hover:bg-newsprint transition-colors border-2 border-ink shadow-[6px_6px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_#1A1A1A] text-center"
+                  href="/hospedaje-mundial-2026"
+                  className="inline-block bg-white text-green-900 px-8 py-4 font-subhead uppercase text-lg hover:bg-gray-100 transition-colors border-2 border-white hover:border-ink shadow-[6px_6px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_#1A1A1A] text-center"
                 >
-                  {lang === 'es' ? 'Reservar para el Mundial' : 'Book for World Cup'}
+                  {lang === 'es' ? '⚡ RESERVAR AHORA - SOLO 3 DISPONIBLES' : '⚡ BOOK NOW - ONLY 3 LEFT'}
                 </a>
                 <a
-                  href="https://superanfitrion.com.mx/blog"
+                  href="https://wa.me/525511427252?text=Hola%2C%20me%20interesa%20hospedarme%20en%20Coyoac%C3%A1n%20para%20el%20Mundial%202026"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block bg-transparent text-white px-8 py-4 font-subhead uppercase text-lg hover:bg-white hover:text-green-900 transition-colors border-2 border-white hover:border-ink text-center"
                 >
-                  {lang === 'es' ? 'Más Información' : 'Learn More'}
+                  {lang === 'es' ? '📱 WhatsApp' : '📱 WhatsApp'}
                 </a>
               </div>
             </div>

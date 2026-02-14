@@ -1,0 +1,37 @@
+# robots.txt para Diario Coyoacán
+# Optimizado para maximizar indexación de Google
+
+User-agent: *
+Allow: /
+Allow: /diario
+Allow: /hospedaje-mundial-2026
+Allow: /hemeroteca
+
+# Sitemap
+Sitemap: https://diario-coyo.manus.space/sitemap.xml
+
+# Permitir todos los bots de búsqueda
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Bloquear bots maliciosos
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# Crawl-delay para evitar sobrecarga
+Crawl-delay: 1

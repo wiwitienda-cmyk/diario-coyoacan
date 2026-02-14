@@ -256,3 +256,22 @@
 - [x] Agregar sección publicitaria del Mundial 2026 al final de cada artículo (CTA verde con ⚽)
 - [x] Optimizar meta tags con keywords del Mundial 2026 (incluido en contenido)
 - [x] Actualizar script de automatización para incluir contexto del Mundial
+
+## Estrategia de Distribución y Tráfico Orgánico
+- [ ] Implementar auto-publicación en redes sociales (Facebook, Twitter, Instagram)
+- [ ] Crear sistema de compartir en grupos de Facebook de Coyoacán/CDMX
+- [x] Configurar sitemap.xml y robots.txt para Google
+- [x] Implementar schema.org markup (Article, LocalBusiness)
+- [x] Agregar Open Graph y Twitter Cards metatags
+- [ ] Crear estrategia de backlinks (directorios, blogs, foros)
+- [x] Optimizar CTAs para conversión (urgencia, escasez, prueba social)
+- [ ] Implementar pixel de conversión y analytics
+- [x] Crear landing page específica para tráfico del blog (/hospedaje-mundial-2026)
+- [ ] Configurar Google Search Console y enviar sitemap
+
+## Optimización de Conversión
+- [x] Agregar contador de visitas en tiempo real (prueba social) - en landing page
+- [x] Implementar banner de urgencia "Solo 3 disponibles"
+- [ ] Crear popup de salida con descuento especial
+- [ ] Optimizar velocidad de carga (lazy loading, CDN, compresión)
+- [ ] A/B testing de CTAs del Mundial 2026
