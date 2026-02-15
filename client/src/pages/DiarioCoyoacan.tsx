@@ -719,6 +719,170 @@ export default function DiarioCoyoacan() {
         </aside>
       </main>
 
+      {/* Sección Publicitaria Mundial 2026 */}
+      <section className="mundial-2026-section" style={{
+        background: 'linear-gradient(135deg, #1e7e34 0%, #0d5c24 100%)',
+        padding: '60px 20px',
+        margin: '40px 0',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 1
+        }}>
+          {/* Badge */}
+          <div style={{ textAlign: 'center' }}>
+            <span style={{
+              display: 'inline-block',
+              background: 'white',
+              color: '#1A1A1A',
+              padding: '12px 30px',
+              border: '3px solid #1A1A1A',
+              fontWeight: 700,
+              fontSize: '16px',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              marginBottom: '30px',
+              boxShadow: '6px 6px 0px 0px #1A1A1A'
+            }}>
+              ⚽ Mundial de Fútbol 2026
+            </span>
+          </div>
+          
+          {/* Título y subtítulo */}
+          <h2 style={{
+            fontSize: '42px',
+            fontWeight: 900,
+            color: 'white',
+            textAlign: 'center',
+            marginBottom: '20px',
+            lineHeight: 1.2
+          }}>
+            Hospédate en Coyoacán Durante el Mundial 2026
+          </h2>
+          <p style={{
+            fontSize: '20px',
+            color: 'rgba(255, 255, 255, 0.9)',
+            textAlign: 'center',
+            maxWidth: '900px',
+            margin: '0 auto 20px',
+            lineHeight: 1.6
+          }}>
+            Propiedades verificadas a 20-25 minutos del Estadio Azteca. Evita el tráfico con Metro Línea 2 directo. Vive la experiencia cultural de Coyoacán mientras disfrutas del evento deportivo más grande del mundo.
+          </p>
+          <p style={{
+            marginTop: '20px',
+            fontSize: '18px',
+            color: 'rgba(255, 255, 255, 0.95)',
+            fontWeight: 500,
+            textAlign: 'center',
+            maxWidth: '900px',
+            margin: '20px auto 0'
+          }}>
+            📺 <strong>¿No alcanzaste boletos?</strong> No te preocupes. En nuestras <strong>pantallas gigantes</strong> podrás ver todos los partidos en la comodidad de <strong>SúperAnfitrión Coyoacán</strong>. ¡Ambiente de estadio sin salir de casa!
+          </p>
+          
+          {/* CTAs */}
+          <div style={{
+            display: 'flex',
+            gap: '20px',
+            justifyContent: 'center',
+            marginTop: '40px',
+            flexWrap: 'wrap'
+          }}>
+            <a 
+              href="https://superanfitrion.com.mx/mundial-2026" 
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '18px 40px',
+                background: 'white',
+                color: '#1A1A1A',
+                border: '4px solid #1A1A1A',
+                fontWeight: 700,
+                fontSize: '18px',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                boxShadow: '8px 8px 0px 0px #1A1A1A',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translate(2px, 2px)';
+                e.currentTarget.style.boxShadow = '4px 4px 0px 0px #1A1A1A';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translate(0, 0)';
+                e.currentTarget.style.boxShadow = '8px 8px 0px 0px #1A1A1A';
+              }}
+            >
+              <span>📅</span>
+              <span>Ver Disponibilidad y Prereservas</span>
+            </a>
+            
+            <a 
+              href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades" 
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '18px 40px',
+                background: 'transparent',
+                color: 'white',
+                border: '4px solid white',
+                fontWeight: 700,
+                fontSize: '18px',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                boxShadow: '8px 8px 0px 0px rgba(255, 255, 255, 0.3)',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'white';
+                e.currentTarget.style.color = '#1e7e34';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = 'white';
+              }}
+            >
+              <span>📅</span>
+              <span>Reservar Ahora</span>
+            </a>
+          </div>
+          
+          {/* Banner de urgencia */}
+          <div style={{
+            background: 'rgba(220, 53, 69, 0.9)',
+            color: 'white',
+            padding: '15px 30px',
+            borderRadius: '8px',
+            border: '3px solid #1A1A1A',
+            marginTop: '40px',
+            textAlign: 'center',
+            fontWeight: 700,
+            fontSize: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            flexWrap: 'wrap'
+          }}>
+            <span>⚠️</span>
+            <span>ALTA DEMANDA: Solo quedan 3 propiedades disponibles para junio 2026. Reserva ahora y asegura tu lugar.</span>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-ink text-newsprint py-12 mt-12 border-t-8 border-rust">
         <div className="max-w-7xl mx-auto px-8">

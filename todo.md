@@ -297,3 +297,10 @@
 - [x] Aplicar diseño diagonal/inclinado (transform: skewY)
 - [x] Estilo neo-brutal con sombras y bordes gruesos
 - [x] Grid responsive: 2 columnas en móvil, 4 en desktop
+
+## Publicar Sección del Mundial 2026 en Diario Coyoacán
+- [x] Agregar componente de sección publicitaria al DiarioCoyoacan.tsx
+- [x] Incluir todos los estilos CSS inline necesarios
+- [x] Verificar que los botones dirijan a /mundial-2026
+- [x] Reiniciar servidor y verificar en navegador
+- [ ] Guardar checkpoint con sección publicada
