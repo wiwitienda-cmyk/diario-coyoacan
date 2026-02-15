@@ -15,6 +15,13 @@
       "when": 1769547909862,
       "tag": "0001_overjoyed_mephistopheles",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1771177476650,
+      "tag": "0002_graceful_scorpion",
+      "breakpoints": true
     }
   ]
 }

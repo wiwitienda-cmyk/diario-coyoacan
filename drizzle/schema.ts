@@ -74,6 +74,25 @@ export type Article = typeof articles.$inferSelect;
 export type InsertArticle = typeof articles.$inferInsert;
 
 /**
+ * News Articles table for Diario Coyoacán
+ */
+export const newsArticles = mysqlTable("newsArticles", {
+  id: int("id").autoincrement().primaryKey(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  title: text("title").notNull(),
+  summary: text("summary").notNull(),
+  content: text("content").notNull(),
+  heroImage: varchar("heroImage", { length: 500 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull(),
+  date: varchar("date", { length: 100 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type NewsArticle = typeof newsArticles.$inferSelect;
+export type InsertNewsArticle = typeof newsArticles.$inferInsert;
+
+/**
  * Subscribers table for newsletter
  */
 export const subscribers = mysqlTable("subscribers", {

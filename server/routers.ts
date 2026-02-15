@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { getAllArticles, getLatestArticle, getArticleBySlug, addSubscriber, getAllSubscribers } from "./articles-db";
+import { getAllNewsArticles, getLatestNewsArticle, getNewsArticleBySlug } from "./news-articles-db";
 import { sendNewsletter } from "./newsletter";
 
 export const appRouter = router({
@@ -31,6 +32,20 @@ export const appRouter = router({
       .input(z.object({ slug: z.string() }))
       .query(async ({ input }) => {
         return await getArticleBySlug(input.slug);
+      }),
+  }),
+  
+  newsArticles: router({
+    list: publicProcedure.query(async () => {
+      return await getAllNewsArticles();
+    }),
+    latest: publicProcedure.query(async () => {
+      return await getLatestNewsArticle();
+    }),
+    bySlug: publicProcedure
+      .input(z.object({ slug: z.string() }))
+      .query(async ({ input }) => {
+        return await getNewsArticleBySlug(input.slug);
       }),
   }),
   
