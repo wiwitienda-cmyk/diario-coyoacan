@@ -40,11 +40,14 @@ async function startServer() {
   // Sitemap.xml
   app.get("/sitemap.xml", async (req, res) => {
     try {
+      console.log('[Server] Sitemap requested');
       const sitemap = await generateSitemap();
+      console.log(`[Server] Sitemap generated, length: ${sitemap.length} chars`);
       res.header("Content-Type", "application/xml");
+      res.header("Cache-Control", "no-cache"); // Disable cache for debugging
       res.send(sitemap);
     } catch (error) {
-      console.error("Error generating sitemap:", error);
+      console.error("[Server] Error generating sitemap:", error);
       res.status(500).send("Error generating sitemap");
     }
   });

@@ -1,4 +1,26 @@
-import { getAllArticles } from './articles-db';
+import { getDb } from './db';
+import { articles, newsArticles } from '../drizzle/schema';
+import { desc } from 'drizzle-orm';
+
+function generateEmptySitemap(): string {
+  const baseUrl = 'https://diario-coyo.manus.space';
+  const today = new Date().toISOString().split('T')[0];
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${baseUrl}/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <lastmod>${today}</lastmod>
+  </url>
+  <url>
+    <loc>${baseUrl}/diario</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <lastmod>${today}</lastmod>
+  </url>
+</urlset>`;
+}
 
 function escapeXml(unsafe: string): string {
   return unsafe
@@ -10,11 +32,56 @@ function escapeXml(unsafe: string): string {
 }
 
 export async function generateSitemap(): Promise<string> {
-  const articles = await getAllArticles();
+  try {
+    // Fetch all articles from database
+    const db = await getDb();
+    if (!db) {
+      console.warn('[Sitemap] Database not available');
+      return generateEmptySitemap();
+    }
+    
+    console.log('[Sitemap] Fetching articles from database...');
+    
+    // Fetch from articles table (Café Avellaneda style)
+    const articlesData = await db
+      .select({
+        slug: articles.slug,
+        headlineEs: articles.headlineEs,
+        summaryEs: articles.summaryEs,
+        heroImage: articles.heroImage,
+        categoryEs: articles.categoryEs,
+        dateISO: articles.dateISO,
+        updatedAt: articles.updatedAt,
+      })
+      .from(articles)
+      .orderBy(desc(articles.createdAt));
+    
+    // Fetch from newsArticles table (news style)
+    const newsData = await db
+      .select({
+        slug: newsArticles.slug,
+        headlineEs: newsArticles.title,
+        summaryEs: newsArticles.summary,
+        heroImage: newsArticles.heroImage,
+        categoryEs: newsArticles.category,
+        dateISO: newsArticles.date,
+        updatedAt: newsArticles.updatedAt,
+      })
+      .from(newsArticles)
+      .orderBy(desc(newsArticles.createdAt));
+    
+    // Combine both arrays
+    const allArticles = [...articlesData, ...newsData];
+    console.log(`[Sitemap] Found ${articlesData.length} articles and ${newsData.length} news articles`);
+    
+    if (allArticles.length === 0) {
+      console.warn('[Sitemap] No articles found, returning empty sitemap');
+      return generateEmptySitemap();
+    }
   const baseUrl = 'https://diario-coyo.manus.space';
   const today = new Date().toISOString().split('T')[0];
   
-  const articleUrls = articles.map(article => {
+  const articleUrls = allArticles.map((article) => {
     const lastmod = article.dateISO || today;
     return `
   <url>
@@ -79,4 +146,8 @@ export async function generateSitemap(): Promise<string> {
 </urlset>`;
 
   return sitemap;
+  } catch (error) {
+    console.error('[Sitemap] Error generating sitemap:', error);
+    return generateEmptySitemap();
+  }
 }

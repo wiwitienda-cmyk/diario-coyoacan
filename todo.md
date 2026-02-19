@@ -333,3 +333,10 @@
 - [x] Agregar índice en columna `dateISO` de tabla articles
 - [x] Agregar índice en columna `createdAt` de tabla articles
 - [x] Aplicar migración a la base de datos (0003_curious_spot.sql)
+
+## Sitemap.xml Dinámico para SEO (NUEVA)
+- [x] Crear endpoint /sitemap.xml en el servidor
+- [x] Consultar todos los artículos de ambas tablas (articles y newsArticles)
+- [x] Generar XML con formato sitemap estándar + Google News + Imágenes
+- [x] Incluir URLs, fechas de modificación y prioridades
+- [x] Verificado: 24 artículos en el sitemap (22 + 2)
