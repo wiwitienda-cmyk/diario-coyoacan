@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, title, slug, date FROM newsArticles ORDER BY createdAt DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, title, slug, date FROM newsArticles ORDER BY createdAt DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "1",
+      "title": "Coyoacán une cultura y solidaridad en festival por Cuba y Venezuela en marco del Mundial 2026",
+      "slug": "coyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026",
+      "date": "Domingo, 15 de febrero de 2026"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tslug\tdate\n1\tCoyoacán une cultura y solidaridad en festival por Cuba y Venezuela en marco del Mundial 2026\tcoyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026\tDomingo, 15 de febrero de 2026\n",
+  "stderr": "",
+  "execution_time_ms": 1535
+}

@@ -304,3 +304,26 @@
 - [x] Verificar que los botones dirijan a /mundial-2026
 - [x] Reiniciar servidor y verificar en navegador
 - [ ] Guardar checkpoint con sección publicada
+
+## Mostrar Artículo del Festival en Primera Plana
+- [ ] Crear componente NewsPage.tsx para artículos periodísticos
+- [ ] Agregar ruta /noticias en App.tsx
+- [ ] Actualizar navegación del header para dirigir a /noticias
+- [ ] Verificar que el artículo del festival aparezca en primera plana
+- [ ] Guardar checkpoint con artículo visible
+
+## Publicar Artículo del Festival de Cuba y Venezuela
+- [ ] Preparar datos del artículo en formato correcto para tabla articles
+- [ ] Generar slug único para el artículo
+- [ ] Insertar artículo en base de datos con webdev_execute_sql
+- [ ] Verificar que aparezca en primera plana de cafeavellan-q8betawp.manus.space
+- [ ] Enviar newsletter a suscriptores
+
+## Optimización de Rendimiento (URGENTE - Página Carga Muy Lento)
+- [x] Diagnosticar problemas de rendimiento en Diario Coyoacán (bundle de 984KB identificado)
+- [x] Reducir tamaño del bundle JavaScript con code splitting (de 984KB a 748KB)
+- [x] Configurar manualChunks en vite.config.ts (react-vendor, router, ui-vendor, map-vendor)
+- [x] Verificar lazy loading en imágenes hero (ya implementado)
+- [ ] Optimizar consultas a la base de datos (pendiente)
+- [ ] Implementar caching en el navegador (pendiente)
+- [ ] Considerar WebP para imágenes futuras

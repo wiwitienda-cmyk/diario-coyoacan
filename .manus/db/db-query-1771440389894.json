@@ -1,0 +1,17 @@
+{
+  "query": "SELECT id, slug, title, category, date FROM newsArticles WHERE slug LIKE '%gentrificacion%' LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, title, category, date FROM newsArticles WHERE slug LIKE '%gentrificacion%' LIMIT 5;",
+  "rows": [
+    {
+      "id": "30001",
+      "slug": "gentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18",
+      "title": "Gentrificación en Coyoacán: entre el progreso inmobiliario y el desplazamiento de vecinos históricos",
+      "category": "SOCIEDAD",
+      "date": "2026-02-18"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\ttitle\tcategory\tdate\n30001\tgentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18\tGentrificación en Coyoacán: entre el progreso inmobiliario y el desplazamiento de vecinos históricos\tSOCIEDAD\t2026-02-18\n",
+  "stderr": "",
+  "execution_time_ms": 1479
+}
