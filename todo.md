@@ -327,3 +327,9 @@
 - [ ] Optimizar consultas a la base de datos (pendiente)
 - [ ] Implementar caching en el navegador (pendiente)
 - [ ] Considerar WebP para imágenes futuras
+
+## Optimización de Base de Datos (NUEVA - Acelerar Búsquedas)
+- [x] Agregar índice en columna `slug` de tabla articles
+- [x] Agregar índice en columna `dateISO` de tabla articles
+- [x] Agregar índice en columna `createdAt` de tabla articles
+- [x] Aplicar migración a la base de datos (0003_curious_spot.sql)
