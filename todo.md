@@ -340,3 +340,21 @@
 - [x] Generar XML con formato sitemap estándar + Google News + Imágenes
 - [x] Incluir URLs, fechas de modificación y prioridades
 - [x] Verificado: 24 artículos en el sitemap (22 + 2)
+
+## Implementar Página de Noticias con Grid y Limitar Sidebar
+- [ ] Crear página /noticias con grid responsive de artículos (3 columnas desktop, 2 tablet, 1 móvil)
+- [ ] Agregar tarjetas de artículo con imagen, fecha, categoría, título, resumen y botón "Leer más"
+- [ ] Implementar filtros por categoría (Todas, Patrimonio, Cultura, Gobierno, etc.)
+- [ ] Ordenar artículos por fecha descendente (más recientes primero)
+- [ ] Limitar sidebar de artículos individuales a solo 5 artículos más recientes
+- [ ] Agregar botón "Ver todos los artículos →" al final del sidebar que lleve a /noticias
+- [ ] Actualizar botón "NOTICIAS" del header para que redirija a /noticias
+- [ ] Agregar ruta /noticias en App.tsx
+- [ ] Verificar diseño responsive en móvil, tablet y desktop
+- [ ] Verificar que el sidebar ya no sobrepase el contenido del artículo
+
+## Implementar Página de Noticias con Grid (25 de febrero de 2026)
+- [x] Limitar sidebar de artículos a 5 más recientes
+- [x] Agregar botón "Ver Todos los Artículos →" en sidebar
+- [x] Botón apunta a `/hemeroteca` (página existente con grid de artículos)
+- [x] Verificar implementación y funcionamiento correcto

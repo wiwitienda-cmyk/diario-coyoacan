@@ -651,12 +651,12 @@ export default function DiarioCoyoacan() {
             </p>
           </div>
 
-          {/* Previous Editions */}
+          {/* Previous Editions - Limited to 5 */}
           {allArticles && allArticles.length > 1 && (
             <div className="bg-white border-4 border-ink p-6 neo-shadow">
               <h3 className="text-xl font-headline mb-4">{t.previousEditions}</h3>
               <div className="space-y-3">
-                {allArticles.map((art) => (
+                {allArticles.slice(0, 5).map((art) => (
                   <a
                     key={art.id}
                     href={`/diario?slug=${art.slug}`}
@@ -671,6 +671,13 @@ export default function DiarioCoyoacan() {
                   </a>
                 ))}
               </div>
+              {/* Botón Ver Todos */}
+              <a
+                href="/hemeroteca"
+                className="block w-full mt-4 bg-ink text-newsprint text-center py-3 font-subhead uppercase tracking-wider hover:bg-rust transition-colors border-2 border-ink shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1A1A1A]"
+              >
+                {lang === 'es' ? 'Ver Todos los Artículos →' : 'See All Articles →'}
+              </a>
             </div>
           )}
 
