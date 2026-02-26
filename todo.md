@@ -358,3 +358,19 @@
 - [x] Agregar botón "Ver Todos los Artículos →" en sidebar
 - [x] Botón apunta a `/hemeroteca` (página existente con grid de artículos)
 - [x] Verificar implementación y funcionamiento correcto
+
+## Generar y Publicar Artículo del 26 de Febrero de 2026
+- [x] Redactar artículo periodístico sobre fuga de agua en Río Churubusco y clima extremo
+- [x] Generar imagen subjetiva artística para el artículo
+- [x] Publicar artículo en primera plana de la base de datos
+- [x] Verificar que el artículo aparezca correctamente en el sitio web
+
+## Optimizar Rendimiento del Sitio Web
+
+- [ ] Diagnosticar problemas de rendimiento (Network tab, Lighthouse)
+- [ ] Optimizar imágenes hero de artículos (comprimir, lazy load)
+- [ ] Implementar paginación en lista de artículos
+- [ ] Optimizar consultas tRPC (limitar campos, agregar índices)
+- [ ] Implementar lazy loading para componentes pesados
+- [ ] Minificar y comprimir assets CSS/JS
+- [ ] Verificar mejoras de rendimiento con Lighthouse

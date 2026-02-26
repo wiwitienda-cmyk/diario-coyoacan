@@ -6,7 +6,23 @@ export async function getAllArticles() {
   const db = await getDb();
   if (!db) return [];
   
-  const result = await db.select().from(articles).orderBy(desc(articles.dateISO));
+  // Optimización: Solo seleccionar campos necesarios para la lista (no el contenido completo)
+  const result = await db.select({
+    id: articles.id,
+    slug: articles.slug,
+    dateISO: articles.dateISO,
+    heroImage: articles.heroImage,
+    headlineEs: articles.headlineEs,
+    headlineEn: articles.headlineEn,
+    summaryEs: articles.summaryEs,
+    summaryEn: articles.summaryEn,
+    categoryEs: articles.categoryEs,
+    categoryEn: articles.categoryEn,
+    dateEs: articles.dateEs,
+    dateEn: articles.dateEn,
+    createdAt: articles.createdAt,
+  }).from(articles).orderBy(desc(articles.dateISO)).limit(50); // Limitar a 50 artículos más recientes
+  
   return result;
 }
 

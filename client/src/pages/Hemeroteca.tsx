@@ -107,13 +107,9 @@ export default function Hemeroteca() {
                       
                       {/* Content */}
                       <div className="p-6">
-                        <div className="flex items-center gap-2 mb-3">
+                        <div className="flex items-center gap-2 mb-2">
                           <span className="text-xs font-subhead uppercase tracking-wider text-rust">
                             {lang === 'es' ? article.categoryEs : article.categoryEn}
-                          </span>
-                          <span className="text-xs text-gray-500">•</span>
-                          <span className="text-xs text-gray-600">
-                            {article.weatherTemp}°C
                           </span>
                         </div>
                         

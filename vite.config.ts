@@ -169,11 +169,27 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react/jsx-runtime'],
-          'router': ['wouter'],
-          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select'],
-          'map-vendor': ['leaflet', 'react-leaflet'],
+        manualChunks(id) {
+          // Separar vendors grandes
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'react-vendor';
+            }
+            if (id.includes('leaflet') || id.includes('react-leaflet')) {
+              return 'map-vendor';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'ui-vendor';
+            }
+            if (id.includes('lucide-react')) {
+              return 'icons';
+            }
+            if (id.includes('@trpc') || id.includes('@tanstack')) {
+              return 'trpc-vendor';
+            }
+            // Otros node_modules en un chunk separado
+            return 'vendor';
+          }
         },
       },
     },
