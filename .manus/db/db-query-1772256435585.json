@@ -1,0 +1,118 @@
+{
+  "query": "SELECT slug, headlineEs FROM articles ORDER BY createdAt DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, headlineEs FROM articles ORDER BY createdAt DESC;",
+  "rows": [
+    {
+      "slug": "vecinos-coyoacan-tlalpan-marchan-contra-gentrificacion-mundial-2026-2026-02-27",
+      "headlineEs": "Vecinos de Coyoacán y Tlalpan marchan contra la gentrificación provocada por el Mundial 2026"
+    },
+    {
+      "slug": "coyoacan-fuga-agua-rio-churubusco-clima-extremo-feb-26-2026",
+      "headlineEs": "Coyoacán enfrenta fuga de agua en Río Churubusco mientras clima extremo marca diferencia de 25 grados en un día"
+    },
+    {
+      "slug": "coyoacan-mantiene-viva-memoria-historica-eventos-culturales-patrimonio-feb-25-2026",
+      "headlineEs": "Coyoacán mantiene viva su memoria histórica con eventos culturales y acceso al patrimonio"
+    },
+    {
+      "slug": "coyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24",
+      "headlineEs": "Coyoacán impulsa seguridad y sustentabilidad en transformación urbana rumbo a Mundial 2026"
+    },
+    {
+      "slug": "coyoacan-confirma-quinta-edicion-feria-internacional-del-libro-2026-02-19",
+      "headlineEs": "Coyoacán confirma la quinta edición de la Feria Internacional del Libro con foco en literatura y fútbol"
+    },
+    {
+      "slug": "gentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18",
+      "headlineEs": "Gentrificación en Coyoacán: entre el progreso inmobiliario y el desplazamiento de vecinos históricos"
+    },
+    {
+      "slug": "coyoacan-refuerza-seguridad-y-enfrenta-retos-culturales-ante-mundial-2026-2026-02-17",
+      "headlineEs": "Coyoacán refuerza seguridad y enfrenta retos culturales ante Mundial 2026"
+    },
+    {
+      "slug": "coyoacan-invierte-21-mdp-en-seguridad-y-enfrenta-contingencia-ambiental-2026-02-14",
+      "headlineEs": "Coyoacán invierte 21 mdp en seguridad y enfrenta contingencia ambiental; refuerza transporte y coordinación con Álvaro Obregón"
+    },
+    {
+      "slug": "contingencia-ambiental-en-cdmx-persiste-coyoacan-entre-las-alcaldias-mas-afectadas-2026-02-16",
+      "headlineEs": "Contingencia ambiental en CDMX persiste; Coyoacán entre las alcaldías más afectadas"
+    },
+    {
+      "slug": "coyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-2026-02-15",
+      "headlineEs": "Coyoacán une cultura y solidaridad en festival por Cuba y Venezuela en marco del Mundial 2026"
+    },
+    {
+      "slug": "vecinos-de-coyoacan-exigen-mejoras-urbanas-preocupacion-por-canales-de-xochimilc-2026-02-14",
+      "headlineEs": "Vecinos de Coyoacán Exigen Mejoras Urbanas; Preocupación por Canales de Xochimilco"
+    },
+    {
+      "slug": "coyoacan-invierte-21-mdp-seguridad-mundial-2026-contingencia-ambiental",
+      "headlineEs": "Coyoacán invierte 21 mdp en seguridad y enfrenta contingencia ambiental; refuerza transporte y coordinación con Álvaro Obregón"
+    },
+    {
+      "slug": "agenda-cultural-cdmx-eventos-destacados-13-15-febrero-coyoacan-2026",
+      "headlineEs": "Agenda cultural en CDMX: eventos destacados del 13 al 15 de febrero en Coyoacán y zonas aledañas"
+    },
+    {
+      "slug": "coyoacan-reafirma-legado-cultural-festival-cafe-cacao-chocolate-2026-02-12",
+      "headlineEs": "Coyoacán reafirma su legado cultural con Festival de Café, Cacao y Chocolate Mexicano"
+    },
+    {
+      "slug": "museo-diego-rosales-tesoro-escondido-coyoacan",
+      "headlineEs": "El Tesoro Escondido de Coyoacán: El Museo Diego Rosales Que Pocos Conocen"
+    },
+    {
+      "slug": "museo-hueytlilatl-abandono-coyoacan",
+      "headlineEs": "Patrimonio en Riesgo: El Museo Arqueológico Hueytlilatl Lleva 10 Años Abandonado en Coyoacán"
+    },
+    {
+      "slug": "corazon-coyoacan-cafe-tradicion-vanguardia",
+      "headlineEs": "El Corazón de Coyoacán Late a Ritmo de Café: De la Tradición a la Vanguardia"
+    },
+    {
+      "slug": "agenda-cultural-eventos-locales-imperdibles-esta-semana-en-coyoacan-2026-02-02",
+      "headlineEs": "Agenda cultural: eventos locales imperdibles esta semana en Coyoacán"
+    },
+    {
+      "slug": "domingos-alternativos-en-coyoacan-eventos-locales-para-redescubrir-el-barrio-2026-02-01",
+      "headlineEs": "Domingos alternativos en Coyoacán: eventos locales para redescubrir el barrio"
+    },
+    {
+      "slug": "descubre-coyoacan-ruta-poco-conocida-2026-01-31",
+      "headlineEs": "Descubre Coyoacán: Ruta poco conocida para un día auténtico en la ciudad"
+    },
+    {
+      "slug": "feria-mezcal-cerveza-tlatelolco",
+      "headlineEs": "Feria del Mezcal y la Cerveza: Tlatelolco, Epicentro Cultural"
+    },
+    {
+      "slug": "fonoteca-nacional",
+      "headlineEs": "Fonoteca Nacional: El Tesoro Sonoro de México Resguardado en Coyoacán"
+    },
+    {
+      "slug": "callejon-del-aguacate-coyoacan",
+      "headlineEs": "Callejón del Aguacate: Donde el Arte Urbano Rescata la Memoria de Coyoacán"
+    },
+    {
+      "slug": "casa-azul-museo-frida-kahlo",
+      "headlineEs": "Casa Azul: El Universo Íntimo de Frida Kahlo en el Corazón de Coyoacán"
+    },
+    {
+      "slug": "jardin-centenario-coyoacan",
+      "headlineEs": "Jardín Centenario: El Corazón Bohemio de Coyoacán y su Fuente de Coyotes"
+    },
+    {
+      "slug": "mercado-coyoacan",
+      "headlineEs": "Mercado de Coyoacán: Colores, Sabores y las Tostadas Más Famosas"
+    },
+    {
+      "slug": "cafe-avellaneda",
+      "headlineEs": "Café Avellaneda: La Resistencia del Café de Barrio Frente a las Cadenas Globales"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\theadlineEs\nvecinos-coyoacan-tlalpan-marchan-contra-gentrificacion-mundial-2026-2026-02-27\tVecinos de Coyoacán y Tlalpan marchan contra la gentrificación provocada por el Mundial 2026\ncoyoacan-fuga-agua-rio-churubusco-clima-extremo-feb-26-2026\tCoyoacán enfrenta fuga de agua en Río Churubusco mientras clima extremo marca diferencia de 25 grados en un día\ncoyoacan-mantiene-viva-memoria-historica-eventos-culturales-patrimonio-feb-25-2026\tCoyoacán mantiene viva su memoria histórica con eventos culturales y acceso al patrimonio\ncoyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24\tCoyoacán impulsa seguridad y sustentabilidad en transformación urbana rumbo a Mundial 2026\ncoyoacan-confirma-quinta-edicion-feria-internacional-del-libro-2026-02-19\tCoyoacán confirma la quinta edición de la Feria Internacional del Libro con foco en literatura y fútbol\ngentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18\tGentrificación en Coyoacán: entre el progreso inmobiliario y el desplazamiento de vecinos históricos\ncoyoacan-refuerza-seguridad-y-enfrenta-retos-culturales-ante-mundial-2026-2026-02-17\tCoyoacán refuerza seguridad y enfrenta retos culturales ante Mundial 2026\ncoyoacan-invierte-21-mdp-en-seguridad-y-enfrenta-contingencia-ambiental-2026-02-14\tCoyoacán invierte 21 mdp en seguridad y enfrenta contingencia ambiental; refuerza transporte y coordinación con Álvaro Obregón\ncontingencia-ambiental-en-cdmx-persiste-coyoacan-entre-las-alcaldias-mas-afectadas-2026-02-16\tContingencia ambiental en CDMX persiste; Coyoacán entre las alcaldías más afectadas\ncoyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-2026-02-15\tCoyoacán une cultura y solidaridad en festival por Cuba y Venezuela en marco del Mundial 2026\nvecinos-de-coyoacan-exigen-mejoras-urbanas-preocupacion-por-canales-de-xochimilc-2026-02-14\tVecinos de Coyoacán Exigen Mejoras Urbanas; Preocupación por Canales de Xochimilco\ncoyoacan-invierte-21-mdp-seguridad-mundial-2026-contingencia-ambiental\tCoyoacán invierte 21 mdp en seguridad y enfrenta contingencia ambiental; refuerza transporte y coordinación con Álvaro Obregón\nagenda-cultural-cdmx-eventos-destacados-13-15-febrero-coyoacan-2026\tAgenda cultural en CDMX: eventos destacados del 13 al 15 de febrero en Coyoacán y zonas aledañas\ncoyoacan-reafirma-legado-cultural-festival-cafe-cacao-chocolate-2026-02-12\tCoyoacán reafirma su legado cultural con Festival de Café, Cacao y Chocolate Mexicano\nmuseo-diego-rosales-tesoro-escondido-coyoacan\tEl Tesoro Escondido de Coyoacán: El Museo Diego Rosales Que Pocos Conocen\nmuseo-hueytlilatl-abandono-coyoacan\tPatrimonio en Riesgo: El Museo Arqueológico Hueytlilatl Lleva 10 Años Abandonado en Coyoacán\ncorazon-coyoacan-cafe-tradicion-vanguardia\tEl Corazón de Coyoacán Late a Ritmo de Café: De la Tradición a la Vanguardia\nagenda-cultural-eventos-locales-imperdibles-esta-semana-en-coyoacan-2026-02-02\tAgenda cultural: eventos locales imperdibles esta semana en Coyoacán\ndomingos-alternativos-en-coyoacan-eventos-locales-para-redescubrir-el-barrio-2026-02-01\tDomingos alternativos en Coyoacán: eventos locales para redescubrir el barrio\ndescubre-coyoacan-ruta-poco-conocida-2026-01-31\tDescubre Coyoacán: Ruta poco conocida para un día auténtico en la ciudad\nferia-mezcal-cerveza-tlatelolco\tFeria del Mezcal y la Cerveza: Tlatelolco, Epicentro Cultural\nfonoteca-nacional\tFonoteca Nacional: El Tesoro Sonoro de México Resguardado en Coyoacán\ncallejon-del-aguacate-coyoacan\tCallejón del Aguacate: Donde el Arte Urbano Rescata la Memoria de Coyoacán\ncasa-azul-museo-frida-kahlo\tCasa Azul: El Universo Íntimo de Frida Kahlo en el Corazón de Coyoacán\njardin-centenario-coyoacan\tJardín Centenario: El Corazón Bohemio de Coyoacán y su Fuente de Coyotes\nmercado-coyoacan\tMercado de Coyoacán: Colores, Sabores y las Tostadas Más Famosas\ncafe-avellaneda\tCafé Avellaneda: La Resistencia del Café de Barrio Frente a las Cadenas Globales\n",
+  "stderr": "",
+  "execution_time_ms": 1549
+}

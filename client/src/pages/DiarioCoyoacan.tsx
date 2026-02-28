@@ -279,9 +279,11 @@ export default function DiarioCoyoacan() {
         <meta name="twitter:data1" content="5 min" />
         
         {/* Additional SEO */}
-        <meta name="keywords" content="Coyoacán, hospedaje CDMX, cultura México, gastronomía Coyoacán, SúperAnfitrión, turismo Ciudad de México" />
+        <meta name="keywords" content={`Coyoacán, hospedaje CDMX, cultura México, gastronomía Coyoacán, SúperAnfitrión, turismo Ciudad de México, Mundial 2026, world cup 2026 mexico city, alojamiento Estadio Azteca, ${t.category}, ${t.headline.split(' ').slice(0, 5).join(', ')}`} />
         <meta name="author" content="Diario Coyoacán" />
-        <link rel="canonical" content={shareUrl} />
+        <link rel="canonical" href={shareUrl.replace('diario-coyoacan.manus.space', 'diario.superanfitrion.com.mx').replace('diario-coyo.manus.space', 'diario.superanfitrion.com.mx')} />
+        <link rel="alternate" hrefLang="es-MX" href={shareUrl.replace('diario-coyoacan.manus.space', 'diario.superanfitrion.com.mx').replace('diario-coyo.manus.space', 'diario.superanfitrion.com.mx')} />
+        <link rel="alternate" hrefLang="en" href={(shareUrl.replace('diario-coyoacan.manus.space', 'diario.superanfitrion.com.mx').replace('diario-coyo.manus.space', 'diario.superanfitrion.com.mx')) + (shareUrl.includes('?') ? '&lang=en' : '?lang=en')} />
         
         {/* Schema.org JSON-LD for Article */}
         <script type="application/ld+json">
@@ -301,7 +303,15 @@ export default function DiarioCoyoacan() {
             "author": {
               "@type": "Organization",
               "name": "Diario Coyoacán",
-              "url": "https://diario-coyoacan.manus.space"
+              "@id": "https://diario.superanfitrion.com.mx/#organization",
+              "url": "https://diario.superanfitrion.com.mx"
+            },
+            "keywords": `Coyoacán, CDMX, ${t.category}, Mundial 2026, hospedaje Coyoacán, turismo Ciudad de México`,
+            "wordCount": 800,
+            "isAccessibleForFree": true,
+            "speakable": {
+              "@type": "SpeakableSpecification",
+              "cssSelector": [".article-headline", ".article-summary"]
             },
             "publisher": {
               "@type": "Organization",
