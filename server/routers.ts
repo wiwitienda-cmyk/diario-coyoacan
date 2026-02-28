@@ -64,7 +64,7 @@ export const appRouter = router({
         }
 
         // Return article data and preview URL
-        const baseUrl = "https://diario-coyoacan.manus.space";
+        const baseUrl = "https://diario-coyo.manus.space";
         const articleUrl = `${baseUrl}/diario?slug=${article.slug}`;
         
         return {
@@ -108,7 +108,7 @@ export const appRouter = router({
         }
 
         // Validate article URL before sending
-        const baseUrl = "https://diario-coyoacan.manus.space";
+        const baseUrl = "https://diario-coyo.manus.space";
         const articleUrl = `${baseUrl}/diario?slug=${article.slug}`;
         
         try {

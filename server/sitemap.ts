@@ -2,37 +2,21 @@ import { getDb } from './db';
 import { articles, newsArticles } from '../drizzle/schema';
 import { desc } from 'drizzle-orm';
 
-// Dominio canónico — siempre usar el dominio personalizado
-const BASE_URL = 'https://diario.superanfitrion.com.mx';
-
 function generateEmptySitemap(): string {
+  const baseUrl = 'https://diario-coyo.manus.space';
   const today = new Date().toISOString().split('T')[0];
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${BASE_URL}/</loc>
+    <loc>${baseUrl}/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <lastmod>${today}</lastmod>
   </url>
   <url>
-    <loc>${BASE_URL}/diario</loc>
+    <loc>${baseUrl}/diario</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
-    <lastmod>${today}</lastmod>
-  </url>
-  <url>
-    <loc>${BASE_URL}/hospedaje-mundial-2026</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <lastmod>${today}</lastmod>
-  </url>
-  <url>
-    <loc>${BASE_URL}/hemeroteca</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
     <lastmod>${today}</lastmod>
   </url>
 </urlset>`;
@@ -49,6 +33,7 @@ function escapeXml(unsafe: string): string {
 
 export async function generateSitemap(): Promise<string> {
   try {
+    // Fetch all articles from database
     const db = await getDb();
     if (!db) {
       console.warn('[Sitemap] Database not available');
@@ -57,7 +42,7 @@ export async function generateSitemap(): Promise<string> {
     
     console.log('[Sitemap] Fetching articles from database...');
     
-    // Fetch from articles table
+    // Fetch from articles table (Café Avellaneda style)
     const articlesData = await db
       .select({
         slug: articles.slug,
@@ -71,7 +56,7 @@ export async function generateSitemap(): Promise<string> {
       .from(articles)
       .orderBy(desc(articles.createdAt));
     
-    // Fetch from newsArticles table
+    // Fetch from newsArticles table (news style)
     const newsData = await db
       .select({
         slug: newsArticles.slug,
@@ -85,6 +70,7 @@ export async function generateSitemap(): Promise<string> {
       .from(newsArticles)
       .orderBy(desc(newsArticles.createdAt));
     
+    // Combine both arrays
     const allArticles = [...articlesData, ...newsData];
     console.log(`[Sitemap] Found ${articlesData.length} articles and ${newsData.length} news articles`);
     
@@ -92,15 +78,14 @@ export async function generateSitemap(): Promise<string> {
       console.warn('[Sitemap] No articles found, returning empty sitemap');
       return generateEmptySitemap();
     }
-
+  const baseUrl = 'https://diario-coyo.manus.space';
   const today = new Date().toISOString().split('T')[0];
   
   const articleUrls = allArticles.map((article) => {
     const lastmod = article.dateISO || today;
-    const articleUrl = `${BASE_URL}/diario?slug=${encodeURIComponent(article.slug)}`;
     return `
   <url>
-    <loc>${articleUrl}</loc>
+    <loc>${baseUrl}/diario?slug=${encodeURIComponent(article.slug)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -111,12 +96,12 @@ export async function generateSitemap(): Promise<string> {
       </news:publication>
       <news:publication_date>${lastmod}</news:publication_date>
       <news:title>${escapeXml(article.headlineEs)}</news:title>
-      <news:keywords>Coyoacán, CDMX, Mundial 2026, hospedaje, ${escapeXml(article.categoryEs || 'cultura')}</news:keywords>
+      <news:keywords>Coyoacán, CDMX, Mundial 2026, hospedaje, ${article.categoryEs}</news:keywords>
     </news:news>
     <image:image>
-      <image:loc>${escapeXml(article.heroImage || '')}</image:loc>
+      <image:loc>${article.heroImage}</image:loc>
       <image:title>${escapeXml(article.headlineEs)}</image:title>
-      <image:caption>${escapeXml(article.summaryEs || '')}</image:caption>
+      <image:caption>${escapeXml(article.summaryEs)}</image:caption>
     </image:image>
   </url>`;
   }).join('');
@@ -128,7 +113,7 @@ export async function generateSitemap(): Promise<string> {
   
   <!-- Página principal -->
   <url>
-    <loc>${BASE_URL}/</loc>
+    <loc>${baseUrl}/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <lastmod>${today}</lastmod>
@@ -136,7 +121,7 @@ export async function generateSitemap(): Promise<string> {
   
   <!-- Diario Coyoacán (primera plana) -->
   <url>
-    <loc>${BASE_URL}/diario</loc>
+    <loc>${baseUrl}/diario</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <lastmod>${today}</lastmod>
@@ -144,18 +129,16 @@ export async function generateSitemap(): Promise<string> {
   
   <!-- Landing page Mundial 2026 (SEO prioritario) -->
   <url>
-    <loc>${BASE_URL}/hospedaje-mundial-2026</loc>
+    <loc>${baseUrl}/hospedaje-mundial-2026</loc>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
-    <lastmod>${today}</lastmod>
   </url>
   
-  <!-- Hemeroteca / Archivo de noticias -->
+  <!-- Hemeroteca -->
   <url>
-    <loc>${BASE_URL}/hemeroteca</loc>
+    <loc>${baseUrl}/hemeroteca</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
-    <lastmod>${today}</lastmod>
   </url>
   
   <!-- Artículos individuales con schema de noticias e imágenes -->${articleUrls}

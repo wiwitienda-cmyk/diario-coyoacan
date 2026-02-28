@@ -279,11 +279,9 @@ export default function DiarioCoyoacan() {
         <meta name="twitter:data1" content="5 min" />
         
         {/* Additional SEO */}
-        <meta name="keywords" content={`Coyoacán, hospedaje CDMX, cultura México, gastronomía Coyoacán, SúperAnfitrión, turismo Ciudad de México, Mundial 2026, world cup 2026 mexico city, alojamiento Estadio Azteca, ${t.category}, ${t.headline.split(' ').slice(0, 5).join(', ')}`} />
+        <meta name="keywords" content="Coyoacán, hospedaje CDMX, cultura México, gastronomía Coyoacán, SúperAnfitrión, turismo Ciudad de México" />
         <meta name="author" content="Diario Coyoacán" />
-        <link rel="canonical" href={shareUrl.replace('diario-coyoacan.manus.space', 'diario.superanfitrion.com.mx').replace('diario-coyo.manus.space', 'diario.superanfitrion.com.mx')} />
-        <link rel="alternate" hrefLang="es-MX" href={shareUrl.replace('diario-coyoacan.manus.space', 'diario.superanfitrion.com.mx').replace('diario-coyo.manus.space', 'diario.superanfitrion.com.mx')} />
-        <link rel="alternate" hrefLang="en" href={(shareUrl.replace('diario-coyoacan.manus.space', 'diario.superanfitrion.com.mx').replace('diario-coyo.manus.space', 'diario.superanfitrion.com.mx')) + (shareUrl.includes('?') ? '&lang=en' : '?lang=en')} />
+        <link rel="canonical" content={shareUrl} />
         
         {/* Schema.org JSON-LD for Article */}
         <script type="application/ld+json">
@@ -303,15 +301,7 @@ export default function DiarioCoyoacan() {
             "author": {
               "@type": "Organization",
               "name": "Diario Coyoacán",
-              "@id": "https://diario.superanfitrion.com.mx/#organization",
-              "url": "https://diario.superanfitrion.com.mx"
-            },
-            "keywords": `Coyoacán, CDMX, ${t.category}, Mundial 2026, hospedaje Coyoacán, turismo Ciudad de México`,
-            "wordCount": 800,
-            "isAccessibleForFree": true,
-            "speakable": {
-              "@type": "SpeakableSpecification",
-              "cssSelector": [".article-headline", ".article-summary"]
+              "url": "https://diario-coyo.manus.space"
             },
             "publisher": {
               "@type": "Organization",
@@ -649,7 +639,7 @@ export default function DiarioCoyoacan() {
             </h3>
             <div className="flex justify-center bg-white p-4 border-2 border-ink">
               <QRCodeSVG 
-                value="https://diario-coyoacan.manus.space/" 
+                value="https://diario-coyo.manus.space/" 
                 size={180}
                 level="H"
                 includeMargin={true}
@@ -947,13 +937,97 @@ export default function DiarioCoyoacan() {
             </div>
           </div>
 
+          {/* Directorio de enlaces */}
+          <div className="border-t-2 border-newsprint/20 pt-10 mb-10">
+            <h3 className="text-xs font-subhead uppercase tracking-widest opacity-50 mb-6 text-center">
+              {lang === 'es' ? 'DIRECTORIO DE SITIOS' : 'SITE DIRECTORY'}
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+              {/* Columna 1: Diario Coyoacán */}
+              <div>
+                <h4 className="font-subhead uppercase text-sm tracking-wider mb-4 border-b border-newsprint/30 pb-2 text-rust">
+                  Diario Coyoacán
+                </h4>
+                <ul className="space-y-2">
+                  <li><a href="/" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Portada' : 'Front Page'}</a></li>
+                  <li><a href="/noticias" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Noticias' : 'News'}</a></li>
+                  <li><a href="/hemeroteca" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Hemeroteca' : 'Archive'}</a></li>
+                  <li><a href="/hospedaje-mundial-2026" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Hospedaje Mundial 2026' : 'World Cup 2026 Lodging'}</a></li>
+                </ul>
+              </div>
+
+              {/* Columna 2: SúperAnfitrión — Hospedaje */}
+              <div>
+                <h4 className="font-subhead uppercase text-sm tracking-wider mb-4 border-b border-newsprint/30 pb-2 text-rust">
+                  {lang === 'es' ? 'Hospedaje' : 'Lodging'}
+                </h4>
+                <ul className="space-y-2">
+                  <li><a href="https://superanfitrion.com.mx/" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">SúperAnfitrión Coyoacán</a></li>
+                  <li><a href="https://superanfitrion.com.mx/alojamientos" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Alojamientos' : 'Accommodations'}</a></li>
+                  <li><a href="https://superanfitrion.com.mx/hospedaje-estudiantes" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Para Estudiantes' : 'For Students'}</a></li>
+                  <li><a href="https://superanfitrion.com.mx/nomadas-digitales" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Nómadas Digitales' : 'Digital Nomads'}</a></li>
+                  <li><a href="https://superanfitrion.com.mx/renta-mensual" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Renta Mensual' : 'Monthly Rental'}</a></li>
+                  <li><a href="https://superanfitrion.com.mx/mundial-2026" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">Mundial 2026</a></li>
+                  <li><a href="https://superanfitrion.com.mx/en/world-cup-2026" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">World Cup 2026 (EN)</a></li>
+                </ul>
+              </div>
+
+              {/* Columna 3: SúperAnfitrión — El Barrio */}
+              <div>
+                <h4 className="font-subhead uppercase text-sm tracking-wider mb-4 border-b border-newsprint/30 pb-2 text-rust">
+                  {lang === 'es' ? 'El Barrio' : 'The Neighborhood'}
+                </h4>
+                <ul className="space-y-2">
+                  <li><a href="https://superanfitrion.com.mx/barrio" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Coyoacán' : 'Coyoacán'}</a></li>
+                  <li><a href="https://superanfitrion.com.mx/lugares-pet-friendly" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Lugares Pet-Friendly' : 'Pet-Friendly Places'}</a></li>
+                  <li><a href="https://superanfitrion.com.mx/blog" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">Blog</a></li>
+                  <li><a href="https://superanfitrion.com.mx/ayuda" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Ayuda' : 'Help'}</a></li>
+                  <li><a href="https://superanfitrion.com.mx/politica-mascotas" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Política de Mascotas' : 'Pet Policy'}</a></li>
+                  <li><a href="https://superanfitrion.com.mx/politicas" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Políticas de Convivencia' : 'House Rules'}</a></li>
+                  <li><a href="https://superanfitrion.com.mx/acceso-huespedes" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">{lang === 'es' ? 'Acceso Huéspedes' : 'Guest Access'}</a></li>
+                </ul>
+              </div>
+
+              {/* Columna 4: Contacto y Reservas */}
+              <div>
+                <h4 className="font-subhead uppercase text-sm tracking-wider mb-4 border-b border-newsprint/30 pb-2 text-rust">
+                  {lang === 'es' ? 'Contacto' : 'Contact'}
+                </h4>
+                <ul className="space-y-2">
+                  <li>
+                    <a href="https://wa.me/525511427252" target="_blank" rel="noopener noreferrer" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">
+                      📱 +52 55 1142 7252
+                    </a>
+                  </li>
+                  <li>
+                    <a href="mailto:superanfitrioncoyoacan@gmail.com" className="text-sm font-body opacity-70 hover:opacity-100 hover:text-rust transition-colors block">
+                      ✉️ superanfitrioncoyoacan@gmail.com
+                    </a>
+                  </li>
+                  <li className="pt-2">
+                    <a
+                      href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block px-4 py-2 bg-rust text-white border-2 border-newsprint font-subhead uppercase text-xs hover:bg-newsprint hover:text-ink transition-colors shadow-[3px_3px_0px_0px_rgba(255,255,255,0.3)]"
+                    >
+                      {lang === 'es' ? 'RESERVAR AHORA' : 'BOOK NOW'}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
           {/* Footer Info */}
-          <div className="text-center">
-            <h2 className="text-4xl font-headline mb-4">Diario Coyoacán</h2>
-            <p className="font-subhead uppercase tracking-widest text-sm opacity-70 mb-8">
+          <div className="text-center border-t border-newsprint/20 pt-8">
+            <h2 className="text-3xl font-headline mb-3">Diario Coyoacán</h2>
+            <p className="font-subhead uppercase tracking-widest text-xs opacity-50 mb-4">
               {lang === 'es' ? 'Periodismo local • Cultura • Gastronomía' : 'Local Journalism • Culture • Gastronomy'}
             </p>
-            <p className="text-xs font-mono opacity-50">
+            <p className="text-xs font-mono opacity-40">
               &copy; 2026 Diario Coyoacán. {lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
             </p>
           </div>

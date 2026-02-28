@@ -52,61 +52,12 @@ async function startServer() {
     }
   });
   
-  // Robots.txt — SEO optimizado para Diario Coyoacán
+  // Robots.txt
   app.get("/robots.txt", (req, res) => {
-    const robotsTxt = `# robots.txt para Diario Coyoacán — diario.superanfitrion.com.mx
-# Optimizado para máxima indexación en Google, Bing y buscadores internacionales
-
-User-agent: *
-Allow: /
-Allow: /diario
-Allow: /hemeroteca
-Allow: /hospedaje-mundial-2026
-Allow: /noticias
-
-# Sitemap canónico con dominio personalizado
-Sitemap: https://diario.superanfitrion.com.mx/sitemap.xml
-
-# Permitir todos los bots de búsqueda principales
-User-agent: Googlebot
+    const robotsTxt = `User-agent: *
 Allow: /
 
-User-agent: Googlebot-Image
-Allow: /
-
-User-agent: Googlebot-News
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Slurp
-Allow: /
-
-User-agent: DuckDuckBot
-Allow: /
-
-User-agent: Baiduspider
-Allow: /
-
-User-agent: YandexBot
-Allow: /
-
-# Bloquear bots de scraping agresivo
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
-User-agent: MJ12bot
-Disallow: /
-
-User-agent: DotBot
-Disallow: /
-
-# Crawl-delay moderado para no sobrecargar
-Crawl-delay: 1`;
+Sitemap: https://diario-coyo.manus.space/sitemap.xml`;
     res.header("Content-Type", "text/plain");
     res.send(robotsTxt);
   });

@@ -74,7 +74,7 @@ export async function sendNewsletter({ article, subscribers }: SendNewsletterPar
  * Generate HTML template for newsletter email
  */
 function generateNewsletterHTML(article: NewsletterArticle): string {
-  const baseUrl = "https://diario-coyoacan.manus.space";
+  const baseUrl = "https://diario-coyo.manus.space";
   const articleUrl = `${baseUrl}/diario?slug=${article.slug}`;
   const unsubscribeUrl = `${baseUrl}/unsubscribe`;
 
@@ -240,7 +240,7 @@ function generateNewsletterHTML(article: NewsletterArticle): string {
  * Generate plain text version for newsletter email
  */
 function generateNewsletterText(article: NewsletterArticle): string {
-  const baseUrl = "https://diario-coyoacan.manus.space";
+  const baseUrl = "https://diario-coyo.manus.space";
   const articleUrl = `${baseUrl}/diario?slug=${article.slug}`;
 
   return `

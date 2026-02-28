@@ -1,186 +1,21 @@
 <!doctype html>
-<html lang="es-MX">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- =============================================
-         SEO PRIMARIO — Diario Coyoacán
-         ============================================= -->
-    <title>Diario Coyoacán — Noticias, Cultura y Hospedaje en CDMX</title>
-    <meta name="description" content="Diario Coyoacán: noticias locales, cultura, gastronomía y los mejores hospedajes en Coyoacán, Ciudad de México. Alojamientos auténticos cerca del Estadio Azteca para el Mundial 2026." />
-    <meta name="keywords" content="Coyoacán noticias, hospedaje Coyoacán, alojamiento CDMX Mundial 2026, world cup 2026 accommodation mexico city, lodging azteca stadium, SúperAnfitrión Coyoacán, turismo Coyoacán, gastronomía CDMX, cultura Ciudad de México, fifa 2026 lodging mexico, coyoacan world cup 2026" />
-    <meta name="author" content="Diario Coyoacán — SúperAnfitrión" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="googlebot" content="index, follow" />
-    <link rel="canonical" href="https://diario.superanfitrion.com.mx/" />
-
-    <!-- =============================================
-         HREFLANG — Targeting internacional
-         ============================================= -->
-    <link rel="alternate" hreflang="es-MX" href="https://diario.superanfitrion.com.mx/" />
-    <link rel="alternate" hreflang="en" href="https://diario.superanfitrion.com.mx/?lang=en" />
-    <link rel="alternate" hreflang="x-default" href="https://diario.superanfitrion.com.mx/" />
-
-    <!-- =============================================
-         OPEN GRAPH — Facebook / WhatsApp / LinkedIn
-         ============================================= -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://diario.superanfitrion.com.mx/" />
-    <meta property="og:title" content="Diario Coyoacán — Noticias, Cultura y Hospedaje en CDMX" />
-    <meta property="og:description" content="Noticias locales, cultura, gastronomía y los mejores hospedajes en Coyoacán. Alojamientos auténticos cerca del Estadio Azteca para el Mundial 2026." />
-    <meta property="og:image" content="https://d2xsxph8kpxj0f.cloudfront.net/310519663072521459/Q8BeTaWP8ahBzzm2xVz4Wa/gentrificacion-coyoacan-mundial-2026-G7KhXfGtoDpc7L2RoukdvV.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Diario Coyoacán — Periódico local de la Ciudad de México" />
-    <meta property="og:site_name" content="Diario Coyoacán" />
-    <meta property="og:locale" content="es_MX" />
-    <meta property="og:locale:alternate" content="en_US" />
-
-    <!-- =============================================
-         TWITTER CARDS
-         ============================================= -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@DiarioCoyoacan" />
-    <meta name="twitter:creator" content="@DiarioCoyoacan" />
-    <meta name="twitter:title" content="Diario Coyoacán — Noticias y Hospedaje en CDMX" />
-    <meta name="twitter:description" content="Noticias locales, cultura y los mejores hospedajes en Coyoacán para el Mundial 2026." />
-    <meta name="twitter:image" content="https://d2xsxph8kpxj0f.cloudfront.net/310519663072521459/Q8BeTaWP8ahBzzm2xVz4Wa/gentrificacion-coyoacan-mundial-2026-G7KhXfGtoDpc7L2RoukdvV.png" />
-
-    <!-- =============================================
-         SCHEMA.ORG — NewsMediaOrganization + WebSite + LodgingBusiness + SportsEvent
-         ============================================= -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "NewsMediaOrganization",
-          "@id": "https://diario.superanfitrion.com.mx/#organization",
-          "name": "Diario Coyoacán",
-          "url": "https://diario.superanfitrion.com.mx",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://d2xsxph8kpxj0f.cloudfront.net/310519663072521459/Q8BeTaWP8ahBzzm2xVz4Wa/gentrificacion-coyoacan-mundial-2026-G7KhXfGtoDpc7L2RoukdvV.png",
-            "width": 1200,
-            "height": 630
-          },
-          "sameAs": [
-            "https://superanfitrion.com.mx",
-            "https://www.facebook.com/superanfitrioncoyoacan",
-            "https://www.instagram.com/superanfitrioncoyoacan"
-          ],
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+52-55-1142-7252",
-            "contactType": "customer service",
-            "areaServed": "MX",
-            "availableLanguage": ["Spanish", "English"]
-          },
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Coyoacán",
-            "addressRegion": "Ciudad de México",
-            "addressCountry": "MX"
-          }
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://diario.superanfitrion.com.mx/#website",
-          "url": "https://diario.superanfitrion.com.mx",
-          "name": "Diario Coyoacán",
-          "description": "Noticias locales, cultura, gastronomía y hospedaje en Coyoacán, Ciudad de México",
-          "publisher": {
-            "@id": "https://diario.superanfitrion.com.mx/#organization"
-          },
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-              "@type": "EntryPoint",
-              "urlTemplate": "https://diario.superanfitrion.com.mx/hemeroteca?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-          },
-          "inLanguage": ["es-MX", "en-US"]
-        },
-        {
-          "@type": "LodgingBusiness",
-          "@id": "https://superanfitrion.com.mx/#lodging",
-          "name": "SúperAnfitrión Coyoacán",
-          "url": "https://superanfitrion.com.mx",
-          "description": "Alojamientos auténticos en el corazón de Coyoacán, Ciudad de México. Cerca del Estadio Azteca para el Mundial 2026.",
-          "telephone": "+52-55-1142-7252",
-          "email": "superanfitrioncoyoacan@gmail.com",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Coyoacán",
-            "addressLocality": "Ciudad de México",
-            "addressRegion": "CDMX",
-            "postalCode": "04000",
-            "addressCountry": "MX"
-          },
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "19.3467",
-            "longitude": "-99.1618"
-          },
-          "priceRange": "$$",
-          "currenciesAccepted": "MXN, USD",
-          "paymentAccepted": "Cash, Credit Card",
-          "amenityFeature": [
-            {"@type": "LocationFeatureSpecification", "name": "WiFi", "value": true},
-            {"@type": "LocationFeatureSpecification", "name": "Kitchen", "value": true},
-            {"@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true}
-          ],
-          "nearbyAttractions": [
-            {"@type": "TouristAttraction", "name": "Estadio Azteca", "description": "25 minutos en Metro Línea 2"},
-            {"@type": "TouristAttraction", "name": "Plaza Hidalgo Coyoacán"},
-            {"@type": "TouristAttraction", "name": "Museo Frida Kahlo"}
-          ]
-        },
-        {
-          "@type": "SportsEvent",
-          "@id": "https://diario.superanfitrion.com.mx/#mundial2026",
-          "name": "FIFA World Cup 2026 — Mexico City",
-          "alternateName": "Copa Mundial FIFA 2026",
-          "startDate": "2026-06-11",
-          "endDate": "2026-07-19",
-          "location": {
-            "@type": "StadiumOrArena",
-            "name": "Estadio Azteca",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Ciudad de México",
-              "addressCountry": "MX"
-            }
-          },
-          "organizer": {
-            "@type": "Organization",
-            "name": "FIFA",
-            "url": "https://www.fifa.com"
-          }
-        }
-      ]
-    }
-    </script>
-
-    <!-- =============================================
-         PERFORMANCE — Preconnect & DNS prefetch
-         ============================================= -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://d2xsxph8kpxj0f.cloudfront.net" crossorigin />
-    <link rel="dns-prefetch" href="https://unpkg.com" />
-    <link rel="dns-prefetch" href="https://superanfitrion.com.mx" />
-
+    
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Oswald:wght@200..700&family=UnifrakturMaguntia&display=swap" rel="stylesheet" />
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Oswald:wght@200..700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-      crossorigin="" />
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+     
+    <title>Café Avellaneda - Diario Coyoacán</title>
   </head>
   <body>
     <div id="root"></div>
