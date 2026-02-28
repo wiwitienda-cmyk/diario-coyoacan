@@ -89,15 +89,17 @@ export default function Noticias() {
             </div>
           </Link>
           <div className="flex gap-3 items-center flex-wrap justify-center">
-            <Link href="/diario">
-              <a className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors">
-                Home
-              </a>
+            <Link
+              href="/diario"
+              className="px-4 py-2 border-2 border-ink font-subhead uppercase text-sm hover:bg-ink hover:text-newsprint transition-colors"
+            >
+              Home
             </Link>
-            <Link href="/noticias">
-              <a className="px-4 py-2 bg-ink text-newsprint border-2 border-ink font-subhead uppercase text-sm">
-                Noticias
-              </a>
+            <Link
+              href="/noticias"
+              className="px-4 py-2 bg-ink text-newsprint border-2 border-ink font-subhead uppercase text-sm"
+            >
+              Noticias
             </Link>
             <a
               href="https://superanfitrion.com.mx/blog"

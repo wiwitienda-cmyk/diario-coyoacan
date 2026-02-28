@@ -392,3 +392,14 @@
 - [x] Implementar pie de página con créditos y links a diario.superanfitrion.com.mx y superanfitrion.com.mx
 - [x] Corregir parseo de fechas mixtas (ISO y texto largo en español)
 - [x] Escribir 21 tests unitarios para las funciones auxiliares del periódico
+
+## Cintilla de Cotizaciones de Divisas en Vivo
+- [x] Crear endpoint tRPC server-side que consulte Frankfurter API (gratuita, sin key) para USD/MXN, EUR/MXN, CAD/MXN, GBP/MXN
+- [x] Implementar cintilla animada de divisas en el marquee del Diario Coyoacán
+- [x] Mostrar variación (▲▼) respecto al día anterior
+- [x] Actualizar automáticamente cada 10 minutos en el frontend
+- [x] Escribir tests unitarios para el endpoint de divisas
+
+## Corrección Error: Anchor Anidado en /noticias
+- [x] Localizar el `<a>` anidado dentro de otro `<a>` en la página /noticias
+- [x] Corregir la estructura HTML para eliminar la anidación

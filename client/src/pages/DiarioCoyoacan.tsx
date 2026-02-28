@@ -152,7 +152,11 @@ export default function DiarioCoyoacan() {
   );
 
   const { data: allArticles } = trpc.newsArticles.list.useQuery();
-
+  // ─── Cotizaciones de divisas (se actualiza cada 10 min) ─────────────────────
+  const { data: divisas } = trpc.divisas.rates.useQuery(undefined, {
+    refetchInterval: 10 * 60 * 1000, // refetch cada 10 minutos
+    staleTime: 9 * 60 * 1000,
+  });
   const subscribeMutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: (data) => {
       if (data.success) {
@@ -341,8 +345,117 @@ export default function DiarioCoyoacan() {
           HOY EN COYOACÁN: {currentArticle.title.substring(0, 60)} &bull; CLIMA: PARCIALMENTE NUBLADO 22°C &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
         </div>
       </div>
-
-      {/* ── CABECERA PRINCIPAL ────────────────────────────────────────────── */}
+      {/* ── CINTILLA DE DIVISAS ───────────────────────────────── */}
+      <div
+        style={{
+          backgroundColor: '#0d1117',
+          color: '#e6edf3',
+          padding: '0.3rem 0',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          borderBottom: `1px solid ${GOLD}`,
+          fontSize: '0.68rem',
+          fontFamily: SANS_SUBHEAD,
+          letterSpacing: '0.08em',
+        }}
+      >
+        {divisas ? (
+          <div
+            style={{
+              display: 'inline-flex',
+              gap: '0',
+              animation: 'marquee 28s linear infinite',
+            }}
+          >
+            {([
+              { label: 'USD/MXN', cur: 'USD_MXN' as const, flag: '🇺🇸' },
+              { label: 'EUR/MXN', cur: 'EUR_MXN' as const, flag: '🇪🇺' },
+              { label: 'CAD/MXN', cur: 'CAD_MXN' as const, flag: '🇨🇦' },
+              { label: 'GBP/MXN', cur: 'GBP_MXN' as const, flag: '🇬🇧' },
+            ] as const).map(({ label, cur, flag }) => {
+              const rate = divisas.rates[cur];
+              const prev = divisas.prevRates?.[cur];
+              const diff = prev ? rate - prev : null;
+              const isUp = diff !== null && diff > 0;
+              const isDown = diff !== null && diff < 0;
+              const arrow = isUp ? '▲' : isDown ? '▼' : '▶';
+              const arrowColor = isUp ? '#4ade80' : isDown ? '#f87171' : GOLD;
+              const diffText = diff !== null ? ` (${isUp ? '+' : ''}${diff.toFixed(2)})` : '';
+              return (
+                <span
+                  key={label}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.3rem',
+                    padding: '0 1.2rem',
+                    borderRight: `1px solid #30363d`,
+                  }}
+                >
+                  <span>{flag}</span>
+                  <span style={{ color: GOLD, fontWeight: 700 }}>{label}</span>
+                  <span style={{ color: '#e6edf3' }}>{rate.toFixed(2)}</span>
+                  <span style={{ color: arrowColor, fontSize: '0.6rem' }}>
+                    {arrow}{diffText}
+                  </span>
+                </span>
+              );
+            })}
+            {/* Separador y fuente */}
+            <span style={{ padding: '0 1.5rem', color: '#8b949e', borderRight: `1px solid #30363d` }}>
+              TIPO DE CAMBIO REFERENCIAL · FUENTE: BCE
+            </span>
+            {/* Repetir para loop continuo */}
+            {([
+              { label: 'USD/MXN', cur: 'USD_MXN' as const, flag: '🇺🇸' },
+              { label: 'EUR/MXN', cur: 'EUR_MXN' as const, flag: '🇪🇺' },
+              { label: 'CAD/MXN', cur: 'CAD_MXN' as const, flag: '🇨🇦' },
+              { label: 'GBP/MXN', cur: 'GBP_MXN' as const, flag: '🇬🇧' },
+            ] as const).map(({ label, cur, flag }) => {
+              const rate = divisas.rates[cur];
+              const prev = divisas.prevRates?.[cur];
+              const diff = prev ? rate - prev : null;
+              const isUp = diff !== null && diff > 0;
+              const isDown = diff !== null && diff < 0;
+              const arrow = isUp ? '▲' : isDown ? '▼' : '▶';
+              const arrowColor = isUp ? '#4ade80' : isDown ? '#f87171' : GOLD;
+              const diffText = diff !== null ? ` (${isUp ? '+' : ''}${diff.toFixed(2)})` : '';
+              return (
+                <span
+                  key={`${label}-2`}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.3rem',
+                    padding: '0 1.2rem',
+                    borderRight: `1px solid #30363d`,
+                  }}
+                >
+                  <span>{flag}</span>
+                  <span style={{ color: GOLD, fontWeight: 700 }}>{label}</span>
+                  <span style={{ color: '#e6edf3' }}>{rate.toFixed(2)}</span>
+                  <span style={{ color: arrowColor, fontSize: '0.6rem' }}>
+                    {arrow}{diffText}
+                  </span>
+                </span>
+              );
+            })}
+          </div>
+        ) : (
+          <div
+            style={{
+              display: 'inline-block',
+              padding: '0 1.5rem',
+              color: '#8b949e',
+              animation: 'marquee 20s linear infinite',
+            }}
+          >
+            CARGANDO COTIZACIONES · USD/MXN · EUR/MXN · CAD/MXN · GBP/MXN &nbsp;&nbsp;
+            CARGANDO COTIZACIONES · USD/MXN · EUR/MXN · CAD/MXN · GBP/MXN
+          </div>
+        )}
+      </div>
+      {/* CABECERA PRINCIPAL */}
       <header
         style={{
           borderBottom: `4px solid ${INK}`,

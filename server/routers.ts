@@ -7,6 +7,78 @@ import { getAllArticles, getLatestArticle, getArticleBySlug, addSubscriber, getA
 import { getAllNewsArticles, getLatestNewsArticle, getNewsArticleBySlug } from "./news-articles-db";
 import { sendNewsletter } from "./newsletter";
 
+// ─── Cache simple de divisas (10 minutos) ───────────────────────────────────
+let exchangeRateCache: {
+  data: ExchangeRates | null;
+  fetchedAt: number;
+} = { data: null, fetchedAt: 0 };
+
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutos
+
+interface ExchangeRates {
+  date: string;
+  rates: {
+    USD_MXN: number;
+    EUR_MXN: number;
+    CAD_MXN: number;
+    GBP_MXN: number;
+  };
+  prevRates: {
+    USD_MXN: number;
+    EUR_MXN: number;
+    CAD_MXN: number;
+    GBP_MXN: number;
+  } | null;
+}
+
+async function fetchExchangeRates(): Promise<ExchangeRates> {
+  const now = Date.now();
+  if (exchangeRateCache.data && now - exchangeRateCache.fetchedAt < CACHE_TTL_MS) {
+    return exchangeRateCache.data;
+  }
+
+  // Obtener tipo de cambio actual: 1 USD = ? MXN, 1 EUR = ? MXN, etc.
+  const latestRes = await fetch('https://api.frankfurter.app/latest?from=MXN&to=USD,EUR,CAD,GBP');
+
+  if (!latestRes.ok) throw new Error('Error al obtener tipos de cambio');
+
+  const latest = await latestRes.json() as { date: string; rates: Record<string, number> };
+
+  // Invertir: cuántos MXN vale 1 USD/EUR/CAD/GBP
+  const toMXN = (rate: number) => Math.round((1 / rate) * 10000) / 10000;
+
+  const rates = {
+    USD_MXN: toMXN(latest.rates['USD']),
+    EUR_MXN: toMXN(latest.rates['EUR']),
+    CAD_MXN: toMXN(latest.rates['CAD']),
+    GBP_MXN: toMXN(latest.rates['GBP']),
+  };
+
+  // Obtener tasa del día anterior para calcular variación
+  let prevRates: ExchangeRates['prevRates'] = null;
+  try {
+    const yesterday = new Date(latest.date);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yDate = yesterday.toISOString().split('T')[0];
+    const prevResponse = await fetch(`https://api.frankfurter.app/${yDate}?from=MXN&to=USD,EUR,CAD,GBP`);
+    if (prevResponse.ok) {
+      const prev = await prevResponse.json() as { rates: Record<string, number> };
+      prevRates = {
+        USD_MXN: toMXN(prev.rates['USD']),
+        EUR_MXN: toMXN(prev.rates['EUR']),
+        CAD_MXN: toMXN(prev.rates['CAD']),
+        GBP_MXN: toMXN(prev.rates['GBP']),
+      };
+    }
+  } catch {
+    // Si falla la tasa anterior, no mostramos variación
+  }
+
+  const result: ExchangeRates = { date: latest.date, rates, prevRates };
+  exchangeRateCache = { data: result, fetchedAt: now };
+  return result;
+}
+
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
@@ -35,6 +107,12 @@ export const appRouter = router({
       }),
   }),
   
+  divisas: router({
+    rates: publicProcedure.query(async () => {
+      return await fetchExchangeRates();
+    }),
+  }),
+
   newsArticles: router({
     list: publicProcedure.query(async () => {
       return await getAllNewsArticles();
