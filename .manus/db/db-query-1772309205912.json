@@ -1,0 +1,37 @@
+{
+  "query": "SELECT id, slug, title, summary, category, date, LEFT(content, 200) as content_preview FROM newsArticles ORDER BY createdAt DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, title, summary, category, date, LEFT(content, 200) as content_preview FROM newsArticles ORDER BY createdAt DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "60001",
+      "slug": "coyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24",
+      "title": "Coyoacán impulsa seguridad y sustentabilidad en transformación urbana rumbo a Mundial 2026",
+      "summary": "Operativos nocturnos, obras públicas y programas ecológicos fortalecen seguridad y calidad de vida en Coyoacán, ante retos y oportunidades del Mundial 2026.",
+      "category": "GOBIERNO LOCAL",
+      "date": "Lunes, 24 de febrero de 2026",
+      "content_preview": "Coyoacán vive una intensa transformación urbana que abarca desde operativos de seguridad nocturna hasta la implementación de programas de sustentabilidad y renovación de espacios públicos, en vísperas"
+    },
+    {
+      "id": "30001",
+      "slug": "gentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18",
+      "title": "Gentrificación en Coyoacán: entre el progreso inmobiliario y el desplazamiento de vecinos históricos",
+      "summary": "El boom de construcciones irregulares y el alza de rentas por el Mundial 2026 amenazan con desplazar a los habitantes originarios de Coyoacán, mientras las autoridades enfrentan acusaciones de omisión ante el avance del mercado inmobiliario.",
+      "category": "SOCIEDAD",
+      "date": "2026-02-18",
+      "content_preview": "[{\"title\":\"Santa Úrsula Coapa: el epicentro de la transformación\",\"text\":\"La colonia Pedregal de Santa Úrsula Coapa, en la alcaldía Coyoacán, donde se ubica el Estadio Azteca, se ha convertido en el e"
+    },
+    {
+      "id": "1",
+      "slug": "coyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026",
+      "title": "Coyoacán une cultura y solidaridad en festival por Cuba y Venezuela en marco del Mundial 2026",
+      "summary": "La Asamblea Popular de Coyoacán contra el Imperialismo convocó a un festival cultural en el Jardín Hidalgo en solidaridad con Cuba y Venezuela, mientras la alcaldía se prepara para recibir más de 1.5 millones de visitantes durante el Mundial de Fútbol 2026.",
+      "category": "COMUNIDAD",
+      "date": "Domingo, 15 de febrero de 2026",
+      "content_preview": "Coyoacán, Ciudad de México.- En un contexto marcado por la proximidad del Mundial de Fútbol 2026 y una reciente emergencia ambiental por ozono, la Asamblea Popular de Coyoacán contra el Imperialismo c"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\ttitle\tsummary\tcategory\tdate\tcontent_preview\n60001\tcoyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24\tCoyoacán impulsa seguridad y sustentabilidad en transformación urbana rumbo a Mundial 2026\tOperativos nocturnos, obras públicas y programas ecológicos fortalecen seguridad y calidad de vida en Coyoacán, ante retos y oportunidades del Mundial 2026.\tGOBIERNO LOCAL\tLunes, 24 de febrero de 2026\tCoyoacán vive una intensa transformación urbana que abarca desde operativos de seguridad nocturna hasta la implementación de programas de sustentabilidad y renovación de espacios públicos, en vísperas\n30001\tgentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18\tGentrificación en Coyoacán: entre el progreso inmobiliario y el desplazamiento de vecinos históricos\tEl boom de construcciones irregulares y el alza de rentas por el Mundial 2026 amenazan con desplazar a los habitantes originarios de Coyoacán, mientras las autoridades enfrentan acusaciones de omisión ante el avance del mercado inmobiliario.\tSOCIEDAD\t2026-02-18\t[{\"title\":\"Santa Úrsula Coapa: el epicentro de la transformación\",\"text\":\"La colonia Pedregal de Santa Úrsula Coapa, en la alcaldía Coyoacán, donde se ubica el Estadio Azteca, se ha convertido en el e\n1\tcoyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026\tCoyoacán une cultura y solidaridad en festival por Cuba y Venezuela en marco del Mundial 2026\tLa Asamblea Popular de Coyoacán contra el Imperialismo convocó a un festival cultural en el Jardín Hidalgo en solidaridad con Cuba y Venezuela, mientras la alcaldía se prepara para recibir más de 1.5 millones de visitantes durante el Mundial de Fútbol 2026.\tCOMUNIDAD\tDomingo, 15 de febrero de 2026\tCoyoacán, Ciudad de México.- En un contexto marcado por la proximidad del Mundial de Fútbol 2026 y una reciente emergencia ambiental por ozono, la Asamblea Popular de Coyoacán contra el Imperialismo c\n",
+  "stderr": "",
+  "execution_time_ms": 1550
+}

@@ -380,3 +380,15 @@
 - [x] Integrar componente en la página de artículos individuales - YA INTEGRADO
 - [x] Verificar que los botones funcionen correctamente con URLs dinámicas
 - [x] Guardar checkpoint
+
+## Rediseño Completo con Formato de Periódico Clásico Impreso
+- [x] Reescribir DiarioCoyoacan.tsx con formato de periódico clásico (tipografía gótica, dos columnas, letra capital, pull quote, anuncio de primera plana)
+- [x] Implementar cabecera con UnifrakturMaguntia, número de edición, alcaldías cubiertas y fecha
+- [x] Implementar banner negro superior con enlace a superanfitrion.com.mx
+- [x] Implementar layout de dos columnas (artículo principal + columna lateral con agenda, efeméride y artículos recientes)
+- [x] Implementar letra capital grande en el primer párrafo del artículo principal
+- [x] Implementar pull quote (cita destacada) con líneas dobles arriba y abajo
+- [x] Implementar anuncio de primera plana contextual con botón rojo de reserva
+- [x] Implementar pie de página con créditos y links a diario.superanfitrion.com.mx y superanfitrion.com.mx
+- [x] Corregir parseo de fechas mixtas (ISO y texto largo en español)
+- [x] Escribir 21 tests unitarios para las funciones auxiliares del periódico

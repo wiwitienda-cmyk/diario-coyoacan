@@ -1,0 +1,37 @@
+{
+  "query": "SELECT id, slug, title, LEFT(summary, 100) as summary_preview, category, date, heroImage FROM newsArticles ORDER BY createdAt DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, title, LEFT(summary, 100) as summary_preview, category, date, heroImage FROM newsArticles ORDER BY createdAt DESC;",
+  "rows": [
+    {
+      "id": "60001",
+      "slug": "coyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24",
+      "title": "Coyoacán impulsa seguridad y sustentabilidad en transformación urbana rumbo a Mundial 2026",
+      "summary_preview": "Operativos nocturnos, obras públicas y programas ecológicos fortalecen seguridad y calidad de vida e",
+      "category": "GOBIERNO LOCAL",
+      "date": "Lunes, 24 de febrero de 2026",
+      "heroImage": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663072521459/BskECKriWbPQUxob.png"
+    },
+    {
+      "id": "30001",
+      "slug": "gentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18",
+      "title": "Gentrificación en Coyoacán: entre el progreso inmobiliario y el desplazamiento de vecinos históricos",
+      "summary_preview": "El boom de construcciones irregulares y el alza de rentas por el Mundial 2026 amenazan con desplazar",
+      "category": "SOCIEDAD",
+      "date": "2026-02-18",
+      "heroImage": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663072521459/gDdBXINerfFAHHwL.png"
+    },
+    {
+      "id": "1",
+      "slug": "coyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026",
+      "title": "Coyoacán une cultura y solidaridad en festival por Cuba y Venezuela en marco del Mundial 2026",
+      "summary_preview": "La Asamblea Popular de Coyoacán contra el Imperialismo convocó a un festival cultural en el Jardín H",
+      "category": "COMUNIDAD",
+      "date": "Domingo, 15 de febrero de 2026",
+      "heroImage": "https://files.manuscdn.com/user_upload_by_module/session_file/310519663072521459/eOKmvcWQWUdpCUKi.png"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\ttitle\tsummary_preview\tcategory\tdate\theroImage\n60001\tcoyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24\tCoyoacán impulsa seguridad y sustentabilidad en transformación urbana rumbo a Mundial 2026\tOperativos nocturnos, obras públicas y programas ecológicos fortalecen seguridad y calidad de vida e\tGOBIERNO LOCAL\tLunes, 24 de febrero de 2026\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663072521459/BskECKriWbPQUxob.png\n30001\tgentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18\tGentrificación en Coyoacán: entre el progreso inmobiliario y el desplazamiento de vecinos históricos\tEl boom de construcciones irregulares y el alza de rentas por el Mundial 2026 amenazan con desplazar\tSOCIEDAD\t2026-02-18\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663072521459/gDdBXINerfFAHHwL.png\n1\tcoyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026\tCoyoacán une cultura y solidaridad en festival por Cuba y Venezuela en marco del Mundial 2026\tLa Asamblea Popular de Coyoacán contra el Imperialismo convocó a un festival cultural en el Jardín H\tCOMUNIDAD\tDomingo, 15 de febrero de 2026\thttps://files.manuscdn.com/user_upload_by_module/session_file/310519663072521459/eOKmvcWQWUdpCUKi.png\n",
+  "stderr": "",
+  "execution_time_ms": 1560
+}
