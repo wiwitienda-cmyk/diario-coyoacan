@@ -7,6 +7,46 @@ import { getAllArticles, getLatestArticle, getArticleBySlug, addSubscriber, getA
 import { getAllNewsArticles, getLatestNewsArticle, getNewsArticleBySlug } from "./news-articles-db";
 import { sendNewsletter } from "./newsletter";
 
+// ─── Cache simple de IPC/BMV (15 minutos) ──────────────────────────────────
+interface IpcData {
+  price: number;
+  prevClose: number;
+  change: number;
+  changePct: number;
+  date: string;
+}
+let ipcCache: { data: IpcData | null; fetchedAt: number } = { data: null, fetchedAt: 0 };
+const IPC_CACHE_TTL_MS = 15 * 60 * 1000;
+
+async function fetchIPC(): Promise<IpcData | null> {
+  const now = Date.now();
+  if (ipcCache.data && now - ipcCache.fetchedAt < IPC_CACHE_TTL_MS) return ipcCache.data;
+  try {
+    const res = await fetch(
+      'https://query1.finance.yahoo.com/v8/finance/chart/%5EMXX?interval=1d&range=5d',
+      { headers: { 'User-Agent': 'Mozilla/5.0' } }
+    );
+    if (!res.ok) return null;
+    const json = await res.json() as { chart: { result: Array<{ meta: Record<string, number | string> }> } };
+    const meta = json.chart.result[0].meta;
+    const price = meta.regularMarketPrice as number;
+    const prevClose = meta.chartPreviousClose as number;
+    const change = Math.round((price - prevClose) * 100) / 100;
+    const changePct = Math.round(((price - prevClose) / prevClose) * 10000) / 100;
+    const result: IpcData = {
+      price: Math.round(price * 100) / 100,
+      prevClose: Math.round(prevClose * 100) / 100,
+      change,
+      changePct,
+      date: new Date().toISOString().split('T')[0],
+    };
+    ipcCache = { data: result, fetchedAt: now };
+    return result;
+  } catch {
+    return null;
+  }
+}
+
 // ─── Cache simple de divisas (10 minutos) ───────────────────────────────────
 let exchangeRateCache: {
   data: ExchangeRates | null;
@@ -110,6 +150,9 @@ export const appRouter = router({
   divisas: router({
     rates: publicProcedure.query(async () => {
       return await fetchExchangeRates();
+    }),
+    ipc: publicProcedure.query(async () => {
+      return await fetchIPC();
     }),
   }),
 

@@ -1,0 +1,25 @@
+{
+  "query": "SELECT slug, date, category FROM newsArticles ORDER BY createdAt DESC LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, date, category FROM newsArticles ORDER BY createdAt DESC LIMIT 20;",
+  "rows": [
+    {
+      "slug": "coyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24",
+      "date": "Lunes, 24 de febrero de 2026",
+      "category": "GOBIERNO LOCAL"
+    },
+    {
+      "slug": "gentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18",
+      "date": "2026-02-18",
+      "category": "SOCIEDAD"
+    },
+    {
+      "slug": "coyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026",
+      "date": "Domingo, 15 de febrero de 2026",
+      "category": "COMUNIDAD"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\tdate\tcategory\ncoyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24\tLunes, 24 de febrero de 2026\tGOBIERNO LOCAL\ngentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18\t2026-02-18\tSOCIEDAD\ncoyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026\tDomingo, 15 de febrero de 2026\tCOMUNIDAD\n",
+  "stderr": "",
+  "execution_time_ms": 1542
+}

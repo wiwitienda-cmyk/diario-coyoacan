@@ -149,3 +149,90 @@ describe('Divisas: validación de estructura de respuesta', () => {
     expect(/^\d{4}-\d{2}-\d{2}$/.test(date)).toBe(true);
   });
 });
+
+// ─── Tests del IPC/BMV ────────────────────────────────────────────────────────
+
+interface IpcData {
+  price: number;
+  prevClose: number;
+  change: number;
+  changePct: number;
+  date: string;
+}
+
+function buildIpcData(price: number, prevClose: number): IpcData {
+  const change = Math.round((price - prevClose) * 100) / 100;
+  const changePct = Math.round(((price - prevClose) / prevClose) * 10000) / 100;
+  return {
+    price: Math.round(price * 100) / 100,
+    prevClose: Math.round(prevClose * 100) / 100,
+    change,
+    changePct,
+    date: new Date().toISOString().split('T')[0],
+  };
+}
+
+describe('IPC/BMV: cálculo de cambio y porcentaje', () => {
+  it('calcula cambio positivo correctamente', () => {
+    const data = buildIpcData(71405.77, 70633.77);
+    expect(data.change).toBeCloseTo(772, 0);
+    expect(data.changePct).toBeGreaterThan(0);
+  });
+
+  it('calcula cambio negativo correctamente', () => {
+    const data = buildIpcData(69000, 70000);
+    expect(data.change).toBeLessThan(0);
+    expect(data.changePct).toBeLessThan(0);
+  });
+
+  it('calcula porcentaje de cambio con precisión de 2 decimales', () => {
+    const data = buildIpcData(71405.77, 70633.77);
+    // 772 / 70633.77 * 100 ≈ 1.09%
+    expect(data.changePct).toBeCloseTo(1.09, 1);
+  });
+
+  it('devuelve 0 de cambio cuando precio = prevClose', () => {
+    const data = buildIpcData(70000, 70000);
+    expect(data.change).toBe(0);
+    expect(data.changePct).toBe(0);
+  });
+
+  it('la estructura tiene todos los campos requeridos', () => {
+    const data = buildIpcData(71405.77, 70633.77);
+    expect(data).toHaveProperty('price');
+    expect(data).toHaveProperty('prevClose');
+    expect(data).toHaveProperty('change');
+    expect(data).toHaveProperty('changePct');
+    expect(data).toHaveProperty('date');
+  });
+
+  it('price y prevClose son números positivos', () => {
+    const data = buildIpcData(71405.77, 70633.77);
+    expect(data.price).toBeGreaterThan(0);
+    expect(data.prevClose).toBeGreaterThan(0);
+  });
+
+  it('date tiene formato ISO YYYY-MM-DD', () => {
+    const data = buildIpcData(71405.77, 70633.77);
+    expect(/^\d{4}-\d{2}-\d{2}$/.test(data.date)).toBe(true);
+  });
+
+  it('formatea el cambio con signo positivo para subidas', () => {
+    const data = buildIpcData(71405.77, 70633.77);
+    const formatted = `${data.change >= 0 ? '+' : ''}${data.change.toFixed(0)}`;
+    expect(formatted.startsWith('+')).toBe(true);
+  });
+
+  it('formatea el cambio sin signo positivo para bajadas', () => {
+    const data = buildIpcData(69000, 70000);
+    const formatted = `${data.change >= 0 ? '+' : ''}${data.change.toFixed(0)}`;
+    expect(formatted.startsWith('+')).toBe(false);
+    expect(formatted.startsWith('-')).toBe(true);
+  });
+
+  it('el precio se redondea a 2 decimales', () => {
+    const data = buildIpcData(71405.777, 70633.77);
+    const decimals = data.price.toString().split('.')[1]?.length ?? 0;
+    expect(decimals).toBeLessThanOrEqual(2);
+  });
+});

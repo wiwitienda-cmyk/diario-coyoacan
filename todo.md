@@ -403,3 +403,9 @@
 ## Corrección Error: Anchor Anidado en /noticias
 - [x] Localizar el `<a>` anidado dentro de otro `<a>` en la página /noticias
 - [x] Corregir la estructura HTML para eliminar la anidación
+
+## Edición 28 de Febrero 2026 + IPC/BMV + Publicación
+- [ ] Buscar noticias reales del 28 de febrero de las alcaldías de CDMX
+- [ ] Generar artículo periodístico completo y publicarlo en la base de datos
+- [x] Agregar índice IPC/BMV a la cintilla de divisas
+- [ ] Verificar y publicar el sitio

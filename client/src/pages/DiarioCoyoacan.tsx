@@ -157,6 +157,11 @@ export default function DiarioCoyoacan() {
     refetchInterval: 10 * 60 * 1000, // refetch cada 10 minutos
     staleTime: 9 * 60 * 1000,
   });
+  // ─── Índice IPC/BMV (se actualiza cada 15 min) ──────────────────────────────────────────
+  const { data: ipc } = trpc.divisas.ipc.useQuery(undefined, {
+    refetchInterval: 15 * 60 * 1000,
+    staleTime: 14 * 60 * 1000,
+  });
   const subscribeMutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: (data) => {
       if (data.success) {
@@ -401,9 +406,29 @@ export default function DiarioCoyoacan() {
                 </span>
               );
             })}
+            {/* IPC/BMV */}
+            {ipc && (
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.3rem',
+                  padding: '0 1.2rem',
+                  borderRight: `1px solid #30363d`,
+                  borderLeft: `2px solid ${GOLD}`,
+                  marginLeft: '0.5rem',
+                }}
+              >
+                <span style={{ color: GOLD, fontWeight: 700 }}>IPC BMV</span>
+                <span style={{ color: '#e6edf3' }}>{ipc.price.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span style={{ color: ipc.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
+                  {ipc.change >= 0 ? '▲' : '▼'} {ipc.change >= 0 ? '+' : ''}{ipc.change.toFixed(0)} ({ipc.changePct >= 0 ? '+' : ''}{ipc.changePct.toFixed(2)}%)
+                </span>
+              </span>
+            )}
             {/* Separador y fuente */}
             <span style={{ padding: '0 1.5rem', color: '#8b949e', borderRight: `1px solid #30363d` }}>
-              TIPO DE CAMBIO REFERENCIAL · FUENTE: BCE
+              TIPO DE CAMBIO REFERENCIAL · FUENTE: BCE/YAHOO
             </span>
             {/* Repetir para loop continuo */}
             {([
