@@ -244,13 +244,13 @@ export default function DiarioCoyoacan() {
     <div className="min-h-screen bg-newsprint text-ink font-body selection:bg-rust selection:text-white">
       <Helmet>
         <title>{t.headline.length > 45 ? t.headline.substring(0, 45) + '...' : t.headline} | Coyoacán</title>
-        <meta name="description" content={t.summary} />
+        <meta name="description" content={t.summary.length > 160 ? t.summary.substring(0, 157) + '...' : t.summary} />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="article" />
         <meta property="og:url" content={shareUrl} />
         <meta property="og:title" content={t.headline} />
-        <meta property="og:description" content={t.summary} />
+        <meta property="og:description" content={t.summary.length > 160 ? t.summary.substring(0, 157) + '...' : t.summary} />
         <meta property="og:image" content={currentArticle.heroImage} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -270,7 +270,7 @@ export default function DiarioCoyoacan() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content={shareUrl} />
         <meta name="twitter:title" content={t.headline} />
-        <meta name="twitter:description" content={t.summary} />
+        <meta name="twitter:description" content={t.summary.length > 160 ? t.summary.substring(0, 157) + '...' : t.summary} />
         <meta name="twitter:image" content={currentArticle.heroImage} />
         <meta name="twitter:image:alt" content={`Imagen del artículo: ${t.headline}`} />
         <meta name="twitter:site" content="@DiarioCoyoacan" />
@@ -281,7 +281,7 @@ export default function DiarioCoyoacan() {
         {/* Additional SEO */}
         <meta name="keywords" content="Coyoacán, hospedaje CDMX, cultura México, gastronomía Coyoacán, SúperAnfitrión, turismo Ciudad de México" />
         <meta name="author" content="Diario Coyoacán" />
-        <link rel="canonical" content={shareUrl} />
+        <link rel="canonical" href={shareUrl} />
         
         {/* Schema.org JSON-LD for Article */}
         <script type="application/ld+json">
@@ -450,7 +450,7 @@ export default function DiarioCoyoacan() {
           </div>
 
           <h2 className="text-3xl md:text-5xl font-headline leading-tight mt-8">
-            {t.headline}
+            {t.headline.length > 80 ? t.headline.substring(0, 77) + '...' : t.headline}
           </h2>
           
           <p className="text-xl md:text-2xl font-body italic text-gray-700 border-l-4 border-rust pl-6 py-2">

@@ -1,0 +1,16 @@
+{
+  "query": "SELECT headlineEs, summaryEs, LENGTH(headlineEs) as headline_len, LENGTH(summaryEs) as summary_len FROM articles ORDER BY id DESC LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT headlineEs, summaryEs, LENGTH(headlineEs) as headline_len, LENGTH(summaryEs) as summary_len FROM articles ORDER BY id DESC LIMIT 1;",
+  "rows": [
+    {
+      "headlineEs": "Vecinos de Coyoacán y Tlalpan marchan contra la gentrificación provocada por el Mundial 2026",
+      "summaryEs": "Más de cien personas del Frente Antigentrificación CDMX exigieron a la Secretaría de Turismo frenar el encarecimiento de la vivienda en colonias del sur de la capital ante la llegada del torneo.",
+      "headline_len": "94",
+      "summary_len": "197"
+    }
+  ],
+  "messages": [],
+  "stdout": "headlineEs\tsummaryEs\theadline_len\tsummary_len\nVecinos de Coyoacán y Tlalpan marchan contra la gentrificación provocada por el Mundial 2026\tMás de cien personas del Frente Antigentrificación CDMX exigieron a la Secretaría de Turismo frenar el encarecimiento de la vivienda en colonias del sur de la capital ante la llegada del torneo.\t94\t197\n",
+  "stderr": "",
+  "execution_time_ms": 1588
+}

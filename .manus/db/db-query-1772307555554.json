@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, LEFT(headlineEs, 100) as headlineEs, LENGTH(headlineEs) as headline_len, LENGTH(summaryEs) as summary_len FROM articles ORDER BY id DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, LEFT(headlineEs, 100) as headlineEs, LENGTH(headlineEs) as headline_len, LENGTH(summaryEs) as summary_len FROM articles ORDER BY id DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "630001",
+      "headlineEs": "Vecinos de Coyoacán y Tlalpan marchan contra la gentrificación provocada por el Mundial 2026",
+      "headline_len": "94",
+      "summary_len": "197"
+    },
+    {
+      "id": "600001",
+      "headlineEs": "Coyoacán enfrenta fuga de agua en Río Churubusco mientras clima extremo marca diferencia de 25 grado",
+      "headline_len": "114",
+      "summary_len": "195"
+    },
+    {
+      "id": "570001",
+      "headlineEs": "Coyoacán mantiene viva su memoria histórica con eventos culturales y acceso al patrimonio",
+      "headline_len": "91",
+      "summary_len": "142"
+    },
+    {
+      "id": "540001",
+      "headlineEs": "Coyoacán impulsa seguridad y sustentabilidad en transformación urbana rumbo a Mundial 2026",
+      "headline_len": "92",
+      "summary_len": "159"
+    },
+    {
+      "id": "510001",
+      "headlineEs": "Coyoacán confirma la quinta edición de la Feria Internacional del Libro con foco en literatura y fút",
+      "headline_len": "106",
+      "summary_len": "158"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\theadlineEs\theadline_len\tsummary_len\n630001\tVecinos de Coyoacán y Tlalpan marchan contra la gentrificación provocada por el Mundial 2026\t94\t197\n600001\tCoyoacán enfrenta fuga de agua en Río Churubusco mientras clima extremo marca diferencia de 25 grado\t114\t195\n570001\tCoyoacán mantiene viva su memoria histórica con eventos culturales y acceso al patrimonio\t91\t142\n540001\tCoyoacán impulsa seguridad y sustentabilidad en transformación urbana rumbo a Mundial 2026\t92\t159\n510001\tCoyoacán confirma la quinta edición de la Feria Internacional del Libro con foco en literatura y fút\t106\t158\n",
+  "stderr": "",
+  "execution_time_ms": 1498
+}
