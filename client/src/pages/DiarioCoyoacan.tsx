@@ -301,7 +301,7 @@ export default function DiarioCoyoacan() {
             "author": {
               "@type": "Organization",
               "name": "Diario Coyoacán",
-              "url": "https://diario-coyo.manus.space"
+              "url": "https://diario-coyoacan.manus.space"
             },
             "publisher": {
               "@type": "Organization",
@@ -639,7 +639,7 @@ export default function DiarioCoyoacan() {
             </h3>
             <div className="flex justify-center bg-white p-4 border-2 border-ink">
               <QRCodeSVG 
-                value="https://diario-coyo.manus.space/" 
+                value="https://diario-coyoacan.manus.space/" 
                 size={180}
                 level="H"
                 includeMargin={true}

@@ -374,3 +374,16 @@
 - [ ] Implementar lazy loading para componentes pesados
 - [ ] Minificar y comprimir assets CSS/JS
 - [ ] Verificar mejoras de rendimiento con Lighthouse
+
+## Agregar Botones de Compartir en Redes Sociales
+- [x] Crear componente de botones de compartir (Facebook, Twitter, WhatsApp) - YA EXISTÍA
+- [x] Integrar componente en la página de artículos individuales - YA INTEGRADO
+- [x] Verificar que los botones funcionen correctamente con URLs dinámicas
+- [x] Guardar checkpoint
+
+## Optimización SEO Completa
+- [ ] Optimizar metadatos Open Graph de cada artículo (imagen, título, descripción)
+- [ ] Crear sitemap.xml dinámico con todos los artículos
+- [ ] Crear robots.txt optimizado
+- [ ] Agregar JSON-LD Schema markup (Article, NewsArticle, Organization)
+- [ ] Preparar instrucciones para vincular desde superanfitrion.com.mx

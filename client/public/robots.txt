@@ -8,7 +8,7 @@ Allow: /hospedaje-mundial-2026
 Allow: /hemeroteca
 
 # Sitemap
-Sitemap: https://diario-coyo.manus.space/sitemap.xml
+Sitemap: https://diario-coyoacan.manus.space/sitemap.xml
 
 # Permitir todos los bots de búsqueda
 User-agent: Googlebot

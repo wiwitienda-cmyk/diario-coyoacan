@@ -57,7 +57,7 @@ async function startServer() {
     const robotsTxt = `User-agent: *
 Allow: /
 
-Sitemap: https://diario-coyo.manus.space/sitemap.xml`;
+Sitemap: https://diario-coyoacan.manus.space/sitemap.xml`;
     res.header("Content-Type", "text/plain");
     res.send(robotsTxt);
   });

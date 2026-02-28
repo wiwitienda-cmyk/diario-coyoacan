@@ -12,7 +12,7 @@ interface DisqusCommentsProps {
  * 1. Ve a https://disqus.com/admin/create/
  * 2. Crea un nuevo sitio con el nombre "diario-coyoacan"
  * 3. El shortname será "diario-coyoacan"
- * 4. Configura la URL del sitio como: https://diario-coyo.manus.space
+ * 4. Configura la URL del sitio como: https://diario-coyoacan.manus.space
  */
 export default function DisqusComments({ articleSlug, articleTitle }: DisqusCommentsProps) {
   useEffect(() => {

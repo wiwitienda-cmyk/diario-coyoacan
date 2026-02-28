@@ -36,7 +36,7 @@ export default function HospedajeMundial2026() {
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Hospedaje en Coyoacán para el Mundial 2026" />
         <meta property="og:description" content="Propiedades verificadas en el corazón de Coyoacán. Cerca del Estadio Azteca, transporte directo, WiFi de alta velocidad. ¡Reserva ahora!" />
-        <meta property="og:url" content="https://diario-coyo.manus.space/hospedaje-mundial-2026" />
+        <meta property="og:url" content="https://diario-coyoacan.manus.space/hospedaje-mundial-2026" />
         <meta property="og:image" content="https://superanfitrion.com.mx/images/coyoacan-hero.jpg" />
         
         {/* Twitter Cards */}
@@ -59,7 +59,7 @@ export default function HospedajeMundial2026() {
             },
             "telephone": "+52-55-1142-7252",
             "email": "superanfitrioncoyoacan@gmail.com",
-            "url": "https://diario-coyo.manus.space/hospedaje-mundial-2026",
+            "url": "https://diario-coyoacan.manus.space/hospedaje-mundial-2026",
             "priceRange": "$$",
             "aggregateRating": {
               "@type": "AggregateRating",
