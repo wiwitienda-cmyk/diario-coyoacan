@@ -197,6 +197,44 @@ async function fetchLatamRates(): Promise<LatamRates | null> {
   }
 }
 
+// ─── Cache simple de oro XAU/USD (15 minutos) ─────────────────────────────
+interface GoldData {
+  price: number;
+  prevClose: number;
+  change: number;
+  changePct: number;
+  date: string;
+}
+let goldCache: { data: GoldData | null; fetchedAt: number } = { data: null, fetchedAt: 0 };
+const GOLD_CACHE_TTL_MS = 15 * 60 * 1000;
+
+async function fetchGold(): Promise<GoldData | null> {
+  const now = Date.now();
+  if (goldCache.data && now - goldCache.fetchedAt < GOLD_CACHE_TTL_MS) return goldCache.data;
+  try {
+    const res = await fetch(
+      'https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1d&range=2d',
+      { headers: { 'User-Agent': 'Mozilla/5.0' } }
+    );
+    if (!res.ok) return null;
+    const json = await res.json() as any;
+    const meta = json.chart.result[0].meta;
+    const price = Math.round(meta.regularMarketPrice * 100) / 100;
+    const prev = Math.round(meta.chartPreviousClose * 100) / 100;
+    const result: GoldData = {
+      price,
+      prevClose: prev,
+      change: Math.round((price - prev) * 100) / 100,
+      changePct: Math.round(((price - prev) / prev) * 10000) / 100,
+      date: new Date().toISOString().split('T')[0],
+    };
+    goldCache = { data: result, fetchedAt: now };
+    return result;
+  } catch {
+    return null;
+  }
+}
+
 // ─── Cache simple de divisas (10 minutos) ───────────────────────────────────
 let exchangeRateCache: {
   data: ExchangeRates | null;
@@ -309,6 +347,9 @@ export const appRouter = router({
     }),
     latam: publicProcedure.query(async () => {
       return await fetchLatamRates();
+    }),
+    gold: publicProcedure.query(async () => {
+      return await fetchGold();
     }),
   }),
 

@@ -1,0 +1,8 @@
+{
+  "query": "SELECT slug, LEFT(content, 400) as content_preview FROM articles ORDER BY createdAt DESC LIMIT 3;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, LEFT(content, 400) as content_preview FROM articles ORDER BY createdAt DESC LIMIT 3;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'content' in 'field list'"
+  ]
+}

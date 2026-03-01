@@ -1,0 +1,25 @@
+{
+  "query": "SELECT slug, LEFT(content, 500) as content_preview FROM newsArticles ORDER BY createdAt DESC LIMIT 3;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, LEFT(content, 500) as content_preview FROM newsArticles ORDER BY createdAt DESC LIMIT 3;",
+  "rows": [
+    {
+      "slug": "coyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24",
+      "content_preview": "Coyoacán vive una intensa transformación urbana que abarca desde operativos de seguridad nocturna hasta la implementación de programas de sustentabilidad y renovación de espacios públicos, en vísperas del Mundial de Futbol 2026. En una semana marcada por la intervención de más de 8 mil viviendas y la desarticulación de una fiesta clandestina con más de mil asistentes, las autoridades buscan consolidar un entorno seguro y sostenible para sus habitantes."
+    },
+    {
+      "slug": "gentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18",
+      "content_preview": "[{\"title\":\"Santa Úrsula Coapa: el epicentro de la transformación\",\"text\":\"La colonia Pedregal de Santa Úrsula Coapa, en la alcaldía Coyoacán, donde se ubica el Estadio Azteca, se ha convertido en el epicentro de un fenómeno que preocupa cada vez más a los vecinos: la gentrificación acelerada por el Mundial de Fútbol 2026. Gustavo Bolaños, residente de la zona, ha documentado más de treinta construcciones irregulares que han surgido en el último año, todas con características similares: edificios"
+    },
+    {
+      "slug": "coyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026",
+      "content_preview": "Coyoacán, Ciudad de México.- En un contexto marcado por la proximidad del Mundial de Fútbol 2026 y una reciente emergencia ambiental por ozono, la Asamblea Popular de Coyoacán contra el Imperialismo convocó a un festival cultural en solidaridad con Cuba y Venezuela. El evento se realizó este domingo 15 de febrero a las 11:00 horas en el Jardín Hidalgo, espacio emblemático del barrio colonial que ha sido escenario recurrente de expresiones sociales y culturales."
+    }
+  ],
+  "messages": [
+    "## Operativo nocturno desmantel--snip--a f",
+    "El festival, que reunió a decenas"
+  ],
+  "stdout": "slug\tcontent_preview\ncoyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24\tCoyoacán vive una intensa transformación urbana que abarca desde operativos de seguridad nocturna hasta la implementación de programas de sustentabilidad y renovación de espacios públicos, en vísperas del Mundial de Futbol 2026. En una semana marcada por la intervención de más de 8 mil viviendas y la desarticulación de una fiesta clandestina con más de mil asistentes, las autoridades buscan consolidar un entorno seguro y sostenible para sus habitantes.\n\n## Operativo nocturno desmantel--snip--a f\ngentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18\t[{\"title\":\"Santa Úrsula Coapa: el epicentro de la transformación\",\"text\":\"La colonia Pedregal de Santa Úrsula Coapa, en la alcaldía Coyoacán, donde se ubica el Estadio Azteca, se ha convertido en el epicentro de un fenómeno que preocupa cada vez más a los vecinos: la gentrificación acelerada por el Mundial de Fútbol 2026. Gustavo Bolaños, residente de la zona, ha documentado más de treinta construcciones irregulares que han surgido en el último año, todas con características similares: edificios\ncoyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026\tCoyoacán, Ciudad de México.- En un contexto marcado por la proximidad del Mundial de Fútbol 2026 y una reciente emergencia ambiental por ozono, la Asamblea Popular de Coyoacán contra el Imperialismo convocó a un festival cultural en solidaridad con Cuba y Venezuela. El evento se realizó este domingo 15 de febrero a las 11:00 horas en el Jardín Hidalgo, espacio emblemático del barrio colonial que ha sido escenario recurrente de expresiones sociales y culturales.\n\nEl festival, que reunió a decenas\n",
+  "stderr": "",
+  "execution_time_ms": 1534
+}

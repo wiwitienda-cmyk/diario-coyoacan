@@ -447,3 +447,15 @@
 - [ ] Agregar endpoint weather con clima de Coyoacán (mañana/tarde/noche) usando Open-Meteo
 - [x] Mostrar clima en el marquee superior y en la cabecera del periódico
 - [ ] Actualización automática del clima cada hora
+
+## Cintilla: Precio del Oro XAU/USD
+- [ ] Agregar endpoint `divisas.gold` con caché de 15 min (Yahoo Finance GC=F)
+- [ ] Mostrar XAU/USD 🥇 en la cintilla con variación del día
+
+## Sesión 28 de Febrero 2026 — Completadas
+
+- [x] Corregir parseSections() para manejar tanto JSON array como texto plano (programación defensiva)
+- [x] Verificar artículo de gentrificación — ya muestra párrafos legibles sin JSON crudo
+- [x] Agregar endpoint divisas.gold (XAU/USD) con caché 15 min (Yahoo Finance GC=F)
+- [x] Mostrar XAU/USD en la cintilla visual con etiqueta "ORO" y variación del día
+- [x] 59 tests pasan correctamente

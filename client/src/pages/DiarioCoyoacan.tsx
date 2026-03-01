@@ -9,6 +9,20 @@ import { Share2, Facebook, Instagram, Youtube, Mail, Phone } from 'lucide-react'
 
 /** Convierte el texto plano separado por ";" en un array de párrafos */
 function parseSections(raw: string): string[] {
+  // Handle JSON array format: [{"title":"...","text":"..."},...]
+  if (raw && raw.trim().startsWith('[')) {
+    try {
+      const sections = JSON.parse(raw) as Array<{ title?: string; text?: string; content?: string }>;
+      if (Array.isArray(sections)) {
+        return sections
+          .map((s) => s.text || s.content || '')
+          .filter(Boolean);
+      }
+    } catch {
+      // Fall through to plain text parsing
+    }
+  }
+  // Handle plain text separated by semicolons
   return raw
     .split(';')
     .map((s) => s.trim())
@@ -172,10 +186,15 @@ export default function DiarioCoyoacan() {
     refetchInterval: 15 * 60 * 1000,
     staleTime: 14 * 60 * 1000,
   });
-  // ─── Clima Coyoacán (se actualiza cada hora) ─────────────────────────────────────
+  // ─── Clima Coyoacán (se actualiza cada hora) ─────────────────────────────────────────────
   const { data: weather } = trpc.weather.coyoacan.useQuery(undefined, {
     refetchInterval: 60 * 60 * 1000, // refetch cada hora
     staleTime: 59 * 60 * 1000,
+  });
+  // ─── Precio del Oro XAU/USD (se actualiza cada 15 min) ──────────────────────────
+  const { data: gold } = trpc.divisas.gold.useQuery(undefined, {
+    refetchInterval: 15 * 60 * 1000,
+    staleTime: 14 * 60 * 1000,
   });
   const subscribeMutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: (data) => {
@@ -530,6 +549,27 @@ export default function DiarioCoyoacan() {
                 </span>
               </>
             )}
+            {/* Oro XAU/USD */}
+            {gold && (
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.3rem',
+                  padding: '0 1.2rem',
+                  borderRight: `1px solid #30363d`,
+                  borderLeft: `2px solid #fbbf24`,
+                  marginLeft: '0.5rem',
+                }}
+              >
+                <span>ORO</span>
+                <span style={{ color: '#fbbf24', fontWeight: 700 }}>XAU/USD</span>
+                <span style={{ color: '#e6edf3' }}>${gold.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span style={{ color: gold.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
+                  {gold.change >= 0 ? '\u25b2' : '\u25bc'} {gold.change >= 0 ? '+' : ''}{gold.change.toFixed(2)} ({gold.changePct >= 0 ? '+' : ''}{gold.changePct.toFixed(2)}%)
+                </span>
+              </span>
+            )}
             {/* Separador y fuente */}
             <span style={{ padding: '0 1.5rem', color: '#8b949e', borderRight: `1px solid #30363d` }}>
               TIPO DE CAMBIO REFERENCIAL · FUENTE: BCE/YAHOO
@@ -599,9 +639,18 @@ export default function DiarioCoyoacan() {
                   <span>🇨🇴</span>
                   <span style={{ color: '#a78bfa', fontWeight: 700 }}>COP/MXN</span>
                   <span style={{ color: '#e6edf3' }}>{latam.COP_MXN.toFixed(5)}</span>
-                  <span style={{ color: latam.COP_MXN >= latam.COP_MXN_prev ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{latam.COP_MXN >= latam.COP_MXN_prev ? '▲' : '▼'}</span>
+                  <span style={{ color: latam.COP_MXN >= latam.COP_MXN_prev ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{latam.COP_MXN >= latam.COP_MXN_prev ? '\u25b2' : '\u25bc'}</span>
                 </span>
               </>
+            )}
+            {/* Oro XAU/USD (loop 2) */}
+            {gold && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0 1.2rem', borderRight: `1px solid #30363d`, borderLeft: `2px solid #fbbf24`, marginLeft: '0.5rem' }}>
+                <span>ORO</span>
+                <span style={{ color: '#fbbf24', fontWeight: 700 }}>XAU/USD</span>
+                <span style={{ color: '#e6edf3' }}>${gold.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span style={{ color: gold.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{gold.change >= 0 ? '\u25b2' : '\u25bc'} {gold.change >= 0 ? '+' : ''}{gold.change.toFixed(2)}%</span>
+              </span>
             )}
           </div>
         ) : (
