@@ -414,7 +414,7 @@
 - [ ] Agregar precio del petróleo WTI y Brent a la cintilla (Yahoo Finance)
 - [ ] Agregar ARS/MXN (peso argentino) a la cintilla
 - [ ] Agregar COP/MXN (peso colombiano) a la cintilla
-- [ ] Actualizar tests unitarios para los nuevos datos
+- [x] Actualizar tests unitarios para los nuevos datos
 
 ## Calculadora de Cambio de Divisas con Nota Legal
 - [ ] Investigar límites legales SAT/CNBV/LFPIORPI para cambio de divisas en México
@@ -425,3 +425,8 @@
 ## Rediseño Bloque de Artículos — 3 Tarjetas Primera Plana
 - [x] Reemplazar artículo largo por 3 tarjetas estilo primera plana con titular, lead y "Leer más"
 - [x] Botón "Leer más" lleva a la hemeroteca o al artículo individual
+
+## Cintilla: WTI/Brent + ARS/COP
+- [x] Conectar endpoint divisas.oil (WTI/Brent) a la cintilla visual
+- [x] Conectar endpoint divisas.latam (ARS/MXN, COP/MXN) a la cintilla visual
+- [x] Actualizar tests unitarios

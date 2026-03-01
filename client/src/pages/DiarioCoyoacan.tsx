@@ -162,6 +162,16 @@ export default function DiarioCoyoacan() {
     refetchInterval: 15 * 60 * 1000,
     staleTime: 14 * 60 * 1000,
   });
+  // ─── Petróleo WTI/Brent (se actualiza cada 15 min) ──────────────────────────
+  const { data: oil } = trpc.divisas.oil.useQuery(undefined, {
+    refetchInterval: 15 * 60 * 1000,
+    staleTime: 14 * 60 * 1000,
+  });
+  // ─── Tipos de cambio Latam ARS/COP (se actualiza cada 15 min) ───────────────
+  const { data: latam } = trpc.divisas.latam.useQuery(undefined, {
+    refetchInterval: 15 * 60 * 1000,
+    staleTime: 14 * 60 * 1000,
+  });
   const subscribeMutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: (data) => {
       if (data.success) {
@@ -435,6 +445,84 @@ export default function DiarioCoyoacan() {
                 </span>
               </span>
             )}
+            {/* Petróleo WTI/Brent */}
+            {oil && (
+              <>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.3rem',
+                    padding: '0 1.2rem',
+                    borderRight: `1px solid #30363d`,
+                    borderLeft: `2px solid #f97316`,
+                    marginLeft: '0.5rem',
+                  }}
+                >
+                  <span>🛢️</span>
+                  <span style={{ color: '#f97316', fontWeight: 700 }}>WTI</span>
+                  <span style={{ color: '#e6edf3' }}>${oil.wti.price.toFixed(2)}</span>
+                  <span style={{ color: oil.wti.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
+                    {oil.wti.change >= 0 ? '▲' : '▼'} {oil.wti.change >= 0 ? '+' : ''}{oil.wti.change.toFixed(2)} ({oil.wti.changePct >= 0 ? '+' : ''}{oil.wti.changePct.toFixed(2)}%)
+                  </span>
+                </span>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.3rem',
+                    padding: '0 1.2rem',
+                    borderRight: `1px solid #30363d`,
+                  }}
+                >
+                  <span>🛢️</span>
+                  <span style={{ color: '#f97316', fontWeight: 700 }}>BRENT</span>
+                  <span style={{ color: '#e6edf3' }}>${oil.brent.price.toFixed(2)}</span>
+                  <span style={{ color: oil.brent.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
+                    {oil.brent.change >= 0 ? '▲' : '▼'} {oil.brent.change >= 0 ? '+' : ''}{oil.brent.change.toFixed(2)} ({oil.brent.changePct >= 0 ? '+' : ''}{oil.brent.changePct.toFixed(2)}%)
+                  </span>
+                </span>
+              </>
+            )}
+            {/* Latam: ARS/MXN y COP/MXN */}
+            {latam && (
+              <>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.3rem',
+                    padding: '0 1.2rem',
+                    borderRight: `1px solid #30363d`,
+                    borderLeft: `2px solid #a78bfa`,
+                    marginLeft: '0.5rem',
+                  }}
+                >
+                  <span>🇦🇷</span>
+                  <span style={{ color: '#a78bfa', fontWeight: 700 }}>ARS/MXN</span>
+                  <span style={{ color: '#e6edf3' }}>{latam.ARS_MXN.toFixed(4)}</span>
+                  <span style={{ color: latam.ARS_MXN >= latam.ARS_MXN_prev ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
+                    {latam.ARS_MXN >= latam.ARS_MXN_prev ? '▲' : '▼'}
+                  </span>
+                </span>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.3rem',
+                    padding: '0 1.2rem',
+                    borderRight: `1px solid #30363d`,
+                  }}
+                >
+                  <span>🇨🇴</span>
+                  <span style={{ color: '#a78bfa', fontWeight: 700 }}>COP/MXN</span>
+                  <span style={{ color: '#e6edf3' }}>{latam.COP_MXN.toFixed(5)}</span>
+                  <span style={{ color: latam.COP_MXN >= latam.COP_MXN_prev ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
+                    {latam.COP_MXN >= latam.COP_MXN_prev ? '▲' : '▼'}
+                  </span>
+                </span>
+              </>
+            )}
             {/* Separador y fuente */}
             <span style={{ padding: '0 1.5rem', color: '#8b949e', borderRight: `1px solid #30363d` }}>
               TIPO DE CAMBIO REFERENCIAL · FUENTE: BCE/YAHOO
@@ -474,6 +562,40 @@ export default function DiarioCoyoacan() {
                 </span>
               );
             })}
+            {/* Petróleo WTI/Brent (loop 2) */}
+            {oil && (
+              <>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0 1.2rem', borderRight: `1px solid #30363d`, borderLeft: `2px solid #f97316`, marginLeft: '0.5rem' }}>
+                  <span>🛢️</span>
+                  <span style={{ color: '#f97316', fontWeight: 700 }}>WTI</span>
+                  <span style={{ color: '#e6edf3' }}>${oil.wti.price.toFixed(2)}</span>
+                  <span style={{ color: oil.wti.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{oil.wti.change >= 0 ? '▲' : '▼'} {oil.wti.change >= 0 ? '+' : ''}{oil.wti.change.toFixed(2)}%</span>
+                </span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0 1.2rem', borderRight: `1px solid #30363d` }}>
+                  <span>🛢️</span>
+                  <span style={{ color: '#f97316', fontWeight: 700 }}>BRENT</span>
+                  <span style={{ color: '#e6edf3' }}>${oil.brent.price.toFixed(2)}</span>
+                  <span style={{ color: oil.brent.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{oil.brent.change >= 0 ? '▲' : '▼'} {oil.brent.change >= 0 ? '+' : ''}{oil.brent.change.toFixed(2)}%</span>
+                </span>
+              </>
+            )}
+            {/* Latam ARS/COP (loop 2) */}
+            {latam && (
+              <>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0 1.2rem', borderRight: `1px solid #30363d`, borderLeft: `2px solid #a78bfa`, marginLeft: '0.5rem' }}>
+                  <span>🇦🇷</span>
+                  <span style={{ color: '#a78bfa', fontWeight: 700 }}>ARS/MXN</span>
+                  <span style={{ color: '#e6edf3' }}>{latam.ARS_MXN.toFixed(4)}</span>
+                  <span style={{ color: latam.ARS_MXN >= latam.ARS_MXN_prev ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{latam.ARS_MXN >= latam.ARS_MXN_prev ? '▲' : '▼'}</span>
+                </span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0 1.2rem', borderRight: `1px solid #30363d` }}>
+                  <span>🇨🇴</span>
+                  <span style={{ color: '#a78bfa', fontWeight: 700 }}>COP/MXN</span>
+                  <span style={{ color: '#e6edf3' }}>{latam.COP_MXN.toFixed(5)}</span>
+                  <span style={{ color: latam.COP_MXN >= latam.COP_MXN_prev ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{latam.COP_MXN >= latam.COP_MXN_prev ? '▲' : '▼'}</span>
+                </span>
+              </>
+            )}
           </div>
         ) : (
           <div
