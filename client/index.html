@@ -5,33 +5,14 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- SEO Base -->
-    <title>Diario Coyoacán | Noticias, Cultura y Hospedaje en Coyoacán CDMX</title>
-    <meta name="description" content="Diario Coyoacán: noticias locales, cultura, gastronomía y hospedaje en el corazón de Coyoacán, Ciudad de México. Reserva con SúperAnfitrión." />
+    <!-- SEO Base (fallback para crawlers sin JS) -->
+    <!-- Nota: title, description, og:* y twitter:* son manejados dinámicamente
+         por react-helmet-async en cada página. Solo se mantienen aquí los
+         meta tags que NO se duplican en el componente React. -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     
     <!-- Search Engine Verification -->
     <meta name="msvalidate.01" content="0B3EF4FE81525EF8AB8B5EEA0EA24C5B" />
-    
-    <!-- Canonical -->
-    <link rel="canonical" href="https://diario.superanfitrion.com.mx/" />
-    
-    <!-- Hreflang -->
-    <link rel="alternate" hrefLang="es-MX" href="https://diario.superanfitrion.com.mx/" />
-    <link rel="alternate" hrefLang="en" href="https://diario.superanfitrion.com.mx/?lang=en" />
-    <link rel="alternate" hrefLang="x-default" href="https://diario.superanfitrion.com.mx/" />
-    
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Diario Coyoacán" />
-    <meta property="og:locale" content="es_MX" />
-    <meta property="og:url" content="https://diario.superanfitrion.com.mx/" />
-    <meta property="og:title" content="Diario Coyoacán | Noticias y Cultura de Coyoacán CDMX" />
-    <meta property="og:description" content="Noticias locales, cultura, gastronomía y hospedaje en el corazón de Coyoacán. Reserva con SúperAnfitrión Coyoacán." />
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@DiarioCoyoacan" />
     
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -459,3 +459,8 @@
 - [x] Agregar endpoint divisas.gold (XAU/USD) con caché 15 min (Yahoo Finance GC=F)
 - [x] Mostrar XAU/USD en la cintilla visual con etiqueta "ORO" y variación del día
 - [x] 59 tests pasan correctamente
+
+## Corrección SEO: Meta Description Duplicada (Bing Webmaster Tools)
+- [x] Diagnosticar dónde se duplica la meta description en el HTML generado
+- [x] Eliminar la etiqueta meta description redundante (removidos del index.html: description, og:description, og:type, og:site_name, og:locale, og:url, og:title, twitter:card, twitter:site, canonical, hreflang)
+- [x] Verificar que solo exista una meta description en el HTML final (confirmado: 1 de cada tipo)
