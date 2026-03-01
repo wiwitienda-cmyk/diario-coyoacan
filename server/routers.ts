@@ -7,6 +7,68 @@ import { getAllArticles, getLatestArticle, getArticleBySlug, addSubscriber, getA
 import { getAllNewsArticles, getLatestNewsArticle, getNewsArticleBySlug } from "./news-articles-db";
 import { sendNewsletter } from "./newsletter";
 
+// ─── Cache de clima Coyoacán (1 hora) ────────────────────────────────────────
+interface WeatherSlot { temp: number; feelsLike: number; code: number; label: string; icon: string; }
+interface WeatherData {
+  morning: WeatherSlot;   // 8am
+  afternoon: WeatherSlot; // 2pm
+  night: WeatherSlot;     // 8pm
+  date: string;
+}
+let weatherCache: { data: WeatherData | null; fetchedAt: number } = { data: null, fetchedAt: 0 };
+const WEATHER_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hora
+
+function wmoIcon(code: number): string {
+  if (code === 0) return '\u2600\uFE0F'; // sol
+  if (code <= 2) return '\uD83C\uDF24\uFE0F'; // parcialmente nublado
+  if (code <= 3) return '\u2601\uFE0F'; // nublado
+  if (code <= 67) return '\uD83C\uDF27\uFE0F'; // lluvia
+  if (code <= 77) return '\u2744\uFE0F'; // nieve
+  if (code <= 82) return '\uD83C\uDF26\uFE0F'; // chubascos
+  return '\u26A1'; // tormenta
+}
+
+function wmoLabel(code: number): string {
+  if (code === 0) return 'Despejado';
+  if (code <= 2) return 'Parcialmente nublado';
+  if (code <= 3) return 'Nublado';
+  if (code <= 67) return 'Lluvia';
+  if (code <= 77) return 'Nieve';
+  if (code <= 82) return 'Chubascos';
+  return 'Tormenta';
+}
+
+async function fetchWeather(): Promise<WeatherData | null> {
+  const now = Date.now();
+  if (weatherCache.data && now - weatherCache.fetchedAt < WEATHER_CACHE_TTL_MS) return weatherCache.data;
+  try {
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=19.35&longitude=-99.16&hourly=temperature_2m,apparent_temperature,weathercode&timezone=America%2FMexico_City&forecast_days=1';
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const json = await res.json() as { hourly: { temperature_2m: number[]; apparent_temperature: number[]; weathercode: number[] } };
+    const temps = json.hourly.temperature_2m;
+    const feels = json.hourly.apparent_temperature;
+    const codes = json.hourly.weathercode;
+    const makeSlot = (h: number): WeatherSlot => ({
+      temp: Math.round(temps[h] * 10) / 10,
+      feelsLike: Math.round(feels[h] * 10) / 10,
+      code: codes[h],
+      label: wmoLabel(codes[h]),
+      icon: wmoIcon(codes[h]),
+    });
+    const result: WeatherData = {
+      morning: makeSlot(8),
+      afternoon: makeSlot(14),
+      night: makeSlot(20),
+      date: new Date().toISOString().split('T')[0],
+    };
+    weatherCache = { data: result, fetchedAt: now };
+    return result;
+  } catch {
+    return null;
+  }
+}
+
 // ─── Cache simple de IPC/BMV (15 minutos) ──────────────────────────────────
 interface IpcData {
   price: number;
@@ -247,6 +309,12 @@ export const appRouter = router({
     }),
     latam: publicProcedure.query(async () => {
       return await fetchLatamRates();
+    }),
+  }),
+
+  weather: router({
+    coyoacan: publicProcedure.query(async () => {
+      return await fetchWeather();
     }),
   }),
 

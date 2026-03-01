@@ -430,3 +430,20 @@
 - [x] Conectar endpoint divisas.oil (WTI/Brent) a la cintilla visual
 - [x] Conectar endpoint divisas.latam (ARS/MXN, COP/MXN) a la cintilla visual
 - [x] Actualizar tests unitarios
+
+## Cintilla: Precio del Oro XAU/USD
+- [ ] Agregar endpoint divisas.gold (XAU/USD) con caché 15 min
+- [ ] Mostrar XAU/USD en la cintilla visual con ícono 🥇
+
+## Generación Automática de Artículo Diario
+- [ ] Implementar endpoint newsArticles.generateDaily con LLM
+- [ ] Buscar noticias reales del día con búsqueda web
+- [ ] Guardar artículo generado en la base de datos
+- [ ] Configurar tarea programada diaria (cron 8am CDMX)
+- [ ] Notificar al propietario cuando se publique el artículo
+
+## Fecha Real y Clima en Tiempo Real
+- [ ] Corregir fecha de cabecera para mostrar siempre la fecha real del día (no la del artículo)
+- [ ] Agregar endpoint weather con clima de Coyoacán (mañana/tarde/noche) usando Open-Meteo
+- [x] Mostrar clima en el marquee superior y en la cabecera del periódico
+- [ ] Actualización automática del clima cada hora

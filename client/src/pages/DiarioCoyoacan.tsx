@@ -167,10 +167,15 @@ export default function DiarioCoyoacan() {
     refetchInterval: 15 * 60 * 1000,
     staleTime: 14 * 60 * 1000,
   });
-  // ─── Tipos de cambio Latam ARS/COP (se actualiza cada 15 min) ───────────────
+  // ─── Tipos de cambio Latam ARS/COP (se actualiza cada 15 min) ─────────────────
   const { data: latam } = trpc.divisas.latam.useQuery(undefined, {
     refetchInterval: 15 * 60 * 1000,
     staleTime: 14 * 60 * 1000,
+  });
+  // ─── Clima Coyoacán (se actualiza cada hora) ─────────────────────────────────────
+  const { data: weather } = trpc.weather.coyoacan.useQuery(undefined, {
+    refetchInterval: 60 * 60 * 1000, // refetch cada hora
+    staleTime: 59 * 60 * 1000,
   });
   const subscribeMutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: (data) => {
@@ -244,8 +249,10 @@ export default function DiarioCoyoacan() {
 
   const paragraphs = parseSections(safeArticle?.content ?? '');
   const pullQuote = extractPullQuote(paragraphs);
-  const editionNum = getEditionNumber(refArticle?.date ?? '');
-  const dateFormatted = formatDateEs(refArticle?.date ?? '');
+   // Fecha de la cabecera: siempre la fecha real de hoy en zona horaria CDMX
+  const todayIso = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' }); // YYYY-MM-DD
+  const editionNum = getEditionNumber(todayIso);
+  const dateFormatted = formatDateEs(todayIso);
   const ad = getContextualAd(safeArticle?.category ?? '', safeArticle?.title ?? '');
   const shareUrl = `https://diario.superanfitrion.com.mx/diario?slug=${safeArticle?.slug ?? ''}`;
 
@@ -365,8 +372,8 @@ export default function DiarioCoyoacan() {
             fontSize: '0.7rem',
           }}
         >
-          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: PARCIALMENTE NUBLADO 22°C &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
-          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: PARCIALMENTE NUBLADO 22°C &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
+          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: {weather ? `${weather.morning.icon} MAÑANA ${weather.morning.temp}°C · ${weather.afternoon.icon} TARDE ${weather.afternoon.temp}°C · ${weather.night.icon} NOCHE ${weather.night.temp}°C` : 'CARGANDO CLIMA...'} &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
+          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: {weather ? `${weather.morning.icon} MAÑANA ${weather.morning.temp}°C · ${weather.afternoon.icon} TARDE ${weather.afternoon.temp}°C · ${weather.night.icon} NOCHE ${weather.night.temp}°C` : 'CARGANDO CLIMA...'} &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
         </div>
       </div>
       {/* ── CINTILLA DE DIVISAS ───────────────────────────────── */}
@@ -673,6 +680,11 @@ export default function DiarioCoyoacan() {
             >
               <span>Periodismo local · Cultura · Gastronomía · Comunidad</span>
               <span style={{ textTransform: 'capitalize' }}>{dateFormatted}</span>
+              {weather && (
+                <span style={{ color: WINE, fontWeight: 600 }}>
+                  {weather.morning.icon} {weather.morning.temp}°C &middot; {weather.afternoon.icon} {weather.afternoon.temp}°C &middot; {weather.night.icon} {weather.night.temp}°C
+                </span>
+              )}
               <span>Precio: Gratuito</span>
             </div>
           </div>
