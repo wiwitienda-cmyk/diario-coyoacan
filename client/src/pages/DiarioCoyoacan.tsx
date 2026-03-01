@@ -151,7 +151,7 @@ export default function DiarioCoyoacan() {
     { enabled: !articleSlug }
   );
 
-  const { data: allArticles } = trpc.newsArticles.list.useQuery();
+  const { data: allArticles, isLoading: isLoadingAll } = trpc.newsArticles.list.useQuery();
   // ─── Cotizaciones de divisas (se actualiza cada 10 min) ─────────────────────
   const { data: divisas } = trpc.divisas.rates.useQuery(undefined, {
     refetchInterval: 10 * 60 * 1000, // refetch cada 10 minutos
@@ -177,7 +177,10 @@ export default function DiarioCoyoacan() {
   });
 
   const currentArticle = articleSlug ? article : latestArticle;
-  const isLoadingAny = articleSlug ? isLoading : isLoadingLatest;
+  // En modo portada (sin slug), mostrar 3 tarjetas de artículos
+  const isPortadaMode = !articleSlug;
+  // En modo portada esperamos allArticles; en modo artículo esperamos el artículo individual
+  const isLoadingAny = isPortadaMode ? isLoadingAll : (articleSlug ? isLoading : isLoadingLatest);
 
   // ─── Estado de carga ───────────────────────────────────────────────────────
   if (isLoadingAny) {
@@ -195,8 +198,9 @@ export default function DiarioCoyoacan() {
     );
   }
 
-  // ─── Sin artículo ──────────────────────────────────────────────────────────
-  if (!currentArticle) {
+  // ─── Sin  // ─── Sin artículo ──────────────────────────────────────────────
+  // En modo portada, no necesitamos currentArticle (usamos allArticles)
+  if (!isPortadaMode && !currentArticle) {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: PAPER, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', maxWidth: '480px', padding: '0 1rem' }}>
@@ -220,17 +224,24 @@ export default function DiarioCoyoacan() {
     );
   }
 
-  // ─── Procesamiento de datos ────────────────────────────────────────────────
-  const paragraphs = parseSections(currentArticle.content);
-  const pullQuote = extractPullQuote(paragraphs);
-  const editionNum = getEditionNumber(currentArticle.date);
-  const dateFormatted = formatDateEs(currentArticle.date);
-  const ad = getContextualAd(currentArticle.category, currentArticle.title);
-  const shareUrl = `https://diario.superanfitrion.com.mx/diario?slug=${currentArticle.slug}`;
+   // ─── Procesamiento de datos ────────────────────────────────────────────
+  // Artículos para portada (los 3 más recientes)
+  const portadaArticles = (allArticles || []).slice(0, 3);
+  // Artículo de referencia para cabecera/SEO: el más reciente
+  // En modo portada currentArticle puede ser undefined; usamos portadaArticles[0] como fallback
+  const safeArticle = currentArticle ?? portadaArticles[0];
+  const refArticle = portadaArticles[0] ?? safeArticle;
 
-  // Artículos recientes para columna lateral
+  const paragraphs = parseSections(safeArticle?.content ?? '');
+  const pullQuote = extractPullQuote(paragraphs);
+  const editionNum = getEditionNumber(refArticle?.date ?? '');
+  const dateFormatted = formatDateEs(refArticle?.date ?? '');
+  const ad = getContextualAd(safeArticle?.category ?? '', safeArticle?.title ?? '');
+  const shareUrl = `https://diario.superanfitrion.com.mx/diario?slug=${safeArticle?.slug ?? ''}`;
+
+  // Artículos recientes para columna lateral (modo artículo individual)
   const recentArticles = (allArticles || [])
-    .filter((a) => a.slug !== currentArticle.slug)
+    .filter((a) => a.slug !== safeArticle?.slug)
     .slice(0, 3);
 
   // Distribución de párrafos
@@ -240,16 +251,14 @@ export default function DiarioCoyoacan() {
   const afterPullQuote = restParagraphs.slice(2);
 
   // Título truncado para H2 (≤80 chars)
-  const displayTitle =
-    currentArticle.title.length > 80
-      ? currentArticle.title.substring(0, 77) + '…'
-      : currentArticle.title;
+  const displayTitle = (safeArticle?.title ?? '').length > 80
+      ? (safeArticle?.title ?? '').substring(0, 77) + '…'
+      : (safeArticle?.title ?? '');
 
   // Summary truncado (≤160 chars)
-  const displaySummary =
-    currentArticle.summary.length > 160
-      ? currentArticle.summary.substring(0, 157) + '…'
-      : currentArticle.summary;
+  const displaySummary = (safeArticle?.summary ?? '').length > 160
+      ? (safeArticle?.summary ?? '').substring(0, 157) + '…'
+      : (safeArticle?.summary ?? '');
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: PAPER, color: INK }}>
@@ -258,24 +267,24 @@ export default function DiarioCoyoacan() {
         <meta name="description" content={displaySummary} />
         <meta
           name="keywords"
-          content={`Coyoacán, ${currentArticle.category}, qué hacer en Coyoacán, hospedaje Coyoacán, nómadas digitales CDMX, Mundial 2026 CDMX, Diario Coyoacán`}
+          content={`Coyoacán, ${safeArticle?.category}, qué hacer en Coyoacán, hospedaje Coyoacán, nómadas digitales CDMX, Mundial 2026 CDMX, Diario Coyoacán`}
         />
         <meta name="author" content="Diario Coyoacán" />
         <link rel="canonical" href={shareUrl} />
         <link rel="alternate" hrefLang="es-MX" href={shareUrl} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={shareUrl} />
-        <meta property="og:title" content={currentArticle.title} />
+        <meta property="og:title" content={safeArticle?.title} />
         <meta property="og:description" content={displaySummary} />
-        <meta property="og:image" content={currentArticle.heroImage} />
-        <meta property="og:image:alt" content={`Fotografía editorial: ${currentArticle.title}`} />
+        <meta property="og:image" content={safeArticle?.heroImage} />
+        <meta property="og:image:alt" content={`Fotografía editorial: ${safeArticle?.title}`} />
         <meta property="og:site_name" content="Diario Coyoacán" />
         <meta property="og:locale" content="es_MX" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content={shareUrl} />
-        <meta name="twitter:title" content={currentArticle.title} />
+        <meta name="twitter:title" content={safeArticle?.title} />
         <meta name="twitter:description" content={displaySummary} />
-        <meta name="twitter:image" content={currentArticle.heroImage} />
+        <meta name="twitter:image" content={safeArticle?.heroImage} />
         <meta name="twitter:site" content="@DiarioCoyoacan" />
         <script type="application/ld+json">
           {JSON.stringify({
@@ -283,8 +292,8 @@ export default function DiarioCoyoacan() {
             '@type': 'NewsArticle',
             headline: displayTitle,
             description: displaySummary,
-            image: { '@type': 'ImageObject', url: currentArticle.heroImage },
-            datePublished: currentArticle.date,
+            image: { '@type': 'ImageObject', url: safeArticle?.heroImage },
+            datePublished: safeArticle?.date,
             author: {
               '@type': 'Organization',
               name: 'Diario Coyoacán',
@@ -297,7 +306,7 @@ export default function DiarioCoyoacan() {
               logo: { '@type': 'ImageObject', url: 'https://superanfitrion.com.mx/logo.png' },
             },
             mainEntityOfPage: { '@type': 'WebPage', '@id': shareUrl },
-            articleSection: currentArticle.category,
+            articleSection: safeArticle?.category,
             inLanguage: 'es-MX',
           })}
         </script>
@@ -346,8 +355,8 @@ export default function DiarioCoyoacan() {
             fontSize: '0.7rem',
           }}
         >
-          HOY EN COYOACÁN: {currentArticle.title.substring(0, 60)} &bull; CLIMA: PARCIALMENTE NUBLADO 22°C &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
-          HOY EN COYOACÁN: {currentArticle.title.substring(0, 60)} &bull; CLIMA: PARCIALMENTE NUBLADO 22°C &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
+          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: PARCIALMENTE NUBLADO 22°C &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
+          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: PARCIALMENTE NUBLADO 22°C &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
         </div>
       </div>
       {/* ── CINTILLA DE DIVISAS ───────────────────────────────── */}
@@ -607,8 +616,240 @@ export default function DiarioCoyoacan() {
         className="newspaper-grid"
       >
         {/* ── COLUMNA IZQUIERDA: ARTÍCULO PRINCIPAL ─────────────────────── */}
-        <article style={{ minWidth: 0 }}>
+        {/* ── COLUMNA IZQUIERDA: PORTADA O ARTÍCULO ─────────────────────── */}
+        {isPortadaMode ? (
+          /* ── MODO PORTADA: 3 TARJETAS DE PRIMERA PLANA ────────────────── */
+          <section style={{ minWidth: 0 }}>
+            {/* Línea divisoria de sección */}
+            <div style={{ borderBottom: `4px double ${INK}`, marginBottom: '1.5rem', paddingBottom: '0.5rem', display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
+              <span style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.7rem', color: WINE }}>
+                Edición del Día
+              </span>
+              <span style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.65rem', color: INK_MUTED }}>
+                {dateFormatted}
+              </span>
+            </div>
 
+            {portadaArticles.length === 0 ? (
+              <div style={{ padding: '3rem', textAlign: 'center', border: `2px dashed ${INK}` }}>
+                <p style={{ fontFamily: SERIF_BODY, color: INK_MUTED, fontSize: '1rem' }}>
+                  La redacción está preparando la edición de hoy. Vuelve pronto.
+                </p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+                {portadaArticles.map((art, idx) => {
+                  const isMain = idx === 0;
+                  const artSummary = art.summary.length > 180
+                    ? art.summary.substring(0, 177) + '…'
+                    : art.summary;
+                  const artTitle = art.title.length > 90
+                    ? art.title.substring(0, 87) + '…'
+                    : art.title;
+
+                  return (
+                    <div
+                      key={art.slug}
+                      style={{
+                        borderBottom: `2px solid ${INK}`,
+                        paddingBottom: isMain ? '2rem' : '1.25rem',
+                        marginBottom: isMain ? '2rem' : '1.25rem',
+                        display: isMain ? 'block' : 'grid',
+                        gridTemplateColumns: isMain ? undefined : '1fr 3fr',
+                        gap: isMain ? undefined : '1rem',
+                        alignItems: isMain ? undefined : 'start',
+                      }}
+                    >
+                      {/* Imagen (solo artículo principal) */}
+                      {isMain && art.heroImage && (
+                        <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
+                          <div style={{ position: 'absolute', inset: 0, backgroundColor: INK, transform: 'translate(4px,4px)', zIndex: 0 }} />
+                          <img
+                            src={art.heroImage}
+                            alt={artTitle}
+                            style={{
+                              position: 'relative',
+                              width: '100%',
+                              height: '320px',
+                              objectFit: 'cover',
+                              border: `3px solid ${INK}`,
+                              filter: 'grayscale(10%)',
+                              display: 'block',
+                              zIndex: 1,
+                            }}
+                          />
+                          <div style={{
+                            position: 'absolute', top: '0.75rem', left: '0.75rem',
+                            backgroundColor: WINE, color: PAPER,
+                            padding: '0.2rem 0.6rem',
+                            fontFamily: SANS_SUBHEAD, textTransform: 'uppercase',
+                            fontSize: '0.6rem', letterSpacing: '0.12em',
+                            border: `1.5px solid ${INK}`, zIndex: 2,
+                          }}>
+                            {art.category}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Thumbnail pequeño para artículos 2 y 3 */}
+                      {!isMain && art.heroImage && (
+                        <img
+                          src={art.heroImage}
+                          alt={artTitle}
+                          style={{
+                            width: '100%',
+                            height: '80px',
+                            objectFit: 'cover',
+                            border: `2px solid ${INK}`,
+                            filter: 'grayscale(20%)',
+                            display: 'block',
+                          }}
+                        />
+                      )}
+
+                      {/* Contenido textual */}
+                      <div>
+                        {/* Categoría */}
+                        <span style={{
+                          fontFamily: SANS_SUBHEAD, textTransform: 'uppercase',
+                          fontSize: '0.6rem', letterSpacing: '0.15em', color: WINE,
+                          display: 'block', marginBottom: '0.3rem',
+                        }}>
+                          {art.category}
+                        </span>
+
+                        {/* Titular */}
+                        <h2 style={{
+                          fontFamily: SERIF_HEADLINE,
+                          fontSize: isMain ? 'clamp(1.4rem, 3.5vw, 2.4rem)' : 'clamp(1rem, 2.5vw, 1.3rem)',
+                          color: INK,
+                          fontWeight: 700,
+                          lineHeight: 1.2,
+                          marginBottom: '0.5rem',
+                        }}>
+                          {artTitle}
+                        </h2>
+
+                        {/* Lead / Sumario */}
+                        <p style={{
+                          fontFamily: SERIF_BODY,
+                          fontSize: isMain ? '1rem' : '0.875rem',
+                          fontStyle: 'italic',
+                          color: INK_LIGHT,
+                          lineHeight: 1.6,
+                          marginBottom: '0.75rem',
+                        }}>
+                          {artSummary}
+                        </p>
+
+                        {/* Firma y botón */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+                          <span style={{
+                            fontFamily: SANS_SUBHEAD, textTransform: 'uppercase',
+                            fontSize: '0.6rem', letterSpacing: '0.1em', color: INK_MUTED,
+                          }}>
+                            Redacción · {formatDateEs(art.date).split(',')[0]}
+                          </span>
+                          <a
+                            href={`/diario?slug=${art.slug}`}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.3rem',
+                              padding: '0.35rem 0.85rem',
+                              backgroundColor: INK,
+                              color: PAPER,
+                              fontFamily: SANS_SUBHEAD,
+                              textTransform: 'uppercase',
+                              fontSize: '0.65rem',
+                              letterSpacing: '0.1em',
+                              textDecoration: 'none',
+                              border: `2px solid ${INK}`,
+                              transition: 'background 0.15s',
+                            }}
+                            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = WINE; }}
+                            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = INK; }}
+                          >
+                            Leer más →
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Enlace a hemeroteca */}
+                <div style={{ textAlign: 'center', paddingTop: '0.5rem' }}>
+                  <a
+                    href="/hemeroteca"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.6rem 1.5rem',
+                      backgroundColor: PAPER,
+                      color: INK,
+                      fontFamily: SANS_SUBHEAD,
+                      textTransform: 'uppercase',
+                      fontSize: '0.7rem',
+                      letterSpacing: '0.15em',
+                      textDecoration: 'none',
+                      border: `2px solid ${INK}`,
+                      boxShadow: `3px 3px 0 ${INK}`,
+                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = INK; (e.currentTarget as HTMLAnchorElement).style.color = PAPER; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = PAPER; (e.currentTarget as HTMLAnchorElement).style.color = INK; }}
+                  >
+                    Ver Hemeroteca Completa →
+                  </a>
+                </div>
+
+                {/* Anuncio de primera plana en modo portada */}
+                <div style={{
+                  marginTop: '2.5rem',
+                  padding: '2rem 2.5rem',
+                  backgroundColor: INK,
+                  color: PAPER,
+                  border: `4px solid ${WINE}`,
+                  boxShadow: `6px 6px 0px 0px ${WINE}`,
+                  textAlign: 'center',
+                }}>
+                  <p style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.65rem', letterSpacing: '0.18em', color: GOLD, marginBottom: '0.75rem' }}>
+                    — Anuncio de Primera Plana —
+                  </p>
+                  <h3 style={{ fontFamily: SERIF_HEADLINE, fontSize: 'clamp(1.3rem, 3vw, 2rem)', color: PAPER, fontWeight: 700, lineHeight: 1.3, marginBottom: '0.75rem' }}>
+                    Hospédate en el corazón de Coyoacán
+                  </h3>
+                  <p style={{ fontFamily: SERIF_BODY, fontSize: '0.9rem', color: '#d4c4a8', lineHeight: 1.7, marginBottom: '1.5rem' }}>
+                    Alojamientos auténticos en el barrio más bonito de México. Reserva directa sin comisiones. Anfitriones locales que conocen cada rincón de Coyoacán.
+                  </p>
+                  <a
+                    href="https://superanfitrion.com.mx"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-block',
+                      padding: '0.75rem 2rem',
+                      backgroundColor: WINE,
+                      color: PAPER,
+                      fontFamily: SANS_SUBHEAD,
+                      textTransform: 'uppercase',
+                      fontSize: '0.8rem',
+                      letterSpacing: '0.12em',
+                      textDecoration: 'none',
+                      border: `2px solid ${PAPER}`,
+                      boxShadow: `3px 3px 0px 0px ${PAPER}`,
+                    }}
+                  >
+                    Ver disponibilidad →
+                  </a>
+                </div>
+              </div>
+            )}
+          </section>
+        ) : (
+          /* ── MODO ARTÍCULO INDIVIDUAL: contenido completo ──────────────── */
+          <article style={{ minWidth: 0 }}>
           {/* Categoría + Titular */}
           <div style={{ borderBottom: `3px double ${INK}`, paddingBottom: '1.25rem', marginBottom: '1.5rem' }}>
             <span
@@ -620,7 +861,7 @@ export default function DiarioCoyoacan() {
                 color: WINE,
               }}
             >
-              {currentArticle.category}
+              {safeArticle?.category}
             </span>
             <h2
               style={{
@@ -659,7 +900,6 @@ export default function DiarioCoyoacan() {
               Por la Redacción del Diario Coyoacán &bull; {dateFormatted}
             </p>
           </div>
-
           {/* Imagen hero */}
           <div style={{ position: 'relative', marginBottom: '1.75rem' }}>
             <div
@@ -672,8 +912,8 @@ export default function DiarioCoyoacan() {
               }}
             />
             <img
-              src={currentArticle.heroImage}
-              alt={`Fotografía editorial: ${currentArticle.title}`}
+              src={safeArticle?.heroImage}
+              alt={`Fotografía editorial: ${safeArticle?.title}`}
               style={{
                 position: 'relative',
                 width: '100%',
@@ -702,10 +942,9 @@ export default function DiarioCoyoacan() {
                 zIndex: 2,
               }}
             >
-              {currentArticle.category}
+              {safeArticle?.category}
             </div>
           </div>
-
           {/* Primer párrafo con LETRA CAPITAL */}
           {firstParagraph && (
             <p
@@ -735,7 +974,6 @@ export default function DiarioCoyoacan() {
               {firstParagraph.substring(1)}
             </p>
           )}
-
           {/* Párrafos 2 y 3 */}
           {beforePullQuote.map((p, i) => (
             <p
@@ -751,7 +989,6 @@ export default function DiarioCoyoacan() {
               {p}
             </p>
           ))}
-
           {/* PULL QUOTE con líneas dobles */}
           {pullQuote && (
             <blockquote
@@ -778,7 +1015,6 @@ export default function DiarioCoyoacan() {
               </p>
             </blockquote>
           )}
-
           {/* Párrafos restantes */}
           {afterPullQuote.map((p, i) => (
             <p
@@ -794,7 +1030,28 @@ export default function DiarioCoyoacan() {
               {p}
             </p>
           ))}
-
+          {/* Botón volver a portada */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <a
+              href="/diario"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                padding: '0.4rem 1rem',
+                backgroundColor: PAPER,
+                color: INK,
+                fontFamily: SANS_SUBHEAD,
+                textTransform: 'uppercase',
+                fontSize: '0.65rem',
+                letterSpacing: '0.1em',
+                textDecoration: 'none',
+                border: `2px solid ${INK}`,
+              }}
+            >
+              ← Volver a Portada
+            </a>
+          </div>
           {/* Botones de compartir */}
           <div
             style={{
@@ -820,7 +1077,7 @@ export default function DiarioCoyoacan() {
               Compartir:
             </span>
             <a
-              href={`https://wa.me/?text=${encodeURIComponent(currentArticle.title + ' ' + shareUrl)}`}
+              href={`https://wa.me/?text=${encodeURIComponent(safeArticle?.title + ' ' + shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -862,7 +1119,7 @@ export default function DiarioCoyoacan() {
               <Facebook size={12} aria-hidden="true" /> Facebook
             </a>
             <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(currentArticle.title)}&url=${encodeURIComponent(shareUrl)}`}
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(safeArticle?.title)}&url=${encodeURIComponent(shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -883,7 +1140,6 @@ export default function DiarioCoyoacan() {
               <Share2 size={12} aria-hidden="true" /> X / Twitter
             </a>
           </div>
-
           {/* ── ANUNCIO DE PRIMERA PLANA ────────────────────────────────── */}
           <div
             style={{
@@ -952,7 +1208,6 @@ export default function DiarioCoyoacan() {
               {ad.cta}
             </a>
           </div>
-
           {/* Newsletter */}
           <div
             style={{
@@ -1029,6 +1284,7 @@ export default function DiarioCoyoacan() {
             </form>
           </div>
         </article>
+        )}
 
         {/* ── COLUMNA DERECHA: NOTAS SECUNDARIAS ────────────────────────── */}
         <aside style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: '2rem' }} className="article-aside">

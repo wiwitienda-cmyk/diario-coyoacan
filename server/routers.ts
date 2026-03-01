@@ -47,6 +47,94 @@ async function fetchIPC(): Promise<IpcData | null> {
   }
 }
 
+// ─── Cache simple de petróleo WTI/Brent (15 minutos) ──────────────────────────
+interface OilData {
+  wti: { price: number; prevClose: number; change: number; changePct: number };
+  brent: { price: number; prevClose: number; change: number; changePct: number };
+  date: string;
+}
+let oilCache: { data: OilData | null; fetchedAt: number } = { data: null, fetchedAt: 0 };
+const OIL_CACHE_TTL_MS = 15 * 60 * 1000;
+
+async function fetchOilPrices(): Promise<OilData | null> {
+  const now = Date.now();
+  if (oilCache.data && now - oilCache.fetchedAt < OIL_CACHE_TTL_MS) return oilCache.data;
+  try {
+    const [wtiRes, brentRes] = await Promise.all([
+      fetch('https://query1.finance.yahoo.com/v8/finance/chart/CL%3DF?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
+      fetch('https://query1.finance.yahoo.com/v8/finance/chart/BZ%3DF?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
+    ]);
+    if (!wtiRes.ok || !brentRes.ok) return null;
+    const [wtiJson, brentJson] = await Promise.all([wtiRes.json(), brentRes.json()]) as [any, any];
+    const wtiMeta = wtiJson.chart.result[0].meta;
+    const brentMeta = brentJson.chart.result[0].meta;
+    const calcChange = (price: number, prev: number) => ({
+      price: Math.round(price * 100) / 100,
+      prevClose: Math.round(prev * 100) / 100,
+      change: Math.round((price - prev) * 100) / 100,
+      changePct: Math.round(((price - prev) / prev) * 10000) / 100,
+    });
+    const result: OilData = {
+      wti: calcChange(wtiMeta.regularMarketPrice, wtiMeta.chartPreviousClose),
+      brent: calcChange(brentMeta.regularMarketPrice, brentMeta.chartPreviousClose),
+      date: new Date().toISOString().split('T')[0],
+    };
+    oilCache = { data: result, fetchedAt: now };
+    return result;
+  } catch {
+    return null;
+  }
+}
+
+// ─── Cache simple de divisas Latam (15 minutos) ─────────────────────────────
+interface LatamRates {
+  ARS_MXN: number;
+  ARS_MXN_prev: number;
+  COP_MXN: number;
+  COP_MXN_prev: number;
+  date: string;
+}
+let latamCache: { data: LatamRates | null; fetchedAt: number } = { data: null, fetchedAt: 0 };
+const LATAM_CACHE_TTL_MS = 15 * 60 * 1000;
+
+async function fetchLatamRates(): Promise<LatamRates | null> {
+  const now = Date.now();
+  if (latamCache.data && now - latamCache.fetchedAt < LATAM_CACHE_TTL_MS) return latamCache.data;
+  try {
+    // Obtener USD/MXN, USD/ARS y USD/COP para calcular cruces
+    const [mxnRes, arsRes, copRes] = await Promise.all([
+      fetch('https://query1.finance.yahoo.com/v8/finance/chart/USDMXN%3DX?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
+      fetch('https://query1.finance.yahoo.com/v8/finance/chart/USDARS%3DX?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
+      fetch('https://query1.finance.yahoo.com/v8/finance/chart/COP%3DX?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
+    ]);
+    if (!mxnRes.ok) return null;
+    const [mxnJson, arsJson, copJson] = await Promise.all([mxnRes.json(), arsRes.json(), copRes.json()]) as [any, any, any];
+    const usdMxn = mxnJson.chart.result[0].meta.regularMarketPrice as number;
+    const usdMxnPrev = mxnJson.chart.result[0].meta.chartPreviousClose as number;
+    // ARS/MXN = USD/MXN ÷ USD/ARS
+    const usdArs = arsJson.chart.result[0].meta.regularMarketPrice as number;
+    const usdArsPrev = arsJson.chart.result[0].meta.chartPreviousClose as number;
+    const arsMxn = Math.round((usdMxn / usdArs) * 10000) / 10000;
+    const arsMxnPrev = Math.round((usdMxnPrev / usdArsPrev) * 10000) / 10000;
+    // COP/MXN = USD/MXN ÷ USD/COP
+    const usdCop = copJson.chart.result[0].meta.regularMarketPrice as number;
+    const usdCopPrev = copJson.chart.result[0].meta.chartPreviousClose as number;
+    const copMxn = Math.round((usdMxn / usdCop) * 100000) / 100000;
+    const copMxnPrev = Math.round((usdMxnPrev / usdCopPrev) * 100000) / 100000;
+    const result: LatamRates = {
+      ARS_MXN: arsMxn,
+      ARS_MXN_prev: arsMxnPrev,
+      COP_MXN: copMxn,
+      COP_MXN_prev: copMxnPrev,
+      date: new Date().toISOString().split('T')[0],
+    };
+    latamCache = { data: result, fetchedAt: now };
+    return result;
+  } catch {
+    return null;
+  }
+}
+
 // ─── Cache simple de divisas (10 minutos) ───────────────────────────────────
 let exchangeRateCache: {
   data: ExchangeRates | null;
@@ -153,6 +241,12 @@ export const appRouter = router({
     }),
     ipc: publicProcedure.query(async () => {
       return await fetchIPC();
+    }),
+    oil: publicProcedure.query(async () => {
+      return await fetchOilPrices();
+    }),
+    latam: publicProcedure.query(async () => {
+      return await fetchLatamRates();
     }),
   }),
 
