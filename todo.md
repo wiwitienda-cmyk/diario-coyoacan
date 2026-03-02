@@ -464,3 +464,8 @@
 - [x] Diagnosticar dónde se duplica la meta description en el HTML generado
 - [x] Eliminar la etiqueta meta description redundante (removidos del index.html: description, og:description, og:type, og:site_name, og:locale, og:url, og:title, twitter:card, twitter:site, canonical, hreflang)
 - [x] Verificar que solo exista una meta description en el HTML final (confirmado: 1 de cada tipo)
+
+## SEO: Agregar meta tags a páginas sin Helmet
+- [x] Agregar Helmet con meta description completa a /noticias (Noticias.tsx) - description, keywords, og:*, twitter:*, canonical, ld+json
+- [x] Agregar Helmet con meta description completa a /hemeroteca (Hemeroteca.tsx) - expandido con og:*, twitter:*, canonical, hreflang, keywords
+- [x] Verificar Home.tsx y HospedajeMundial2026.tsx tienen description completa - OK
