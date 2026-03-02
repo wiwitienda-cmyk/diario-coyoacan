@@ -305,6 +305,7 @@ export default function DiarioCoyoacan() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: PAPER, color: INK }}>
       <Helmet>
+        {/* title y description son únicos por artículo - no los inyecta Manus */}
         <title>{seoTitle} | Diario Coyoacán</title>
         <meta name="description" content={displaySummary} />
         <meta
@@ -312,22 +313,7 @@ export default function DiarioCoyoacan() {
           content={`Coyoacán, ${safeArticle?.category}, qué hacer en Coyoacán, hospedaje Coyoacán, nómadas digitales CDMX, Mundial 2026 CDMX, Diario Coyoacán`}
         />
         <meta name="author" content="Diario Coyoacán" />
-        <link rel="canonical" href={shareUrl} />
-        <link rel="alternate" hrefLang="es-MX" href={shareUrl} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={shareUrl} />
-        <meta property="og:title" content={safeArticle?.title} />
-        <meta property="og:description" content={displaySummary} />
-        <meta property="og:image" content={safeArticle?.heroImage} />
-        <meta property="og:image:alt" content={`Fotografía editorial: ${safeArticle?.title}`} />
-        <meta property="og:site_name" content="Diario Coyoacán" />
-        <meta property="og:locale" content="es_MX" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={shareUrl} />
-        <meta name="twitter:title" content={safeArticle?.title} />
-        <meta name="twitter:description" content={displaySummary} />
-        <meta name="twitter:image" content={safeArticle?.heroImage} />
-        <meta name="twitter:site" content="@DiarioCoyoacan" />
+        {/* ld+json Schema.org - único, no lo inyecta Manus */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',

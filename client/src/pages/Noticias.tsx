@@ -34,22 +34,12 @@ export default function Noticias() {
   return (
     <div className="min-h-screen bg-newsprint text-ink font-body selection:bg-rust selection:text-white">
       <Helmet>
+        {/* Solo title, description, keywords, author y ld+json - og:* y twitter:* los inyecta Manus */}
         <title>Noticias de Coyoacán | Diario Coyoacán</title>
         <meta name="description" content="Todas las noticias de Coyoacán: cultura, gastronomía, gobierno local, comunidad y hospedaje. El periódico digital del corazón de la Ciudad de México." />
         <meta name="keywords" content="noticias Coyoacán, periódico Coyoacán, cultura CDMX, gastronomía Coyoacán, hospedaje Coyoacán, SúperAnfitrión, Diario Coyoacán" />
         <meta name="author" content="Diario Coyoacán" />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://diario.superanfitrion.com.mx/noticias" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://diario.superanfitrion.com.mx/noticias" />
-        <meta property="og:title" content="Noticias de Coyoacán | Diario Coyoacán" />
-        <meta property="og:description" content="Todas las noticias de Coyoacán: cultura, gastronomía, gobierno local, comunidad y hospedaje. El periódico digital del corazón de la Ciudad de México." />
-        <meta property="og:site_name" content="Diario Coyoacán" />
-        <meta property="og:locale" content="es_MX" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@DiarioCoyoacan" />
-        <meta name="twitter:title" content="Noticias de Coyoacán | Diario Coyoacán" />
-        <meta name="twitter:description" content="Todas las noticias de Coyoacán: cultura, gastronomía, gobierno local, comunidad y hospedaje. El periódico digital del corazón de la Ciudad de México." />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',

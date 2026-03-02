@@ -473,3 +473,8 @@
 ## SEO: Correcciones de título y H2 en página principal (/)
 - [x] Acortar el título de la página principal a 30-60 caracteres: seoTitle (42 max) + ' | Diario Coyoacán' = 58-60 total
 - [x] Acortar el H2 principal a 80 caracteres o menos: displayTitle truncado a 78 chars máximo
+
+## SEO: Correcciones Bing Webmaster Tools (3 problemas)
+- [ ] Error: Eliminar meta description duplicada (2 instancias) en index.html vs Helmet
+- [ ] Aviso: Agregar atributo alt a 5 imágenes sin texto alternativo
+- [ ] Aviso: Eliminar etiqueta canónica duplicada (3 instancias)
