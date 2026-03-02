@@ -340,12 +340,8 @@ export default function DiarioCoyoacan() {
               width: 1200,
               height: 630,
             }] : undefined,
-            datePublished: safeArticle?.date
-              ? new Date(safeArticle.date + 'T12:00:00Z').toISOString()
-              : new Date().toISOString(),
-            dateModified: safeArticle?.date
-              ? new Date(safeArticle.date + 'T12:00:00Z').toISOString()
-              : new Date().toISOString(),
+            datePublished: (() => { try { if (safeArticle?.date && /^\d{4}-\d{2}-\d{2}$/.test(safeArticle.date)) return new Date(safeArticle.date + 'T12:00:00Z').toISOString(); } catch {} return new Date().toISOString(); })(),
+            dateModified: (() => { try { if (safeArticle?.date && /^\d{4}-\d{2}-\d{2}$/.test(safeArticle.date)) return new Date(safeArticle.date + 'T12:00:00Z').toISOString(); } catch {} return new Date().toISOString(); })(),
             author: [{
               '@type': 'Organization',
               name: 'Diario Coyoacán',
