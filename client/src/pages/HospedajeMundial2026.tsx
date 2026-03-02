@@ -50,21 +50,53 @@ export default function HospedajeMundial2026() {
             "@context": "https://schema.org",
             "@type": "LodgingBusiness",
             "name": "SúperAnfitrión Coyoacán",
-            "description": "Hospedaje verificado en Coyoacán para el Mundial 2026",
+            "description": "Hospedaje verificado en Coyoacán para el Mundial de Fútbol 2026. Propiedades auténticas a 20 minutos del Estadio Azteca.",
+            "url": "https://diario.superanfitrion.com.mx/hospedaje-mundial-2026",
+            "sameAs": [
+              "https://superanfitrion.com.mx",
+              "https://superanfitrioncoyoacan.lodgify.com"
+            ],
             "address": {
               "@type": "PostalAddress",
               "addressLocality": "Coyoacán",
-              "addressRegion": "CDMX",
-              "addressCountry": "MX"
+              "addressRegion": "Ciudad de México",
+              "addressCountry": "MX",
+              "postalCode": "04000"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 19.3500,
+              "longitude": -99.1620
             },
             "telephone": "+52-55-1142-7252",
             "email": "superanfitrioncoyoacan@gmail.com",
-            "url": "https://diario-coyo.manus.space/hospedaje-mundial-2026",
             "priceRange": "$$",
+            "currenciesAccepted": "MXN, USD",
+            "paymentAccepted": "Cash, Credit Card",
+            "checkinTime": "15:00",
+            "checkoutTime": "11:00",
+            "amenityFeature": [
+              { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
+              { "@type": "LocationFeatureSpecification", "name": "Self check-in", "value": true }
+            ],
             "aggregateRating": {
               "@type": "AggregateRating",
               "ratingValue": "4.9",
-              "reviewCount": "127"
+              "reviewCount": "127",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "event": {
+              "@type": "SportsEvent",
+              "name": "FIFA World Cup 2026",
+              "startDate": "2026-06-11",
+              "endDate": "2026-07-19",
+              "location": {
+                "@type": "Place",
+                "name": "Estadio Azteca",
+                "address": "Ciudad de México, México"
+              }
             }
           })}
         </script>

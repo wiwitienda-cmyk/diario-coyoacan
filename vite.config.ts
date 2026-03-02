@@ -167,33 +167,36 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    // Minificación agresiva
+    minify: 'esbuild',
+    target: 'es2020',
+    // CSS inline para chunks pequeños
+    cssCodeSplit: true,
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Separar vendors grandes
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
               return 'react-vendor';
             }
-            if (id.includes('leaflet') || id.includes('react-leaflet')) {
-              return 'map-vendor';
-            }
             if (id.includes('@radix-ui')) {
               return 'ui-vendor';
-            }
-            if (id.includes('lucide-react')) {
-              return 'icons';
             }
             if (id.includes('@trpc') || id.includes('@tanstack')) {
               return 'trpc-vendor';
             }
-            // Otros node_modules en un chunk separado
             return 'vendor';
           }
         },
+        // Nombres de chunks con hash para cache busting
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
     chunkSizeWarningLimit: 600,
+    // Reportar tamaño comprimido
+    reportCompressedSize: true,
   },
   server: {
     host: true,

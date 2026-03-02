@@ -33,6 +33,53 @@ export default function Home() {
         <meta name="twitter:description" content="Descubre los mejores lugares de Coyoacán, CDMX. Noticias diarias, cultura, gastronomía y recomendaciones locales." />
         {/* Canonical */}
         <link rel="canonical" href="https://diario.superanfitrion.com.mx/" />
+        {/* hreflang */}
+        <link rel="alternate" hrefLang="es-mx" href="https://diario.superanfitrion.com.mx/" />
+        <link rel="alternate" hrefLang="en" href="https://diario.superanfitrion.com.mx/en" />
+        <link rel="alternate" hrefLang="x-default" href="https://diario.superanfitrion.com.mx/" />
+        {/* Schema.org WebSite + Organization */}
+        <script type="application/ld+json">
+          {JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Diario Coyoacán",
+              "url": "https://diario.superanfitrion.com.mx",
+              "description": "Noticias diarias, cultura, gastronomía y recomendaciones locales de Coyoacán, Ciudad de México.",
+              "inLanguage": "es-MX",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://diario.superanfitrion.com.mx/noticias?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+              }
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "NewsMediaOrganization",
+              "name": "Diario Coyoacán",
+              "url": "https://diario.superanfitrion.com.mx",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://diario.superanfitrion.com.mx/logo-diario.png",
+                "width": 600,
+                "height": 60
+              },
+              "sameAs": [
+                "https://superanfitrion.com.mx",
+                "https://www.facebook.com/superanfitrioncoyoacan",
+                "https://www.instagram.com/superanfitrioncoyoacan"
+              ],
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Coyoacán",
+                "addressRegion": "Ciudad de México",
+                "addressCountry": "MX"
+              },
+              "foundingDate": "2026",
+              "publishingPrinciples": "https://diario.superanfitrion.com.mx/"
+            }
+          ])}
+        </script>
       </Helmet>
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ink mx-auto"></div>

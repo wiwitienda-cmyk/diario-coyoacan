@@ -327,29 +327,59 @@ export default function DiarioCoyoacan() {
         {safeArticle?.heroImage && <meta name="twitter:image" content={safeArticle.heroImage} />}
         {/* Canonical */}
         <link rel="canonical" href={shareUrl} />
-        {/* ld+json Schema.org - único, no lo inyecta Manus */}
+        {/* ld+json Schema.org - NewsArticle completo para Google News */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'NewsArticle',
-            headline: displayTitle,
-            description: displaySummary,
-            image: { '@type': 'ImageObject', url: safeArticle?.heroImage },
-            datePublished: safeArticle?.date,
-            author: {
+            headline: (displayTitle || '').substring(0, 110),
+            description: (displaySummary || '').substring(0, 300),
+            image: safeArticle?.heroImage ? [{
+              '@type': 'ImageObject',
+              url: safeArticle.heroImage,
+              width: 1200,
+              height: 630,
+            }] : undefined,
+            datePublished: safeArticle?.date
+              ? new Date(safeArticle.date + 'T12:00:00Z').toISOString()
+              : new Date().toISOString(),
+            dateModified: safeArticle?.date
+              ? new Date(safeArticle.date + 'T12:00:00Z').toISOString()
+              : new Date().toISOString(),
+            author: [{
               '@type': 'Organization',
               name: 'Diario Coyoacán',
               url: 'https://diario.superanfitrion.com.mx',
-            },
+            }],
             publisher: {
-              '@type': 'Organization',
-              name: 'SúperAnfitrión Coyoacán',
-              url: 'https://superanfitrion.com.mx',
-              logo: { '@type': 'ImageObject', url: 'https://superanfitrion.com.mx/logo.png' },
+              '@type': 'NewsMediaOrganization',
+              name: 'Diario Coyoacán',
+              url: 'https://diario.superanfitrion.com.mx',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://diario.superanfitrion.com.mx/logo-diario.png',
+                width: 600,
+                height: 60,
+              },
             },
-            mainEntityOfPage: { '@type': 'WebPage', '@id': shareUrl },
-            articleSection: safeArticle?.category,
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': shareUrl,
+            },
+            articleSection: safeArticle?.category || 'Noticias',
             inLanguage: 'es-MX',
+            isAccessibleForFree: true,
+            keywords: `Coyoacán, CDMX, ${safeArticle?.category || 'noticias'}, hospedaje Coyoacán, SúperAnfitrión`,
+            about: {
+              '@type': 'Place',
+              name: 'Coyoacán',
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Coyoacán',
+                addressRegion: 'Ciudad de México',
+                addressCountry: 'MX',
+              },
+            },
           })}
         </script>
       </Helmet>

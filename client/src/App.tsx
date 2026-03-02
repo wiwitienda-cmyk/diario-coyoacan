@@ -8,7 +8,8 @@ import DiarioCoyoacan from "./pages/DiarioCoyoacan";
 import Hemeroteca from "./pages/Hemeroteca";
 import Noticias from "./pages/Noticias";
 import AdminNewsletter from "./pages/AdminNewsletter";
-import HospedajeMundial2026 from "./pages/HospedajeMundial2026";
+import HospedajeMundial2026 from './pages/HospedajeMundial2026';
+import WorldCup2026En from './pages/WorldCup2026En';
 import { HelmetProvider } from 'react-helmet-async';
 
 function Router() {
@@ -20,6 +21,8 @@ function Router() {
       <Route path={"/archivo"} component={Hemeroteca} />
       <Route path={"/noticias"} component={Noticias} />
       <Route path={"/hospedaje-mundial-2026"} component={HospedajeMundial2026} />
+      <Route path={"/en"} component={WorldCup2026En} />
+      <Route path={"/world-cup-2026"} component={WorldCup2026En} />
       <Route path={"/admin/newsletter"} component={AdminNewsletter} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />

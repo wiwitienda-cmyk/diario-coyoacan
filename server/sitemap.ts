@@ -2,27 +2,10 @@ import { getDb } from './db';
 import { articles, newsArticles } from '../drizzle/schema';
 import { desc } from 'drizzle-orm';
 
-function generateEmptySitemap(): string {
-  const baseUrl = 'https://diario-coyo.manus.space';
-  const today = new Date().toISOString().split('T')[0];
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${baseUrl}/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-    <lastmod>${today}</lastmod>
-  </url>
-  <url>
-    <loc>${baseUrl}/diario</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <lastmod>${today}</lastmod>
-  </url>
-</urlset>`;
-}
+const BASE_URL = 'https://diario.superanfitrion.com.mx';
 
 function escapeXml(unsafe: string): string {
+  if (!unsafe) return '';
   return unsafe
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -31,18 +14,34 @@ function escapeXml(unsafe: string): string {
     .replace(/'/g, '&apos;');
 }
 
+function generateEmptySitemap(): string {
+  const today = new Date().toISOString().split('T')[0];
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>${BASE_URL}/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <lastmod>${today}</lastmod>
+    <xhtml:link rel="alternate" hreflang="es-mx" href="${BASE_URL}/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/"/>
+  </url>
+  <url>
+    <loc>${BASE_URL}/diario</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <lastmod>${today}</lastmod>
+  </url>
+</urlset>`;
+}
+
 export async function generateSitemap(): Promise<string> {
   try {
-    // Fetch all articles from database
     const db = await getDb();
-    if (!db) {
-      console.warn('[Sitemap] Database not available');
-      return generateEmptySitemap();
-    }
-    
-    console.log('[Sitemap] Fetching articles from database...');
-    
-    // Fetch from articles table (Café Avellaneda style)
+    if (!db) return generateEmptySitemap();
+
     const articlesData = await db
       .select({
         slug: articles.slug,
@@ -55,8 +54,7 @@ export async function generateSitemap(): Promise<string> {
       })
       .from(articles)
       .orderBy(desc(articles.createdAt));
-    
-    // Fetch from newsArticles table (news style)
+
     const newsData = await db
       .select({
         slug: newsArticles.slug,
@@ -69,85 +67,170 @@ export async function generateSitemap(): Promise<string> {
       })
       .from(newsArticles)
       .orderBy(desc(newsArticles.createdAt));
-    
-    // Combine both arrays
+
     const allArticles = [...articlesData, ...newsData];
-    console.log(`[Sitemap] Found ${articlesData.length} articles and ${newsData.length} news articles`);
-    
-    if (allArticles.length === 0) {
-      console.warn('[Sitemap] No articles found, returning empty sitemap');
-      return generateEmptySitemap();
-    }
-  const baseUrl = 'https://diario-coyo.manus.space';
-  const today = new Date().toISOString().split('T')[0];
-  
-  const articleUrls = allArticles.map((article) => {
-    const lastmod = article.dateISO || today;
-    return `
+    const today = new Date().toISOString().split('T')[0];
+
+    const articleUrls = allArticles
+      .filter(a => a.slug)
+      .map((article) => {
+        const lastmod = article.dateISO || today;
+        const imageTag = article.heroImage
+          ? `
+    <image:image>
+      <image:loc>${escapeXml(article.heroImage)}</image:loc>
+      <image:title>${escapeXml(article.headlineEs)}</image:title>
+      <image:caption>${escapeXml((article.summaryEs || '').substring(0, 200))}</image:caption>
+    </image:image>`
+          : '';
+        return `
   <url>
-    <loc>${baseUrl}/diario?slug=${encodeURIComponent(article.slug)}</loc>
+    <loc>${BASE_URL}/diario?slug=${encodeURIComponent(article.slug)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>${imageTag}
+  </url>`;
+      })
+      .join('');
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Página principal -->
+  <url>
+    <loc>${BASE_URL}/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <lastmod>${today}</lastmod>
+    <xhtml:link rel="alternate" hreflang="es-mx" href="${BASE_URL}/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/"/>
+  </url>
+
+  <!-- Diario Coyoacán (primera plana) -->
+  <url>
+    <loc>${BASE_URL}/diario</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <lastmod>${today}</lastmod>
+    <xhtml:link rel="alternate" hreflang="es-mx" href="${BASE_URL}/diario"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/diario"/>
+  </url>
+
+  <!-- Hospedaje Mundial 2026 (SEO prioritario) -->
+  <url>
+    <loc>${BASE_URL}/hospedaje-mundial-2026</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <lastmod>${today}</lastmod>
+    <xhtml:link rel="alternate" hreflang="es-mx" href="${BASE_URL}/hospedaje-mundial-2026"/>
+    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}/en/world-cup-2026-accommodation"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/hospedaje-mundial-2026"/>
+  </url>
+
+  <!-- English page - World Cup 2026 -->
+  <url>
+    <loc>${BASE_URL}/en</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <lastmod>${today}</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}/en"/>
+    <xhtml:link rel="alternate" hreflang="es-mx" href="${BASE_URL}/hospedaje-mundial-2026"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/en"/>
+  </url>
+
+  <!-- Noticias -->
+  <url>
+    <loc>${BASE_URL}/noticias</loc>
+    <changefreq>daily</changefreq>
     <priority>0.8</priority>
+    <lastmod>${today}</lastmod>
+  </url>
+
+  <!-- Hemeroteca -->
+  <url>
+    <loc>${BASE_URL}/hemeroteca</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <lastmod>${today}</lastmod>
+  </url>
+
+  <!-- Artículos individuales con imágenes -->${articleUrls}
+
+</urlset>`;
+  } catch (error) {
+    console.error('[Sitemap] Error:', error);
+    return generateEmptySitemap();
+  }
+}
+
+/** Sitemap de Google News - solo artículos recientes */
+export async function generateNewsSitemap(): Promise<string> {
+  try {
+    const db = await getDb();
+    if (!db) {
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+</urlset>`;
+    }
+
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+    const twoDaysAgoISO = twoDaysAgo.toISOString().split('T')[0];
+
+    const newsData = await db
+      .select({
+        slug: newsArticles.slug,
+        title: newsArticles.title,
+        summary: newsArticles.summary,
+        heroImage: newsArticles.heroImage,
+        category: newsArticles.category,
+        date: newsArticles.date,
+      })
+      .from(newsArticles)
+      .orderBy(desc(newsArticles.createdAt));
+
+    const recentNews = newsData
+      .filter(a => a.date && /^\d{4}-\d{2}-\d{2}$/.test(a.date) && a.date >= twoDaysAgoISO)
+      .slice(0, 1000);
+
+    const newsUrls = recentNews
+      .filter(a => a.slug && a.title)
+      .map(article => {
+        let pubDate = new Date().toISOString();
+        try {
+          if (article.date && /^\d{4}-\d{2}-\d{2}$/.test(article.date)) {
+            pubDate = new Date(article.date + 'T12:00:00Z').toISOString();
+          }
+        } catch { /* use default */ }
+        return `
+  <url>
+    <loc>${BASE_URL}/diario?slug=${encodeURIComponent(article.slug)}</loc>
     <news:news>
       <news:publication>
         <news:name>Diario Coyoacán</news:name>
         <news:language>es</news:language>
       </news:publication>
-      <news:publication_date>${lastmod}</news:publication_date>
-      <news:title>${escapeXml(article.headlineEs)}</news:title>
-      <news:keywords>Coyoacán, CDMX, Mundial 2026, hospedaje, ${article.categoryEs}</news:keywords>
+      <news:publication_date>${pubDate}</news:publication_date>
+      <news:title>${escapeXml(article.title)}</news:title>
+      <news:keywords>Coyoacán, CDMX, ${escapeXml(article.category || 'noticias')}, hospedaje, México</news:keywords>
     </news:news>
-    <image:image>
-      <image:loc>${article.heroImage}</image:loc>
-      <image:title>${escapeXml(article.headlineEs)}</image:title>
-      <image:caption>${escapeXml(article.summaryEs)}</image:caption>
-    </image:image>
   </url>`;
-  }).join('');
+      })
+      .join('');
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  
-  <!-- Página principal -->
-  <url>
-    <loc>${baseUrl}/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-    <lastmod>${today}</lastmod>
-  </url>
-  
-  <!-- Diario Coyoacán (primera plana) -->
-  <url>
-    <loc>${baseUrl}/diario</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <lastmod>${today}</lastmod>
-  </url>
-  
-  <!-- Landing page Mundial 2026 (SEO prioritario) -->
-  <url>
-    <loc>${baseUrl}/hospedaje-mundial-2026</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  
-  <!-- Hemeroteca -->
-  <url>
-    <loc>${baseUrl}/hemeroteca</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- Artículos individuales con schema de noticias e imágenes -->${articleUrls}
-  
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">${newsUrls}
 </urlset>`;
-
-  return sitemap;
   } catch (error) {
-    console.error('[Sitemap] Error generating sitemap:', error);
-    return generateEmptySitemap();
+    console.error('[NewsSitemap] Error:', error);
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+</urlset>`;
   }
 }
