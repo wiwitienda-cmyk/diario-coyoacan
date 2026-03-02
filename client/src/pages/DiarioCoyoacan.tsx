@@ -286,10 +286,16 @@ export default function DiarioCoyoacan() {
   const beforePullQuote = restParagraphs.slice(0, 2);
   const afterPullQuote = restParagraphs.slice(2);
 
-  // Título truncado para H2 (≤80 chars)
-  const displayTitle = (safeArticle?.title ?? '').length > 80
-      ? (safeArticle?.title ?? '').substring(0, 77) + '…'
-      : (safeArticle?.title ?? '');
+  // Título para <title> SEO: máximo 42 chars + " | Diario Coyoacán" (18) = 60 total
+  const rawTitle = safeArticle?.title ?? '';
+  const seoTitle = rawTitle.length > 42
+      ? rawTitle.substring(0, 39) + '…'
+      : rawTitle;
+
+  // Título visible en H2 (≤78 chars para dejar margen)
+  const displayTitle = rawTitle.length > 78
+      ? rawTitle.substring(0, 75) + '…'
+      : rawTitle;
 
   // Summary truncado (≤160 chars)
   const displaySummary = (safeArticle?.summary ?? '').length > 160
@@ -299,7 +305,7 @@ export default function DiarioCoyoacan() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: PAPER, color: INK }}>
       <Helmet>
-        <title>{displayTitle} | Diario Coyoacán</title>
+        <title>{seoTitle} | Diario Coyoacán</title>
         <meta name="description" content={displaySummary} />
         <meta
           name="keywords"

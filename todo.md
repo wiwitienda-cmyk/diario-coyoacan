@@ -469,3 +469,7 @@
 - [x] Agregar Helmet con meta description completa a /noticias (Noticias.tsx) - description, keywords, og:*, twitter:*, canonical, ld+json
 - [x] Agregar Helmet con meta description completa a /hemeroteca (Hemeroteca.tsx) - expandido con og:*, twitter:*, canonical, hreflang, keywords
 - [x] Verificar Home.tsx y HospedajeMundial2026.tsx tienen description completa - OK
+
+## SEO: Correcciones de título y H2 en página principal (/)
+- [x] Acortar el título de la página principal a 30-60 caracteres: seoTitle (42 max) + ' | Diario Coyoacán' = 58-60 total
+- [x] Acortar el H2 principal a 80 caracteres o menos: displayTitle truncado a 78 chars máximo
