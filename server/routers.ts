@@ -323,15 +323,40 @@ export const appRouter = router({
 
   articles: router({
     list: publicProcedure.query(async () => {
-      return await getAllArticles();
+      const rows = await getAllArticles();
+      return rows.map(a => ({
+        ...a,
+        title: a.headlineEs,
+        summary: a.summaryEs,
+        date: a.dateISO,
+        category: a.categoryEs,
+      }));
     }),
     latest: publicProcedure.query(async () => {
-      return await getLatestArticle();
+      const a = await getLatestArticle();
+      if (!a) return null;
+      return {
+        ...a,
+        title: a.headlineEs,
+        summary: a.summaryEs,
+        date: a.dateISO,
+        category: a.categoryEs,
+        content: a.contentEs,
+      };
     }),
     bySlug: publicProcedure
       .input(z.object({ slug: z.string() }))
       .query(async ({ input }) => {
-        return await getArticleBySlug(input.slug);
+        const a = await getArticleBySlug(input.slug);
+        if (!a) return null;
+        return {
+          ...a,
+          title: a.headlineEs,
+          summary: a.summaryEs,
+          date: a.dateISO,
+          category: a.categoryEs,
+          content: a.contentEs,
+        };
       }),
   }),
   

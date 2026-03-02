@@ -193,9 +193,27 @@ export async function generateNewsSitemap(): Promise<string> {
       .from(newsArticles)
       .orderBy(desc(newsArticles.createdAt));
 
-    const recentNews = newsData
+    // También incluir artículos de la tabla principal (articles)
+    const mainArticlesData = await db
+      .select({
+        slug: articles.slug,
+        title: articles.headlineEs,
+        summary: articles.summaryEs,
+        heroImage: articles.heroImage,
+        category: articles.categoryEs,
+        date: articles.dateISO,
+      })
+      .from(articles)
+      .orderBy(desc(articles.createdAt));
+
+    const allNewsData = [
+      ...mainArticlesData,
+      ...newsData,
+    ];
+
+    const recentNews = allNewsData
       .filter(a => a.date && /^\d{4}-\d{2}-\d{2}$/.test(a.date) && a.date >= twoDaysAgoISO)
-      .slice(0, 1000);
+      .slice(0, 1000);;
 
     const newsUrls = recentNews
       .filter(a => a.slug && a.title)
