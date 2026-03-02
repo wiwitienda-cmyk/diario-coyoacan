@@ -31,19 +31,19 @@ export default function HospedajeMundial2026() {
         <title>Hospedaje en Coyoacán para el Mundial 2026 | SúperAnfitrión</title>
         <meta name="description" content="Hospédate en el corazón de Coyoacán para el Mundial de Fútbol 2026. Propiedades verificadas, cerca del Estadio Azteca, transporte directo. ¡Reserva ahora y asegura tu lugar!" />
         <meta name="keywords" content="hospedaje mundial 2026, alojamiento mundial 2026 méxico, donde hospedarse mundial 2026 cdmx, airbnb coyoacán mundial 2026, hoteles cerca estadio azteca, hospedaje coyoacán, alojamiento coyoacán" />
-        
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Hospedaje en Coyoacán para el Mundial 2026" />
-        <meta property="og:description" content="Propiedades verificadas en el corazón de Coyoacán. Cerca del Estadio Azteca, transporte directo, WiFi de alta velocidad. ¡Reserva ahora!" />
-        <meta property="og:url" content="https://diario-coyo.manus.space/hospedaje-mundial-2026" />
-        <meta property="og:image" content="https://superanfitrion.com.mx/images/coyoacan-hero.jpg" />
-        
-        {/* Twitter Cards */}
+        <meta property="og:url" content="https://diario.superanfitrion.com.mx/hospedaje-mundial-2026" />
+        <meta property="og:title" content="Hospedaje en Coyoacán para el Mundial 2026 | SúperAnfitrión" />
+        <meta property="og:description" content="Hospédate en el corazón de Coyoacán para el Mundial de Fútbol 2026. Propiedades verificadas, cerca del Estadio Azteca, transporte directo." />
+        <meta property="og:site_name" content="Diario Coyoacán" />
+        <meta property="og:locale" content="es_MX" />
+        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Hospedaje en Coyoacán para el Mundial 2026" />
-        <meta name="twitter:description" content="Propiedades verificadas en Coyoacán. Cerca del Estadio Azteca. ¡Reserva ahora!" />
-        
+        <meta name="twitter:title" content="Hospedaje en Coyoacán para el Mundial 2026 | SúperAnfitrión" />
+        <meta name="twitter:description" content="Hospédate en el corazón de Coyoacán para el Mundial de Fútbol 2026. Propiedades verificadas, cerca del Estadio Azteca, transporte directo." />
+        {/* Canonical */}
+        <link rel="canonical" href="https://diario.superanfitrion.com.mx/hospedaje-mundial-2026" />
         {/* Schema.org LocalBusiness */}
         <script type="application/ld+json">
           {JSON.stringify({
@@ -79,7 +79,7 @@ export default function HospedajeMundial2026() {
               SA
             </div>
             <div>
-              <h1 className="font-headline text-xl text-ink leading-none">SúperAnfitrión</h1>
+              <p className="font-headline text-xl text-ink leading-none">SúperAnfitrión</p>
               <p className="text-xs text-gray-600 font-subhead uppercase tracking-wider">Coyoacán</p>
             </div>
           </a>

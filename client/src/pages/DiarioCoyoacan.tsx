@@ -221,9 +221,9 @@ export default function DiarioCoyoacan() {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: PAPER, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center' }}>
-          <h1 style={{ fontFamily: GOTHIC, fontSize: '4rem', color: INK, marginBottom: '1rem' }}>
+          <p style={{ fontFamily: GOTHIC, fontSize: '4rem', color: INK, marginBottom: '1rem' }}>
             Diario Coyoacán
-          </h1>
+          </p>
           <p style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', letterSpacing: '0.15em', color: WINE, fontSize: '0.85rem' }}>
             Cargando edición…
           </p>
@@ -238,9 +238,9 @@ export default function DiarioCoyoacan() {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: PAPER, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center', maxWidth: '480px', padding: '0 1rem' }}>
-          <h1 style={{ fontFamily: GOTHIC, fontSize: '4rem', color: INK, marginBottom: '1rem' }}>
+          <p style={{ fontFamily: GOTHIC, fontSize: '4rem', color: INK, marginBottom: '1rem' }}>
             Diario Coyoacán
-          </h1>
+          </p>
           <p style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', letterSpacing: '0.15em', color: WINE, marginBottom: '2rem', fontSize: '0.85rem' }}>
             La edición de hoy está en preparación
           </p>
@@ -305,7 +305,6 @@ export default function DiarioCoyoacan() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: PAPER, color: INK }}>
       <Helmet>
-        {/* title y description son únicos por artículo - no los inyecta Manus */}
         <title>{seoTitle} | Diario Coyoacán</title>
         <meta name="description" content={displaySummary} />
         <meta
@@ -313,6 +312,21 @@ export default function DiarioCoyoacan() {
           content={`Coyoacán, ${safeArticle?.category}, qué hacer en Coyoacán, hospedaje Coyoacán, nómadas digitales CDMX, Mundial 2026 CDMX, Diario Coyoacán`}
         />
         <meta name="author" content="Diario Coyoacán" />
+        {/* Open Graph - sobreescribe los que inyecta la plataforma */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={shareUrl} />
+        <meta property="og:title" content={`${seoTitle} | Diario Coyoacán`} />
+        <meta property="og:description" content={displaySummary} />
+        <meta property="og:site_name" content="Diario Coyoacán" />
+        <meta property="og:locale" content="es_MX" />
+        {safeArticle?.heroImage && <meta property="og:image" content={safeArticle.heroImage} />}
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${seoTitle} | Diario Coyoacán`} />
+        <meta name="twitter:description" content={displaySummary} />
+        {safeArticle?.heroImage && <meta name="twitter:image" content={safeArticle.heroImage} />}
+        {/* Canonical */}
+        <link rel="canonical" href={shareUrl} />
         {/* ld+json Schema.org - único, no lo inyecta Manus */}
         <script type="application/ld+json">
           {JSON.stringify({

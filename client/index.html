@@ -5,10 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- SEO Base (fallback para crawlers sin JS) -->
-    <!-- Nota: title, description, og:* y twitter:* son manejados dinámicamente
-         por react-helmet-async en cada página. Solo se mantienen aquí los
-         meta tags que NO se duplican en el componente React. -->
+    <!-- SEO Base -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     
     <!-- Search Engine Verification -->
@@ -25,6 +22,26 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
+
+    <!--
+      Script de limpieza: elimina los meta tags que la plataforma inyecta
+      estáticamente (og:*, twitter:*, canonical, description) ANTES de que
+      React monte, para que react-helmet-async los inyecte correctamente
+      sin duplicados. Esto resuelve los errores de Bing Webmaster Tools.
+    -->
+    <script>
+      (function() {
+        var head = document.head;
+        // Eliminar og:* y twitter:* inyectados por la plataforma
+        var metasToRemove = head.querySelectorAll(
+          'meta[property^="og:"], meta[name^="twitter:"], meta[name="description"]'
+        );
+        metasToRemove.forEach(function(el) { el.parentNode.removeChild(el); });
+        // Eliminar canonical inyectado por la plataforma
+        var canonicals = head.querySelectorAll('link[rel="canonical"]');
+        canonicals.forEach(function(el) { el.parentNode.removeChild(el); });
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

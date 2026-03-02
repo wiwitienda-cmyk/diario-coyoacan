@@ -38,7 +38,6 @@ export default function Hemeroteca() {
   return (
     <div className="min-h-screen bg-newsprint text-ink font-body">
       <Helmet>
-        {/* Solo title, description, keywords y author - og:* y twitter:* los inyecta Manus */}
         <title>{lang === 'es' ? 'Hemeroteca | Diario Coyoacán' : 'Archive | Diario Coyoacán'}</title>
         <meta name="description" content={lang === 'es'
           ? 'Hemeroteca completa del Diario Coyoacán: archivo de todas las ediciones, noticias locales, cultura y gastronomía de Coyoacán CDMX. Hospeda con SúperAnfitrión.'
@@ -46,7 +45,25 @@ export default function Hemeroteca() {
         } />
         <meta name="keywords" content="hemeroteca Coyoacán, archivo noticias Coyoacán, Diario Coyoacán, ediciones anteriores, periodismo local CDMX" />
         <meta name="author" content="Diario Coyoacán" />
-        <meta name="robots" content="index, follow" />
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://diario.superanfitrion.com.mx/hemeroteca" />
+        <meta property="og:title" content={lang === 'es' ? 'Hemeroteca | Diario Coyoacán' : 'Archive | Diario Coyoacán'} />
+        <meta property="og:description" content={lang === 'es'
+          ? 'Hemeroteca completa del Diario Coyoacán: archivo de todas las ediciones, noticias locales, cultura y gastronomía de Coyoacán CDMX.'
+          : 'Complete archive of Diario Coyoacán: all editions, local news, culture and gastronomy from Coyoacán Mexico City.'
+        } />
+        <meta property="og:site_name" content="Diario Coyoacán" />
+        <meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={lang === 'es' ? 'Hemeroteca | Diario Coyoacán' : 'Archive | Diario Coyoacán'} />
+        <meta name="twitter:description" content={lang === 'es'
+          ? 'Hemeroteca completa del Diario Coyoacán: archivo de todas las ediciones, noticias locales, cultura y gastronomía de Coyoacán CDMX.'
+          : 'Complete archive of Diario Coyoacán: all editions, local news, culture and gastronomy from Coyoacán Mexico City.'
+        } />
+        {/* Canonical */}
+        <link rel="canonical" href="https://diario.superanfitrion.com.mx/hemeroteca" />
       </Helmet>
 
       {/* Header */}
