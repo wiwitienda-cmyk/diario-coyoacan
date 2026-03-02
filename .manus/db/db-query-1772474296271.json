@@ -1,0 +1,9 @@
+{
+  "query": "\n-- Cambiar IDs para reordenar: Retas AntiFIFA (660001) → 660010 (primero), Coyoacán (660002) → 660009, Incendio (660003) → 660008\nUPDATE articles SET id = 660010 WHERE id = 660001;\nUPDATE articles SET id = 660009 WHERE id = 660002;\nUPDATE articles SET id = 660008 WHERE id = 660003;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute \n-- Cambiar IDs para reordenar: Retas AntiFIFA (660001) → 660010 (primero), Coyoacán (660002) → 660009, Incendio (660003) → 660008\nUPDATE articles SET id = 660010 WHERE id = 660001;\nUPDATE articles SET id = 660009 WHERE id = 660002;\nUPDATE articles SET id = 660008 WHERE id = 660003;\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 2020
+}

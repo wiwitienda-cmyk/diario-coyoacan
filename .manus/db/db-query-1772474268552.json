@@ -1,0 +1,28 @@
+{
+  "query": "SELECT id, slug, createdAt, updatedAt FROM articles WHERE dateISO = '2026-03-02' ORDER BY createdAt DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, createdAt, updatedAt FROM articles WHERE dateISO = '2026-03-02' ORDER BY createdAt DESC;",
+  "rows": [
+    {
+      "id": "660001",
+      "slug": "retas-antififa-coyoacan-protesta-mundial-despojo-2026-03-02",
+      "createdAt": "2026-03-02 17:46:11",
+      "updatedAt": "2026-03-02 17:57:28"
+    },
+    {
+      "id": "660002",
+      "slug": "coyoacan-recupera-primer-cuadro-40-motos-franeleros-2026-03-02",
+      "createdAt": "2026-03-02 17:46:10",
+      "updatedAt": "2026-03-02 17:57:28"
+    },
+    {
+      "id": "660003",
+      "slug": "incendio-xochimilco-calidad-aire-mala-cdmx-2026-03-02",
+      "createdAt": "2026-03-02 17:46:09",
+      "updatedAt": "2026-03-02 17:46:09"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\tcreatedAt\tupdatedAt\n660001\tretas-antififa-coyoacan-protesta-mundial-despojo-2026-03-02\t2026-03-02 17:46:11\t2026-03-02 17:57:28\n660002\tcoyoacan-recupera-primer-cuadro-40-motos-franeleros-2026-03-02\t2026-03-02 17:46:10\t2026-03-02 17:57:28\n660003\tincendio-xochimilco-calidad-aire-mala-cdmx-2026-03-02\t2026-03-02 17:46:09\t2026-03-02 17:46:09\n",
+  "stderr": "",
+  "execution_time_ms": 1564
+}

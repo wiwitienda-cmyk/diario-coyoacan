@@ -1,0 +1,28 @@
+{
+  "query": "\n-- Ver los IDs y createdAt de los 3 artículos de hoy para reordenarlos\nSELECT id, slug, headlineEs, createdAt FROM articles WHERE dateISO = '2026-03-02' ORDER BY createdAt DESC;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute \n-- Ver los IDs y createdAt de los 3 artículos de hoy para reordenarlos\nSELECT id, slug, headlineEs, createdAt FROM articles WHERE dateISO = '2026-03-02' ORDER BY createdAt DESC;\n",
+  "rows": [
+    {
+      "id": "660001",
+      "slug": "retas-antififa-coyoacan-protesta-mundial-despojo-2026-03-02",
+      "headlineEs": "'¡Agua para las casas, no para las plazas!': Jóvenes cierran Tlalpan con 'Retas AntiFIFA'",
+      "createdAt": "2026-03-02 17:46:09"
+    },
+    {
+      "id": "660002",
+      "slug": "coyoacan-recupera-primer-cuadro-40-motos-franeleros-2026-03-02",
+      "headlineEs": "Coyoacán despliega 31 equipos y retira 40 motos del primer cuadro en operativo contra franeleros",
+      "createdAt": "2026-03-02 17:46:09"
+    },
+    {
+      "id": "660003",
+      "slug": "incendio-xochimilco-calidad-aire-mala-cdmx-2026-03-02",
+      "headlineEs": "Incendio en Xochimilco y fábrica de PET en Chalco: el sur de la CDMX amanece con aire 'malo' y riesgo 'alto'",
+      "createdAt": "2026-03-02 17:46:09"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\theadlineEs\tcreatedAt\n660001\tretas-antififa-coyoacan-protesta-mundial-despojo-2026-03-02\t'¡Agua para las casas, no para las plazas!': Jóvenes cierran Tlalpan con 'Retas AntiFIFA'\t2026-03-02 17:46:09\n660002\tcoyoacan-recupera-primer-cuadro-40-motos-franeleros-2026-03-02\tCoyoacán despliega 31 equipos y retira 40 motos del primer cuadro en operativo contra franeleros\t2026-03-02 17:46:09\n660003\tincendio-xochimilco-calidad-aire-mala-cdmx-2026-03-02\tIncendio en Xochimilco y fábrica de PET en Chalco: el sur de la CDMX amanece con aire 'malo' y riesgo 'alto'\t2026-03-02 17:46:09\n",
+  "stderr": "",
+  "execution_time_ms": 1641
+}

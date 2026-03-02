@@ -1,0 +1,13 @@
+{
+  "query": "\n-- Retas AntiFIFA (id=660001) debe salir primero → le damos el id más alto\n-- Primero verificamos el max id actual\nSELECT MAX(id) as max_id FROM articles;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute \n-- Retas AntiFIFA (id=660001) debe salir primero → le damos el id más alto\n-- Primero verificamos el max id actual\nSELECT MAX(id) as max_id FROM articles;\n",
+  "rows": [
+    {
+      "max_id": "660003"
+    }
+  ],
+  "messages": [],
+  "stdout": "max_id\n660003\n",
+  "stderr": "",
+  "execution_time_ms": 1557
+}
