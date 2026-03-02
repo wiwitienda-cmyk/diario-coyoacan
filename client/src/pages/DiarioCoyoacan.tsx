@@ -155,17 +155,17 @@ export default function DiarioCoyoacan() {
   const searchParams = new URLSearchParams(window.location.search);
   const articleSlug = searchParams.get('slug');
 
-  const { data: article, isLoading } = trpc.newsArticles.bySlug.useQuery(
+  const { data: article, isLoading } = trpc.articles.bySlug.useQuery(
     { slug: articleSlug || '' },
     { enabled: !!articleSlug }
   );
 
-  const { data: latestArticle, isLoading: isLoadingLatest } = trpc.newsArticles.latest.useQuery(
+  const { data: latestArticle, isLoading: isLoadingLatest } = trpc.articles.latest.useQuery(
     undefined,
     { enabled: !articleSlug }
   );
 
-  const { data: allArticles, isLoading: isLoadingAll } = trpc.newsArticles.list.useQuery();
+  const { data: allArticles, isLoading: isLoadingAll } = trpc.articles.list.useQuery();
   // ─── Cotizaciones de divisas (se actualiza cada 10 min) ─────────────────────
   const { data: divisas } = trpc.divisas.rates.useQuery(undefined, {
     refetchInterval: 10 * 60 * 1000, // refetch cada 10 minutos
@@ -266,7 +266,7 @@ export default function DiarioCoyoacan() {
   const safeArticle = currentArticle ?? portadaArticles[0];
   const refArticle = portadaArticles[0] ?? safeArticle;
 
-  const paragraphs = parseSections(safeArticle?.content ?? '');
+  const paragraphs = parseSections((safeArticle as any)?.content ?? (safeArticle as any)?.contentEs ?? '');
   const pullQuote = extractPullQuote(paragraphs);
    // Fecha de la cabecera: siempre la fecha real de hoy en zona horaria CDMX
   const todayIso = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' }); // YYYY-MM-DD
