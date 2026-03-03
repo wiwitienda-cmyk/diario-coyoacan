@@ -478,3 +478,8 @@
 - [ ] Error: Eliminar meta description duplicada (2 instancias) en index.html vs Helmet
 - [ ] Aviso: Agregar atributo alt a 5 imágenes sin texto alternativo
 - [ ] Aviso: Eliminar etiqueta canónica duplicada (3 instancias)
+
+## Índice de Rayos UV en Tiempo Real
+- [x] Agregar campo uv_index a la respuesta de la API de clima (Open-Meteo)
+- [x] Mostrar índice UV en el marquee junto a la temperatura
+- [x] Mostrar índice UV en la cabecera con etiqueta de nivel (Bajo/Moderado/Alto/Muy Alto/Extremo)

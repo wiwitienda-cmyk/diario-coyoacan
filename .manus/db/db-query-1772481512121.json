@@ -1,0 +1,15 @@
+{
+  "query": "SELECT id, email, createdAt FROM subscribers ORDER BY createdAt DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, email, createdAt FROM subscribers ORDER BY createdAt DESC;",
+  "rows": [
+    {
+      "id": "60001",
+      "email": "grupohino@gmail.com",
+      "createdAt": "2026-02-13 00:22:14"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\temail\tcreatedAt\n60001\tgrupohino@gmail.com\t2026-02-13 00:22:14\n",
+  "stderr": "",
+  "execution_time_ms": 1580
+}

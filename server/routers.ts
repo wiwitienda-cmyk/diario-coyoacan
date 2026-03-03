@@ -8,7 +8,7 @@ import { getAllNewsArticles, getLatestNewsArticle, getNewsArticleBySlug } from "
 import { sendNewsletter } from "./newsletter";
 
 // ─── Cache de clima Coyoacán (1 hora) ────────────────────────────────────────
-interface WeatherSlot { temp: number; feelsLike: number; code: number; label: string; icon: string; }
+interface WeatherSlot { temp: number; feelsLike: number; code: number; label: string; icon: string; uvIndex: number; uvLabel: string; }
 interface WeatherData {
   morning: WeatherSlot;   // 8am
   afternoon: WeatherSlot; // 2pm
@@ -42,19 +42,29 @@ async function fetchWeather(): Promise<WeatherData | null> {
   const now = Date.now();
   if (weatherCache.data && now - weatherCache.fetchedAt < WEATHER_CACHE_TTL_MS) return weatherCache.data;
   try {
-    const url = 'https://api.open-meteo.com/v1/forecast?latitude=19.35&longitude=-99.16&hourly=temperature_2m,apparent_temperature,weathercode&timezone=America%2FMexico_City&forecast_days=1';
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=19.35&longitude=-99.16&hourly=temperature_2m,apparent_temperature,weathercode,uv_index&timezone=America%2FMexico_City&forecast_days=1';
     const res = await fetch(url);
     if (!res.ok) return null;
-    const json = await res.json() as { hourly: { temperature_2m: number[]; apparent_temperature: number[]; weathercode: number[] } };
+    const json = await res.json() as { hourly: { temperature_2m: number[]; apparent_temperature: number[]; weathercode: number[]; uv_index: number[] } };
     const temps = json.hourly.temperature_2m;
     const feels = json.hourly.apparent_temperature;
     const codes = json.hourly.weathercode;
+    const uvs = json.hourly.uv_index;
+    const getUvLabel = (uv: number): string => {
+      if (uv <= 2) return 'Bajo';
+      if (uv <= 5) return 'Moderado';
+      if (uv <= 7) return 'Alto';
+      if (uv <= 10) return 'Muy Alto';
+      return 'Extremo';
+    };
     const makeSlot = (h: number): WeatherSlot => ({
       temp: Math.round(temps[h] * 10) / 10,
       feelsLike: Math.round(feels[h] * 10) / 10,
       code: codes[h],
       label: wmoLabel(codes[h]),
       icon: wmoIcon(codes[h]),
+      uvIndex: Math.round((uvs[h] ?? 0) * 10) / 10,
+      uvLabel: getUvLabel(uvs[h] ?? 0),
     });
     const result: WeatherData = {
       morning: makeSlot(8),
