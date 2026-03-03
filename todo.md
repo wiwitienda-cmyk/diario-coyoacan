@@ -483,3 +483,10 @@
 - [x] Agregar campo uv_index a la respuesta de la API de clima (Open-Meteo)
 - [x] Mostrar índice UV en el marquee junto a la temperatura
 - [x] Mostrar índice UV en la cabecera con etiqueta de nivel (Bajo/Moderado/Alto/Muy Alto/Extremo)
+
+## Artículos 3 de marzo de 2026
+- [x] Eclipse lunar / Luna de Sangre / Alineación planetaria (con imagen real 20Minutos/EFE)
+- [x] Viviendas → hospedaje temporal por Mundial 2026 (con imagen real Xataka México)
+- [x] Limpieza Canal Nacional Coyoacán - 9 toneladas (con imagen real La Prensa/OEM)
+- [x] Bomberos rescatan 4 gatos en Coyoacán (con imagen real Escapada H/AlaCrítica)
+- [x] Coyoacán vs franeleros - operativo trafitambos (con imagen real La Prensa/OEM)
