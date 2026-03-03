@@ -504,3 +504,28 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+
+// ─── Precalentamiento de caché en background ─────────────────────────────────
+// Carga todas las APIs externas al arrancar y las refresca cada 10 minutos
+// para que los usuarios NUNCA esperen por APIs externas.
+async function warmUpCache() {
+  try {
+    await Promise.allSettled([
+      fetchExchangeRates(),
+      fetchIPC(),
+      fetchOilPrices(),
+      fetchLatamRates(),
+      fetchGold(),
+      fetchWeather(),
+    ]);
+    console.log('[Cache] Warm-up complete');
+  } catch (e) {
+    console.error('[Cache] Warm-up error:', e);
+  }
+}
+
+// Ejecutar al arrancar
+warmUpCache();
+
+// Refrescar cada 10 minutos en background
+setInterval(warmUpCache, 10 * 60 * 1000);

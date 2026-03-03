@@ -490,3 +490,9 @@
 - [x] Limpieza Canal Nacional Coyoacán - 9 toneladas (con imagen real La Prensa/OEM)
 - [x] Bomberos rescatan 4 gatos en Coyoacán (con imagen real Escapada H/AlaCrítica)
 - [x] Coyoacán vs franeleros - operativo trafitambos (con imagen real La Prensa/OEM)
+
+## Optimización de Velocidad y Corrección Luna de Sangre
+- [x] Implementar caché agresivo en servidor para divisas (USD, CAD, GBP, IPC, petróleo, LATAM, oro)
+- [x] Implementar caché agresivo para clima/UV
+- [x] Reducir tiempo de carga de 8s a menos de 1s (warm-up + background refresh cada 10 min)
+- [x] Corregir artículo de Luna de Sangre que no aparece en portada (createdAt actualizado)
