@@ -507,3 +507,8 @@
 - [x] R1: Componente CTA clicable de reserva dentro de cada artículo (automático en componente)
 - [x] R2: Enlazado interno automático a /hospedaje-mundial-2026 desde artículos relevantes
 - [x] R4: Lazy loading de imágenes (loading="lazy" + fetchpriority="high" para hero)
+
+## Google Analytics 4 - 3 marzo 2026
+- [x] Instalar script gtag.js con Measurement ID G-VSZ9P3M8P5
+- [x] Configurar eventos de conversión: clic en reserva (CTA Lodgify), clic en Mundial 2026
+- [x] Tracking de lectura de artículos (page_view automático por gtag config)

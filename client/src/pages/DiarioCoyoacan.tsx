@@ -792,6 +792,15 @@ export default function DiarioCoyoacan() {
                 href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).gtag) {
+                    (window as any).gtag('event', 'clic_reserva', {
+                      event_category: 'conversion',
+                      event_label: 'header_nav',
+                      cta_location: 'header',
+                    });
+                  }
+                }}
                 style={{
                   padding: '0.35rem 1rem',
                   backgroundColor: WINE,
@@ -1303,6 +1312,17 @@ export default function DiarioCoyoacan() {
                 href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).gtag) {
+                    (window as any).gtag('event', 'clic_reserva', {
+                      event_category: 'conversion',
+                      event_label: safeArticle?.title || 'articulo',
+                      article_slug: safeArticle?.slug || '',
+                      article_category: safeArticle?.category || '',
+                      cta_location: 'articulo_body',
+                    });
+                  }
+                }}
                 style={{
                   display: 'inline-block',
                   padding: '0.7rem 1.5rem',
@@ -1321,6 +1341,16 @@ export default function DiarioCoyoacan() {
               </a>
               <a
                 href="/hospedaje-mundial-2026"
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).gtag) {
+                    (window as any).gtag('event', 'clic_mundial_2026', {
+                      event_category: 'engagement',
+                      event_label: safeArticle?.title || 'articulo',
+                      article_slug: safeArticle?.slug || '',
+                      cta_location: 'articulo_body',
+                    });
+                  }
+                }}
                 style={{
                   display: 'inline-block',
                   padding: '0.7rem 1.5rem',
@@ -1499,6 +1529,16 @@ export default function DiarioCoyoacan() {
               href={ad.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                if (typeof window !== 'undefined' && (window as any).gtag) {
+                  (window as any).gtag('event', 'clic_reserva', {
+                    event_category: 'conversion',
+                    event_label: ad.headline,
+                    cta_location: 'anuncio_primera_plana',
+                    article_slug: safeArticle?.slug || '',
+                  });
+                }
+              }}
               style={{
                 display: 'inline-block',
                 padding: '0.75rem 2rem',
