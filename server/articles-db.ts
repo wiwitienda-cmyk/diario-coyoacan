@@ -21,7 +21,7 @@ export async function getAllArticles() {
     dateEs: articles.dateEs,
     dateEn: articles.dateEn,
     createdAt: articles.createdAt,
-  }).from(articles).orderBy(desc(articles.dateISO)).limit(50); // Limitar a 50 artículos más recientes
+  }).from(articles).orderBy(desc(articles.dateISO), desc(articles.createdAt)).limit(50); // Limitar a 50 artículos más recientes, ordenados por fecha y luego por creación
   
   return result;
 }
