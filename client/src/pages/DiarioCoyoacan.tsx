@@ -882,6 +882,8 @@ export default function DiarioCoyoacan() {
                           <img
                             src={art.heroImage}
                             alt={artTitle}
+                            loading={idx === 0 ? 'eager' : 'lazy'}
+                            fetchPriority={idx === 0 ? 'high' : 'low'}
                             style={{
                               position: 'relative',
                               width: '100%',
@@ -911,6 +913,7 @@ export default function DiarioCoyoacan() {
                         <img
                           src={art.heroImage}
                           alt={artTitle}
+                          loading="lazy"
                           style={{
                             width: '100%',
                             height: '80px',
@@ -1129,6 +1132,8 @@ export default function DiarioCoyoacan() {
             <img
               src={safeArticle?.heroImage}
               alt={`Fotografía editorial: ${safeArticle?.title}`}
+              loading="eager"
+              fetchPriority="high"
               style={{
                 position: 'relative',
                 width: '100%',
@@ -1245,6 +1250,94 @@ export default function DiarioCoyoacan() {
               {p}
             </p>
           ))}
+          {/* ── CTA DE RESERVA CLICABLE (R1 + R2 SEO) ──────────────── */}
+          <div
+            style={{
+              margin: '2.5rem 0 2rem',
+              padding: '2rem',
+              background: `linear-gradient(135deg, ${WINE} 0%, #5a1010 100%)`,
+              color: PAPER,
+              border: `3px solid ${GOLD}`,
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            <div style={{ position: 'absolute', top: 0, right: 0, width: '120px', height: '120px', background: `linear-gradient(135deg, transparent 50%, rgba(201,169,110,0.15) 50%)` }} />
+            <p
+              style={{
+                fontFamily: SANS_SUBHEAD,
+                textTransform: 'uppercase',
+                fontSize: '0.6rem',
+                letterSpacing: '0.2em',
+                color: GOLD,
+                marginBottom: '0.5rem',
+              }}
+            >
+              Recomendación del Diario
+            </p>
+            <h4
+              style={{
+                fontFamily: SERIF_HEADLINE,
+                fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
+                fontWeight: 700,
+                lineHeight: 1.3,
+                marginBottom: '0.75rem',
+                color: PAPER,
+              }}
+            >
+              ¿Planeas visitar Coyoacán?
+            </h4>
+            <p
+              style={{
+                fontFamily: SERIF_BODY,
+                fontSize: '0.85rem',
+                lineHeight: 1.7,
+                color: '#e8d8c0',
+                marginBottom: '1.25rem',
+              }}
+            >
+              Hospédate en el corazón del barrio con SúperAnfitrión Coyoacán. Alojamientos auténticos a pasos del Jardín Centenario, sin comisiones de plataforma, con WiFi de alta velocidad y anfitriones locales.
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <a
+                href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-block',
+                  padding: '0.7rem 1.5rem',
+                  backgroundColor: GOLD,
+                  color: INK,
+                  fontFamily: SANS_SUBHEAD,
+                  textTransform: 'uppercase',
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.1em',
+                  textDecoration: 'none',
+                  fontWeight: 700,
+                  border: `2px solid ${PAPER}`,
+                }}
+              >
+                Reservar ahora →
+              </a>
+              <a
+                href="/hospedaje-mundial-2026"
+                style={{
+                  display: 'inline-block',
+                  padding: '0.7rem 1.5rem',
+                  backgroundColor: 'transparent',
+                  color: PAPER,
+                  fontFamily: SANS_SUBHEAD,
+                  textTransform: 'uppercase',
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.1em',
+                  textDecoration: 'none',
+                  border: `2px solid ${GOLD}`,
+                }}
+              >
+                Mundial 2026 →
+              </a>
+            </div>
+          </div>
           {/* Botón volver a portada */}
           <div style={{ marginBottom: '1.5rem' }}>
             <a

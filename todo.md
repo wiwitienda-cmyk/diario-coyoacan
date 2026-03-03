@@ -496,3 +496,14 @@
 - [x] Implementar caché agresivo para clima/UV
 - [x] Reducir tiempo de carga de 8s a menos de 1s (warm-up + background refresh cada 10 min)
 - [x] Corregir artículo de Luna de Sangre que no aparece en portada (createdAt actualizado)
+
+## Auditoría SEO - Conversión de Reservas
+- [x] Auditar meta tags, structured data, Open Graph, sitemap y robots.txt
+- [x] Auditar contenido de artículos: keywords, CTAs, enlaces internos y conversión
+- [x] Comparar con mejores prácticas SEO para conversión hotelera
+- [x] Generar informe SEO con hallazgos y recomendaciones accionables
+
+## Correcciones SEO Críticas - 3 marzo 2026
+- [x] R1: Componente CTA clicable de reserva dentro de cada artículo (automático en componente)
+- [x] R2: Enlazado interno automático a /hospedaje-mundial-2026 desde artículos relevantes
+- [x] R4: Lazy loading de imágenes (loading="lazy" + fetchpriority="high" para hero)
