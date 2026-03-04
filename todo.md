@@ -317,7 +317,7 @@
 - [ ] Generar slug único para el artículo
 - [ ] Insertar artículo en base de datos con webdev_execute_sql
 - [ ] Verificar que aparezca en primera plana de cafeavellan-q8betawp.manus.space
-- [ ] Enviar newsletter a suscriptores
+- [x] Enviar newsletter (enviado) a suscriptores
 
 ## Optimización de Rendimiento (URGENTE - Página Carga Muy Lento)
 - [x] Diagnosticar problemas de rendimiento en Diario Coyoacán (bundle de 984KB identificado)
@@ -512,3 +512,10 @@
 - [x] Instalar script gtag.js con Measurement ID G-VSZ9P3M8P5
 - [x] Configurar eventos de conversión: clic en reserva (CTA Lodgify), clic en Mundial 2026
 - [x] Tracking de lectura de artículos (page_view automático por gtag config)
+
+## Artículos 4 de marzo de 2026
+- [x] Verificar artículos existentes para evitar repeticiones
+- [x] Buscar noticias del 4 de marzo en fuentes prioritarias
+- [x] Recopilar imágenes reales de reportajes con fuentes
+- [x] Redactar 6 artículos periodísticos y publicar en BD
+- [x] Enviar newsletter (enviado)
