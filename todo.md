@@ -519,3 +519,7 @@
 - [x] Recopilar imágenes reales de reportajes con fuentes
 - [x] Redactar 6 artículos periodísticos y publicar en BD
 - [x] Enviar newsletter (enviado)
+
+## Fix Open Graph para Facebook
+- [x] Agregar og:image con URL de imagen del artículo principal en la página de inicio
+- [x] Mejorar og:title y og:description para la página principal

@@ -53,6 +53,87 @@ async function startServer() {
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+  // Middleware para inyectar meta tags OG dinámicos para crawlers de redes sociales
+  // Facebook, Twitter, LinkedIn, etc. no ejecutan JavaScript, así que necesitan
+  // los meta tags directamente en el HTML estático.
+  app.use(async (req, res, next) => {
+    const ua = (req.headers['user-agent'] || '').toLowerCase();
+    const isCrawler = /facebookexternalhit|twitterbot|linkedinbot|whatsapp|telegrambot|slackbot|discordbot|pinterest|googlebot/i.test(ua);
+    
+    if (!isCrawler) return next();
+    
+    // Solo interceptar rutas de páginas (no API, assets, etc.)
+    if (req.path.startsWith('/api/') || req.path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map|json)$/)) {
+      return next();
+    }
+    
+    try {
+      const { getLatestArticle, getArticleBySlug } = await import('../articles-db');
+      
+      let ogTitle = 'Diario Coyoacán - Noticias locales, cultura y gastronomía';
+      let ogDescription = 'Tu periódico digital del barrio. Noticias diarias de Coyoacán, clima en tiempo real, índice UV y lo que pasa en el sur de la CDMX.';
+      let ogImage = 'https://diario.superanfitrion.com.mx/logo-diario.png';
+      let ogUrl = 'https://diario.superanfitrion.com.mx' + req.path;
+      let ogType = 'website';
+      
+      // Si es un artículo específico (/diario/slug)
+      const articleMatch = req.path.match(/^\/diario\/(.+)$/);
+      if (articleMatch) {
+        const slug = articleMatch[1];
+        const article = await getArticleBySlug(slug);
+        if (article) {
+          ogTitle = (article.headlineEs || '').substring(0, 65) + ' | Diario Coyoacán';
+          ogDescription = (article.summaryEs || '').substring(0, 160);
+          ogImage = article.heroImage || ogImage;
+          ogType = 'article';
+        }
+      } else {
+        // Página principal: usar imagen del artículo más reciente
+        const latest = await getLatestArticle();
+        if (latest) {
+          ogTitle = (latest.headlineEs || '').substring(0, 50) + ' | Diario Coyoacán';
+          ogDescription = (latest.summaryEs || '').substring(0, 160);
+          ogImage = latest.heroImage || ogImage;
+        }
+      }
+      
+      // Servir HTML mínimo con meta tags OG para el crawler
+      const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>${ogTitle}</title>
+  <meta name="description" content="${ogDescription}">
+  <meta property="og:type" content="${ogType}">
+  <meta property="og:url" content="${ogUrl}">
+  <meta property="og:title" content="${ogTitle}">
+  <meta property="og:description" content="${ogDescription}">
+  <meta property="og:image" content="${ogImage}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Diario Coyoacán">
+  <meta property="og:locale" content="es_MX">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${ogTitle}">
+  <meta name="twitter:description" content="${ogDescription}">
+  <meta name="twitter:image" content="${ogImage}">
+  <link rel="canonical" href="${ogUrl}">
+</head>
+<body>
+  <h1>${ogTitle}</h1>
+  <p>${ogDescription}</p>
+  <img src="${ogImage}" alt="${ogTitle}">
+</body>
+</html>`;
+      
+      res.status(200).set({ 'Content-Type': 'text/html; charset=utf-8' }).end(html);
+    } catch (error) {
+      console.error('[OG Crawler] Error:', error);
+      next();
+    }
+  });
+
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
   
