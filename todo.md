@@ -526,3 +526,4 @@
 
 ## Fix UV Index nocturno
 - [x] Corregir UV para mostrar valor de hora actual (no pico del día) - de noche debe ser 0 o no mostrarse
+- [x] Mostrar UV siempre visible, con 'Sin riesgo' cuando UV es 0 (de noche)

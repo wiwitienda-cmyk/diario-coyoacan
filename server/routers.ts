@@ -52,6 +52,7 @@ async function fetchWeather(): Promise<WeatherData | null> {
     const codes = json.hourly.weathercode;
     const uvs = json.hourly.uv_index;
     const getUvLabel = (uv: number): string => {
+      if (uv === 0) return 'Sin riesgo';
       if (uv <= 2) return 'Bajo';
       if (uv <= 5) return 'Moderado';
       if (uv <= 7) return 'Alto';
