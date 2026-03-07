@@ -523,3 +523,6 @@
 ## Fix Open Graph para Facebook
 - [x] Agregar og:image con URL de imagen del artículo principal en la página de inicio
 - [x] Mejorar og:title y og:description para la página principal
+
+## Fix UV Index nocturno
+- [x] Corregir UV para mostrar valor de hora actual (no pico del día) - de noche debe ser 0 o no mostrarse

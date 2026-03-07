@@ -423,8 +423,8 @@ export default function DiarioCoyoacan() {
             fontSize: '0.7rem',
           }}
         >
-          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: {weather ? `${weather.morning.icon} MAÑANA ${weather.morning.temp}°C · ${weather.afternoon.icon} TARDE ${weather.afternoon.temp}°C · ${weather.night.icon} NOCHE ${weather.night.temp}°C · ☀️ UV ${weather.afternoon.uvIndex} (${weather.afternoon.uvLabel})` : 'CARGANDO CLIMA...'} &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
-          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: {weather ? `${weather.morning.icon} MAÑANA ${weather.morning.temp}°C · ${weather.afternoon.icon} TARDE ${weather.afternoon.temp}°C · ${weather.night.icon} NOCHE ${weather.night.temp}°C · ☀️ UV ${weather.afternoon.uvIndex} (${weather.afternoon.uvLabel})` : 'CARGANDO CLIMA...'} &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
+          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: {weather ? `${weather.morning.icon} MAÑANA ${weather.morning.temp}°C · ${weather.afternoon.icon} TARDE ${weather.afternoon.temp}°C · ${weather.night.icon} NOCHE ${weather.night.temp}°C${weather.current.uvIndex > 0 ? ` · ☀️ UV ${weather.current.uvIndex} (${weather.current.uvLabel})` : ''}` : 'CARGANDO CLIMA...'} &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
+          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: {weather ? `${weather.morning.icon} MAÑANA ${weather.morning.temp}°C · ${weather.afternoon.icon} TARDE ${weather.afternoon.temp}°C · ${weather.night.icon} NOCHE ${weather.night.temp}°C${weather.current.uvIndex > 0 ? ` · ☀️ UV ${weather.current.uvIndex} (${weather.current.uvLabel})` : ''}` : 'CARGANDO CLIMA...'} &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
         </div>
       </div>
       {/* ── CINTILLA DE DIVISAS ───────────────────────────────── */}
@@ -763,7 +763,7 @@ export default function DiarioCoyoacan() {
               <span style={{ textTransform: 'capitalize' }}>{dateFormatted}</span>
               {weather && (
                 <span style={{ color: WINE, fontWeight: 600 }}>
-                  {weather.morning.icon} {weather.morning.temp}°C &middot; {weather.afternoon.icon} {weather.afternoon.temp}°C &middot; {weather.night.icon} {weather.night.temp}°C &middot; <span title="Índice de Rayos UV (hora pico)">UV {weather.afternoon.uvIndex} — {weather.afternoon.uvLabel}</span>
+                  {weather.morning.icon} {weather.morning.temp}°C &middot; {weather.afternoon.icon} {weather.afternoon.temp}°C &middot; {weather.night.icon} {weather.night.temp}°C{weather.current.uvIndex > 0 && <> &middot; <span title="Índice UV actual">UV {weather.current.uvIndex} — {weather.current.uvLabel}</span></>}
                 </span>
               )}
               <span>Precio: Gratuito</span>

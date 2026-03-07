@@ -13,6 +13,7 @@ interface WeatherData {
   morning: WeatherSlot;   // 8am
   afternoon: WeatherSlot; // 2pm
   night: WeatherSlot;     // 8pm
+  current: WeatherSlot;   // hora actual
   date: string;
 }
 let weatherCache: { data: WeatherData | null; fetchedAt: number } = { data: null, fetchedAt: 0 };
@@ -66,10 +67,14 @@ async function fetchWeather(): Promise<WeatherData | null> {
       uvIndex: Math.round((uvs[h] ?? 0) * 10) / 10,
       uvLabel: getUvLabel(uvs[h] ?? 0),
     });
+    // Hora actual en CDMX para el slot "current"
+    const cdmxNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+    const currentHour = cdmxNow.getHours();
     const result: WeatherData = {
       morning: makeSlot(8),
       afternoon: makeSlot(14),
       night: makeSlot(20),
+      current: makeSlot(currentHour),
       date: new Date().toISOString().split('T')[0],
     };
     weatherCache = { data: result, fetchedAt: now };
