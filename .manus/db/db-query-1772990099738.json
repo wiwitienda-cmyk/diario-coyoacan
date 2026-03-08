@@ -1,0 +1,60 @@
+{
+  "query": "SELECT slug, headlineEs, dateISO FROM articles ORDER BY dateISO DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, headlineEs, dateISO FROM articles ORDER BY dateISO DESC LIMIT 10;",
+  "rows": [
+    {
+      "slug": "filco-2026-arranca-350-actividades-jardines-coyoacan-06-03",
+      "headlineEs": "Arranca FILCO 2026: 350 actividades invaden los jardines de Coyoacán durante diez días",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "mujeres-coyoacan-convocan-marcha-local-8m-06-03",
+      "headlineEs": "'Ni una menos en Coyoacán': mujeres del sur convocan marcha local para el 8 de marzo",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "mujer-muere-incendio-santa-ursula-coyoacan-06-03",
+      "headlineEs": "Tragedia en Santa Úrsula: mujer de 54 años muere atrapada en incendio dentro de su vivienda",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "zocalo-blindado-vallas-3-metros-8m-cdmx-06-03",
+      "headlineEs": "Zócalo blindado: vallas de tres metros y 400 mujeres policías para la marcha del 8M",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "xochimilco-turismo-sustentable-chinampas-unesco-06-03",
+      "headlineEs": "Xochimilco lanza nueva etapa de turismo sustentable en chinampas patrimonio UNESCO",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "noche-primavera-2026-450-artistas-festival-gratuito-cdmx-06-03",
+      "headlineEs": "Noche de Primavera 2026: 450 artistas y un Gran Baile Sonidero gratuito el 21 y 22 de marzo",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "jacarandas-tinen-morado-coyoacan-ruta-fotografica-2026-03-04",
+      "headlineEs": "Marzo morado: las jacarandas conquistan Coyoacán y el sur de la capital",
+      "dateISO": "2026-03-04"
+    },
+    {
+      "slug": "alerta-amarilla-frio-coyoacan-tlalpan-xochimilco-2026-03-04",
+      "headlineEs": "Alerta amarilla por frío en Coyoacán, Tlalpan y Xochimilco: temperaturas de 4°C en la madrugada",
+      "dateISO": "2026-03-04"
+    },
+    {
+      "slug": "fuga-gas-tlalpan-evacuacion-emergencia-2026-03-04",
+      "headlineEs": "Fuga de gas en Tlalpan moviliza cuerpos de emergencia y obliga a evacuar decenas de viviendas",
+      "dateISO": "2026-03-04"
+    },
+    {
+      "slug": "placas-conmemorativas-mundial-2026-cdmx-tramite-digital-2026-03-04",
+      "headlineEs": "Placas del Mundial 2026: la fiebre futbolera llega a las calles de la CDMX desde el 9 de marzo",
+      "dateISO": "2026-03-04"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\theadlineEs\tdateISO\nfilco-2026-arranca-350-actividades-jardines-coyoacan-06-03\tArranca FILCO 2026: 350 actividades invaden los jardines de Coyoacán durante diez días\t2026-03-06\nmujeres-coyoacan-convocan-marcha-local-8m-06-03\t'Ni una menos en Coyoacán': mujeres del sur convocan marcha local para el 8 de marzo\t2026-03-06\nmujer-muere-incendio-santa-ursula-coyoacan-06-03\tTragedia en Santa Úrsula: mujer de 54 años muere atrapada en incendio dentro de su vivienda\t2026-03-06\nzocalo-blindado-vallas-3-metros-8m-cdmx-06-03\tZócalo blindado: vallas de tres metros y 400 mujeres policías para la marcha del 8M\t2026-03-06\nxochimilco-turismo-sustentable-chinampas-unesco-06-03\tXochimilco lanza nueva etapa de turismo sustentable en chinampas patrimonio UNESCO\t2026-03-06\nnoche-primavera-2026-450-artistas-festival-gratuito-cdmx-06-03\tNoche de Primavera 2026: 450 artistas y un Gran Baile Sonidero gratuito el 21 y 22 de marzo\t2026-03-06\njacarandas-tinen-morado-coyoacan-ruta-fotografica-2026-03-04\tMarzo morado: las jacarandas conquistan Coyoacán y el sur de la capital\t2026-03-04\nalerta-amarilla-frio-coyoacan-tlalpan-xochimilco-2026-03-04\tAlerta amarilla por frío en Coyoacán, Tlalpan y Xochimilco: temperaturas de 4°C en la madrugada\t2026-03-04\nfuga-gas-tlalpan-evacuacion-emergencia-2026-03-04\tFuga de gas en Tlalpan moviliza cuerpos de emergencia y obliga a evacuar decenas de viviendas\t2026-03-04\nplacas-conmemorativas-mundial-2026-cdmx-tramite-digital-2026-03-04\tPlacas del Mundial 2026: la fiebre futbolera llega a las calles de la CDMX desde el 9 de marzo\t2026-03-04\n",
+  "stderr": "",
+  "execution_time_ms": 1496
+}

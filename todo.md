@@ -536,3 +536,9 @@
 - [x] Redactar reportaje 8M con fuentes citadas
 - [x] Publicar ambos artículos en BD
 - [x] Verificar artículos en el sitio
+
+## Corrección: Reportajes 8 de marzo (rehacer con fotos reales de medios)
+- [x] Borrar artículos repetidos/duplicados del 8 de marzo
+- [x] Buscar noticias frescas del 8M y FILCO con fotos originales de medios
+- [x] Descargar fotos reales de medios y subirlas a S3
+- [x] Publicar reportajes nuevos con fotos reales y fuentes citadas

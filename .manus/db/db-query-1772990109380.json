@@ -1,0 +1,85 @@
+{
+  "query": "SELECT slug, LEFT(headlineEs, 80) as headline, dateISO FROM articles ORDER BY dateISO DESC LIMIT 15;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, LEFT(headlineEs, 80) as headline, dateISO FROM articles ORDER BY dateISO DESC LIMIT 15;",
+  "rows": [
+    {
+      "slug": "zocalo-blindado-vallas-3-metros-8m-cdmx-06-03",
+      "headline": "Zócalo blindado: vallas de tres metros y 400 mujeres policías para la marcha del",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "mujer-muere-incendio-santa-ursula-coyoacan-06-03",
+      "headline": "Tragedia en Santa Úrsula: mujer de 54 años muere atrapada en incendio dentro de ",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "noche-primavera-2026-450-artistas-festival-gratuito-cdmx-06-03",
+      "headline": "Noche de Primavera 2026: 450 artistas y un Gran Baile Sonidero gratuito el 21 y ",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "xochimilco-turismo-sustentable-chinampas-unesco-06-03",
+      "headline": "Xochimilco lanza nueva etapa de turismo sustentable en chinampas patrimonio UNES",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "mujeres-coyoacan-convocan-marcha-local-8m-06-03",
+      "headline": "'Ni una menos en Coyoacán': mujeres del sur convocan marcha local para el 8 de m",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "filco-2026-arranca-350-actividades-jardines-coyoacan-06-03",
+      "headline": "Arranca FILCO 2026: 350 actividades invaden los jardines de Coyoacán durante die",
+      "dateISO": "2026-03-06"
+    },
+    {
+      "slug": "megamarcha-locatarios-mercados-cdmx-digitalizacion-2026-03-04",
+      "headline": "Miles de locatarios marchan al Zócalo contra la digitalización forzada de mercad",
+      "dateISO": "2026-03-04"
+    },
+    {
+      "slug": "alerta-amarilla-frio-coyoacan-tlalpan-xochimilco-2026-03-04",
+      "headline": "Alerta amarilla por frío en Coyoacán, Tlalpan y Xochimilco: temperaturas de 4°C ",
+      "dateISO": "2026-03-04"
+    },
+    {
+      "slug": "placas-conmemorativas-mundial-2026-cdmx-tramite-digital-2026-03-04",
+      "headline": "Placas del Mundial 2026: la fiebre futbolera llega a las calles de la CDMX desde",
+      "dateISO": "2026-03-04"
+    },
+    {
+      "slug": "jacarandas-tinen-morado-coyoacan-ruta-fotografica-2026-03-04",
+      "headline": "Marzo morado: las jacarandas conquistan Coyoacán y el sur de la capital",
+      "dateISO": "2026-03-04"
+    },
+    {
+      "slug": "talleres-carteles-8m-arte-tipografico-cdmx-2026-03-04",
+      "headline": "Cuando las letras se vuelven protesta: talleres de carteles preparan el 8M en la",
+      "dateISO": "2026-03-04"
+    },
+    {
+      "slug": "fuga-gas-tlalpan-evacuacion-emergencia-2026-03-04",
+      "headline": "Fuga de gas en Tlalpan moviliza cuerpos de emergencia y obliga a evacuar decenas",
+      "dateISO": "2026-03-04"
+    },
+    {
+      "slug": "coyoacan-operativo-franeleros-trafitambos-2026-03-03",
+      "headline": "Coyoacán declara guerra a los franeleros: retiran una tonelada de trafitambos y ",
+      "dateISO": "2026-03-03"
+    },
+    {
+      "slug": "eclipse-lunar-luna-sangre-alineacion-planetaria-cdmx-2026-03-03",
+      "headline": "Luna de Sangre sobre la CDMX: eclipse total y seis planetas alineados marcan una",
+      "dateISO": "2026-03-03"
+    },
+    {
+      "slug": "viviendas-hospedaje-temporal-mundial-2026-cdmx-coyoacan-2026-03-03",
+      "headline": "Cada 48 horas, tres viviendas en la CDMX dejan de ser hogar para convertirse en ",
+      "dateISO": "2026-03-03"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\theadline\tdateISO\nzocalo-blindado-vallas-3-metros-8m-cdmx-06-03\tZócalo blindado: vallas de tres metros y 400 mujeres policías para la marcha del\t2026-03-06\nmujer-muere-incendio-santa-ursula-coyoacan-06-03\tTragedia en Santa Úrsula: mujer de 54 años muere atrapada en incendio dentro de \t2026-03-06\nnoche-primavera-2026-450-artistas-festival-gratuito-cdmx-06-03\tNoche de Primavera 2026: 450 artistas y un Gran Baile Sonidero gratuito el 21 y \t2026-03-06\nxochimilco-turismo-sustentable-chinampas-unesco-06-03\tXochimilco lanza nueva etapa de turismo sustentable en chinampas patrimonio UNES\t2026-03-06\nmujeres-coyoacan-convocan-marcha-local-8m-06-03\t'Ni una menos en Coyoacán': mujeres del sur convocan marcha local para el 8 de m\t2026-03-06\nfilco-2026-arranca-350-actividades-jardines-coyoacan-06-03\tArranca FILCO 2026: 350 actividades invaden los jardines de Coyoacán durante die\t2026-03-06\nmegamarcha-locatarios-mercados-cdmx-digitalizacion-2026-03-04\tMiles de locatarios marchan al Zócalo contra la digitalización forzada de mercad\t2026-03-04\nalerta-amarilla-frio-coyoacan-tlalpan-xochimilco-2026-03-04\tAlerta amarilla por frío en Coyoacán, Tlalpan y Xochimilco: temperaturas de 4°C \t2026-03-04\nplacas-conmemorativas-mundial-2026-cdmx-tramite-digital-2026-03-04\tPlacas del Mundial 2026: la fiebre futbolera llega a las calles de la CDMX desde\t2026-03-04\njacarandas-tinen-morado-coyoacan-ruta-fotografica-2026-03-04\tMarzo morado: las jacarandas conquistan Coyoacán y el sur de la capital\t2026-03-04\ntalleres-carteles-8m-arte-tipografico-cdmx-2026-03-04\tCuando las letras se vuelven protesta: talleres de carteles preparan el 8M en la\t2026-03-04\nfuga-gas-tlalpan-evacuacion-emergencia-2026-03-04\tFuga de gas en Tlalpan moviliza cuerpos de emergencia y obliga a evacuar decenas\t2026-03-04\ncoyoacan-operativo-franeleros-trafitambos-2026-03-03\tCoyoacán declara guerra a los franeleros: retiran una tonelada de trafitambos y \t2026-03-03\neclipse-lunar-luna-sangre-alineacion-planetaria-cdmx-2026-03-03\tLuna de Sangre sobre la CDMX: eclipse total y seis planetas alineados marcan una\t2026-03-03\nviviendas-hospedaje-temporal-mundial-2026-cdmx-coyoacan-2026-03-03\tCada 48 horas, tres viviendas en la CDMX dejan de ser hogar para convertirse en \t2026-03-03\n",
+  "stderr": "",
+  "execution_time_ms": 1505
+}
