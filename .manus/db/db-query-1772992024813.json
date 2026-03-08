@@ -1,0 +1,15 @@
+{
+  "query": "SELECT id, slug, LEFT(contentEs, 200) as content_preview FROM articles WHERE slug LIKE '%mataperros%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, LEFT(contentEs, 200) as content_preview FROM articles WHERE slug LIKE '%mataperros%';",
+  "rows": [
+    {
+      "id": "780006",
+      "slug": "abuela-mataperros-coyoacan-libre-perrita-moni-08-03",
+      "content_preview": "[{\"title\":\"Suspensión provisional y libertad\",\"text\":\"Flor \"N\", la mujer de 77 años conocida como la \"Abuela Mataperros\" de Coyoacán, salió libre de los juzgados el viernes 7 de marzo después de que u"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\tcontent_preview\n780006\tabuela-mataperros-coyoacan-libre-perrita-moni-08-03\t[{\"title\":\"Suspensión provisional y libertad\",\"text\":\"Flor \"N\", la mujer de 77 años conocida como la \"Abuela Mataperros\" de Coyoacán, salió libre de los juzgados el viernes 7 de marzo después de que u\n",
+  "stderr": "",
+  "execution_time_ms": 1590
+}

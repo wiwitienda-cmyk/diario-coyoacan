@@ -548,3 +548,7 @@
 - [x] Buscar 2 noticias frescas del 8 de marzo CDMX/Coyoacán diferentes a las existentes
 - [x] Obtener fotos reales y fuentes de las noticias
 - [x] Publicar artículos nuevos en BD
+
+## Bug: JSON crudo en artículo Abuela Mataperros
+- [x] Corregir contentEs del artículo Abuela Mataperros - muestra JSON crudo en vez de contenido parseado
+- [x] Corregir contentEs del artículo Socavón Estadio Azteca (mismo problema de comillas sin escapar)
