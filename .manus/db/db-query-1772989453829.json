@@ -1,0 +1,22 @@
+{
+  "query": "SELECT id, slug, headlineEs, dateISO FROM articles WHERE dateISO = '2026-03-08' ORDER BY id DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, headlineEs, dateISO FROM articles WHERE dateISO = '2026-03-08' ORDER BY id DESC;",
+  "rows": [
+    {
+      "id": "780003",
+      "slug": "marcha-8m-cdmx-miles-mujeres-reforma-zocalo-2026-03-08",
+      "headlineEs": "Miles de mujeres toman Reforma en la marcha del 8M: exigen justicia ante más de 6,400 feminicidios",
+      "dateISO": "2026-03-08"
+    },
+    {
+      "id": "780002",
+      "slug": "filco-2026-quinta-edicion-arranca-coyoacan-2026-03-08",
+      "headlineEs": "FILCO 2026 abre sus puertas: 350 actividades y Reino Unido como invitado de honor invaden los jardines de Coyoacán",
+      "dateISO": "2026-03-08"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\theadlineEs\tdateISO\n780003\tmarcha-8m-cdmx-miles-mujeres-reforma-zocalo-2026-03-08\tMiles de mujeres toman Reforma en la marcha del 8M: exigen justicia ante más de 6,400 feminicidios\t2026-03-08\n780002\tfilco-2026-quinta-edicion-arranca-coyoacan-2026-03-08\tFILCO 2026 abre sus puertas: 350 actividades y Reino Unido como invitado de honor invaden los jardines de Coyoacán\t2026-03-08\n",
+  "stderr": "",
+  "execution_time_ms": 1574
+}

@@ -527,3 +527,12 @@
 ## Fix UV Index nocturno
 - [x] Corregir UV para mostrar valor de hora actual (no pico del día) - de noche debe ser 0 o no mostrarse
 - [x] Mostrar UV siempre visible, con 'Sin riesgo' cuando UV es 0 (de noche)
+
+## Reportajes 8 de marzo 2026
+- [x] Investigar FILCO 2026 primer día (fuentes reales)
+- [x] Investigar marcha 8M CDMX (fuentes reales)
+- [x] Buscar/generar imágenes editoriales para ambos artículos
+- [x] Redactar reportaje FILCO con fuentes citadas
+- [x] Redactar reportaje 8M con fuentes citadas
+- [x] Publicar ambos artículos en BD
+- [x] Verificar artículos en el sitio
