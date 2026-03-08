@@ -542,3 +542,9 @@
 - [x] Buscar noticias frescas del 8M y FILCO con fotos originales de medios
 - [x] Descargar fotos reales de medios y subirlas a S3
 - [x] Publicar reportajes nuevos con fotos reales y fuentes citadas
+
+## Reemplazar artículo repetido FILCO con noticias frescas del 8 de marzo
+- [x] Borrar artículo repetido de FILCO día 3 (ya teníamos "Arranca FILCO")
+- [x] Buscar 2 noticias frescas del 8 de marzo CDMX/Coyoacán diferentes a las existentes
+- [x] Obtener fotos reales y fuentes de las noticias
+- [x] Publicar artículos nuevos en BD
