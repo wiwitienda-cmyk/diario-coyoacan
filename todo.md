@@ -552,3 +552,11 @@
 ## Bug: JSON crudo en artículo Abuela Mataperros
 - [x] Corregir contentEs del artículo Abuela Mataperros - muestra JSON crudo en vez de contenido parseado
 - [x] Corregir contentEs del artículo Socavón Estadio Azteca (mismo problema de comillas sin escapar)
+
+## Artículos 9 de marzo 2026
+- [x] Buscar fotos reales de: FILCO día 4, acoso niña Coyoacán, choque Calzada de Tlalpan
+- [x] Subir fotos a S3
+- [x] Redactar y publicar artículo FILCO día 4 (Sicilia/Dayán/novela negra)
+- [x] Redactar y publicar artículo acoso a niña en Coyoacán
+- [x] Redactar y publicar artículo choque mortal Calzada de Tlalpan
+- [x] Verificar artículos en el sitio
