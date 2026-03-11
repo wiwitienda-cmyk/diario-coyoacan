@@ -1,0 +1,40 @@
+{
+  "query": "SELECT slug, dateISO, categoryEs, headlineEs FROM articles ORDER BY createdAt DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, dateISO, categoryEs, headlineEs FROM articles ORDER BY createdAt DESC LIMIT 5;",
+  "rows": [
+    {
+      "slug": "vive-latino-2026-guia-completa-cartel-horarios-hospedaje-cdmx",
+      "dateISO": "2026-03-11",
+      "categoryEs": "Música",
+      "headlineEs": "Vive Latino 2026: guía definitiva del festival que sacudirá la CDMX este fin de semana"
+    },
+    {
+      "slug": "filco-2026-dia-4-sicilia-dayan-novela-negra-2026-03-09",
+      "dateISO": "2026-03-09",
+      "categoryEs": "Cultura",
+      "headlineEs": "FILCO 2026, día 4: Javier Sicilia y Jacobo Dayán debaten el mal en nuestro tiempo; novela negra y fútbol femenil completan la jornada"
+    },
+    {
+      "slug": "choque-mortal-calzada-tlalpan-coyoacan-2026-03-09",
+      "dateISO": "2026-03-09",
+      "categoryEs": "Seguridad",
+      "headlineEs": "Joven muere tras volcar su auto a exceso de velocidad en Calzada de Tlalpan, alcaldía Coyoacán"
+    },
+    {
+      "slug": "acoso-nina-coyoacan-abuelita-enfrenta-agresor-2026-03-09",
+      "dateISO": "2026-03-09",
+      "categoryEs": "Justicia",
+      "headlineEs": "Abuelita enfrenta a acosador de su nieta en tienda de Coyoacán: comerciantes lo retienen hasta que llega la policía"
+    },
+    {
+      "slug": "filco-2026-dia-3-poniatowska-welsh-great-britain-coyoacan-08-03",
+      "dateISO": "2026-03-08",
+      "categoryEs": "Cultura",
+      "headlineEs": "FILCO 2026, día 3: Elena Poniatowska y el pabellón GREAT Britain encabezan la jornada más literaria en Coyoacán"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\tdateISO\tcategoryEs\theadlineEs\nvive-latino-2026-guia-completa-cartel-horarios-hospedaje-cdmx\t2026-03-11\tMúsica\tVive Latino 2026: guía definitiva del festival que sacudirá la CDMX este fin de semana\nfilco-2026-dia-4-sicilia-dayan-novela-negra-2026-03-09\t2026-03-09\tCultura\tFILCO 2026, día 4: Javier Sicilia y Jacobo Dayán debaten el mal en nuestro tiempo; novela negra y fútbol femenil completan la jornada\nchoque-mortal-calzada-tlalpan-coyoacan-2026-03-09\t2026-03-09\tSeguridad\tJoven muere tras volcar su auto a exceso de velocidad en Calzada de Tlalpan, alcaldía Coyoacán\nacoso-nina-coyoacan-abuelita-enfrenta-agresor-2026-03-09\t2026-03-09\tJusticia\tAbuelita enfrenta a acosador de su nieta en tienda de Coyoacán: comerciantes lo retienen hasta que llega la policía\nfilco-2026-dia-3-poniatowska-welsh-great-britain-coyoacan-08-03\t2026-03-08\tCultura\tFILCO 2026, día 3: Elena Poniatowska y el pabellón GREAT Britain encabezan la jornada más literaria en Coyoacán\n",
+  "stderr": "",
+  "execution_time_ms": 1534
+}

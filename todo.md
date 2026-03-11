@@ -560,3 +560,26 @@
 - [x] Redactar y publicar artículo acoso a niña en Coyoacán
 - [x] Redactar y publicar artículo choque mortal Calzada de Tlalpan
 - [x] Verificar artículos en el sitio
+
+## Serie Vive Latino 2026 - SEO para hospedaje
+- [x] Investigar Vive Latino 2026: fechas, cartel, cobertura medios/YouTubers/influencers
+- [x] Buscar fotos reales del evento de medios y redes
+- [x] Redactar 4 reportajes con SEO agresivo para hospedaje cerca del Estadio GNP/Coyoacán
+- [x] Insertar artículos en BD con keywords de hospedaje y CTAs de SúperAnfitrión
+- [x] Verificar artículos y SEO en el sitio
+
+## Artículo noticioso Vive Latino 2026 (fecha 11 marzo)
+- [x] Nota periodística principal: Vive Latino 2026 guía definitiva - cartel, horarios, precios, transporte, hospedaje Coyoacán
+
+## Artículos de seguimiento Vive Latino 2026 (11-13 marzo)
+- [x] Artículo perfil Lenny Kravitz: Blue Electric Light tour, datos curiosos, setlist probable, hospedaje Coyoacán
+- [x] Artículo cancelaciones Mars Volta/Moby + Steve Aoki + firma autógrafos + Música Pa Mandar a Volar Vol. 2
+- [x] Artículo Fabulosos Cadillacs + Maldita Vecindad + guía de supervivencia del festival
+- [x] Tip sutil de cuidar celular/pertenencias incluido en todos los artículos
+- [x] Contenido bilingüe (ES/EN) en todos los artículos
+- [x] CTAs inline de hospedaje SúperAnfitrión en todos los artículos
+- [x] Fuentes citadas en todos los artículos (Chilango, Indie Rocks, El Financiero, El Economista, Sopitas, etc.)
+
+## Bug: Botones que ya estaban programados desaparecieron
+- [x] Diagnosticar qué botones se perdieron — RESULTADO: Los botones NO se perdieron, el slug del artículo cambió de 'vive-latino-2026-guia-definitiva-festival-cdmx-hospedaje-coyoacan' a 'vive-latino-2026-guia-completa-cartel-horarios-hospedaje-cdmx'
+- [x] Verificar que todos los CTAs funcionan correctamente (Comprar Boletos, FAQs, Reservar Hospedaje, Ver Alojamientos)

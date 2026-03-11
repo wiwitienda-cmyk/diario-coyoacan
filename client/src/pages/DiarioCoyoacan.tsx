@@ -8,15 +8,21 @@ import { Share2, Facebook, Instagram, Youtube, Mail, Phone } from 'lucide-react'
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 /** Convierte el texto plano separado por ";" en un array de párrafos */
-function parseSections(raw: string): string[] {
-  // Handle JSON array format: [{"title":"...","text":"..."},...]
+interface ContentSection {
+  title?: string;
+  text: string;
+  cta?: Array<{ label: string; url: string; style?: 'primary' | 'secondary' }>;
+}
+
+function parseSectionsRich(raw: string): ContentSection[] {
+  // Handle JSON array format: [{"title":"...","text":"...","cta":[...]},...]
   if (raw && raw.trim().startsWith('[')) {
     try {
-      const sections = JSON.parse(raw) as Array<{ title?: string; text?: string; content?: string }>;
+      const sections = JSON.parse(raw) as Array<{ title?: string; text?: string; content?: string; cta?: Array<{ label: string; url: string; style?: 'primary' | 'secondary' }> }>;
       if (Array.isArray(sections)) {
         return sections
-          .map((s) => s.text || s.content || '')
-          .filter(Boolean);
+          .map((s) => ({ title: s.title, text: s.text || s.content || '', cta: s.cta }))
+          .filter((s) => s.text);
       }
     } catch {
       // Fall through to plain text parsing
@@ -27,7 +33,13 @@ function parseSections(raw: string): string[] {
     .split(';')
     .map((s) => s.trim())
     .filter(Boolean)
-    .filter((s) => !s.startsWith('---') && !s.startsWith('**Fuentes') && !s.startsWith('Fuentes:'));
+    .filter((s) => !s.startsWith('---') && !s.startsWith('**Fuentes') && !s.startsWith('Fuentes:'))
+    .map((s) => ({ text: s }));
+}
+
+/** Legacy wrapper for compatibility */
+function parseSections(raw: string): string[] {
+  return parseSectionsRich(raw).map((s) => s.text);
 }
 
 /** Extrae la primera cita directa o frase destacable para pull quote */
@@ -266,7 +278,8 @@ export default function DiarioCoyoacan() {
   const safeArticle = currentArticle ?? portadaArticles[0];
   const refArticle = portadaArticles[0] ?? safeArticle;
 
-  const paragraphs = parseSections((safeArticle as any)?.content ?? (safeArticle as any)?.contentEs ?? '');
+  const richSections = parseSectionsRich((safeArticle as any)?.content ?? (safeArticle as any)?.contentEs ?? '');
+  const paragraphs = richSections.map((s) => s.text);
   const pullQuote = extractPullQuote(paragraphs);
    // Fecha de la cabecera: siempre la fecha real de hoy en zona horaria CDMX
   const todayIso = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' }); // YYYY-MM-DD
@@ -282,9 +295,13 @@ export default function DiarioCoyoacan() {
 
   // Distribución de párrafos
   const firstParagraph = paragraphs[0] || '';
+  const firstSection = richSections[0];
   const restParagraphs = paragraphs.slice(1);
+  const restSections = richSections.slice(1);
   const beforePullQuote = restParagraphs.slice(0, 2);
+  const beforePullQuoteSections = restSections.slice(0, 2);
   const afterPullQuote = restParagraphs.slice(2);
+  const afterPullQuoteSections = restSections.slice(2);
 
   // Título para <title> SEO: máximo 42 chars + " | Diario Coyoacán" (18) = 60 total
   const rawTitle = safeArticle?.title ?? '';
@@ -1204,19 +1221,20 @@ export default function DiarioCoyoacan() {
             </p>
           )}
           {/* Párrafos 2 y 3 */}
-          {beforePullQuote.map((p, i) => (
-            <p
-              key={i}
-              style={{
-                fontFamily: SERIF_BODY,
-                fontSize: '1rem',
-                lineHeight: 1.8,
-                textAlign: 'justify',
-                marginBottom: '1.25rem',
-              }}
-            >
-              {p}
-            </p>
+          {beforePullQuoteSections.map((sec, i) => (
+            <div key={i}>
+              {sec.title && (
+                <h3 style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.12em', borderBottom: `2px solid ${INK}`, display: 'inline-block', paddingBottom: '0.25rem', marginBottom: '0.75rem', marginTop: '1.5rem' }}>{sec.title}</h3>
+              )}
+              <p style={{ fontFamily: SERIF_BODY, fontSize: '1rem', lineHeight: 1.8, textAlign: 'justify', marginBottom: '1.25rem' }}>{sec.text}</p>
+              {sec.cta && sec.cta.length > 0 && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', margin: '1rem 0 1.5rem' }}>
+                  {sec.cta.map((btn, j) => (
+                    <a key={j} href={btn.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', padding: '0.7rem 1.5rem', backgroundColor: btn.style === 'secondary' ? 'transparent' : WINE, color: btn.style === 'secondary' ? INK : PAPER, fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em', textDecoration: 'none', fontWeight: 700, border: `2px solid ${btn.style === 'secondary' ? INK : WINE}` }}>{btn.label}</a>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
           {/* PULL QUOTE con líneas dobles */}
           {pullQuote && (
@@ -1245,19 +1263,20 @@ export default function DiarioCoyoacan() {
             </blockquote>
           )}
           {/* Párrafos restantes */}
-          {afterPullQuote.map((p, i) => (
-            <p
-              key={i}
-              style={{
-                fontFamily: SERIF_BODY,
-                fontSize: '1rem',
-                lineHeight: 1.8,
-                textAlign: 'justify',
-                marginBottom: '1.25rem',
-              }}
-            >
-              {p}
-            </p>
+          {afterPullQuoteSections.map((sec, i) => (
+            <div key={i}>
+              {sec.title && (
+                <h3 style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.12em', borderBottom: `2px solid ${INK}`, display: 'inline-block', paddingBottom: '0.25rem', marginBottom: '0.75rem', marginTop: '1.5rem' }}>{sec.title}</h3>
+              )}
+              <p style={{ fontFamily: SERIF_BODY, fontSize: '1rem', lineHeight: 1.8, textAlign: 'justify', marginBottom: '1.25rem' }}>{sec.text}</p>
+              {sec.cta && sec.cta.length > 0 && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', margin: '1rem 0 1.5rem' }}>
+                  {sec.cta.map((btn, j) => (
+                    <a key={j} href={btn.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', padding: '0.7rem 1.5rem', backgroundColor: btn.style === 'secondary' ? 'transparent' : WINE, color: btn.style === 'secondary' ? INK : PAPER, fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em', textDecoration: 'none', fontWeight: 700, border: `2px solid ${btn.style === 'secondary' ? INK : WINE}` }}>{btn.label}</a>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
           {/* ── CTA DE RESERVA CLICABLE (R1 + R2 SEO) ──────────────── */}
           <div
