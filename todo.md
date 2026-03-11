@@ -583,3 +583,9 @@
 ## Bug: Botones que ya estaban programados desaparecieron
 - [x] Diagnosticar qué botones se perdieron — RESULTADO: Los botones NO se perdieron, el slug del artículo cambió de 'vive-latino-2026-guia-definitiva-festival-cdmx-hospedaje-coyoacan' a 'vive-latino-2026-guia-completa-cartel-horarios-hospedaje-cdmx'
 - [x] Verificar que todos los CTAs funcionan correctamente (Comprar Boletos, FAQs, Reservar Hospedaje, Ver Alojamientos)
+
+## Bug: URL de reservaciones Lodgify rota (Error 444)
+- [x] Encontrar la URL correcta de reservaciones en Lodgify (la URL completa funciona, el problema era URLs truncadas a /es/)
+- [x] Actualizar URL en todos los artículos de la BD (5 artículos corregidos: Lenny Kravitz, Mars Volta, Cadillacs, Feria Mezcal, Domingos Alternativos)
+- [x] Verificar URLs en código fuente (todas las URLs en .tsx y .ts ya apuntaban a la URL correcta completa)
+- [x] Verificar que la liga funciona correctamente en el sitio
