@@ -589,3 +589,16 @@
 - [x] Actualizar URL en todos los artículos de la BD (5 artículos corregidos: Lenny Kravitz, Mars Volta, Cadillacs, Feria Mezcal, Domingos Alternativos)
 - [x] Verificar URLs en código fuente (todas las URLs en .tsx y .ts ya apuntaban a la URL correcta completa)
 - [x] Verificar que la liga funciona correctamente en el sitio
+
+## Artículo Día de San Patricio 2026 + Batallón de San Patricio
+- [x] Investigar desfile de San Patricio 2026 en CDMX (YouTube, DondeIr, El Universal)
+- [x] Investigar historia del Batallón de San Patricio y Museo de las Intervenciones (Smithsonian, LA Times)
+- [x] Buscar imágenes relevantes y subirlas a CDN
+- [x] Redactar artículo periodístico bilingüe con vinculación a hospedaje Coyoacán (9 secciones)
+- [x] Insertar artículo en la BD
+- [x] Verificar renderizado con CTAs de hospedaje funcionando
+
+## Cambio de estrategia: de diario a semanal
+- [x] Publicar artículo de San Patricio 2026 (último artículo del ritmo diario)
+- [ ] Replantear estrategia: reportajes semanales long-form con SEO pesado en vez de artículos diarios
+- NOTA: Los artículos del Vive Latino no generaron consultas de hospedaje. El SEO orgánico necesita tiempo (3-6 meses). Cambio a reportajes semanales más sustanciosos con keywords de cola larga.
