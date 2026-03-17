@@ -602,3 +602,9 @@
 - [x] Publicar artículo de San Patricio 2026 (último artículo del ritmo diario)
 - [ ] Replantear estrategia: reportajes semanales long-form con SEO pesado en vez de artículos diarios
 - NOTA: Los artículos del Vive Latino no generaron consultas de hospedaje. El SEO orgánico necesita tiempo (3-6 meses). Cambio a reportajes semanales más sustanciosos con keywords de cola larga.
+
+## Bug SEO: Google Search Console - "Página alternativa con etiqueta canónica adecuada"
+- [x] Diagnosticar qué página no se indexa — middleware de crawlers no manejaba URLs con ?slug= (query params), solo /diario/slug (path)
+- [x] Corregir middleware servidor: ahora detecta ?slug= y genera canonical correcto para cada artículo
+- [x] Agregar canonical específico para cada página estática (/, /noticias, /hemeroteca, /hospedaje-mundial-2026, /en)
+- [x] Verificar con curl + Googlebot UA que todas las páginas devuelven canonical correcto

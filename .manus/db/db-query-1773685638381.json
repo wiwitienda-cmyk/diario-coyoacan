@@ -1,0 +1,97 @@
+{
+  "query": "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'articles' ORDER BY ORDINAL_POSITION;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'articles' ORDER BY ORDINAL_POSITION;",
+  "rows": [
+    {
+      "COLUMN_NAME": "id"
+    },
+    {
+      "COLUMN_NAME": "slug"
+    },
+    {
+      "COLUMN_NAME": "dateISO"
+    },
+    {
+      "COLUMN_NAME": "weatherTemp"
+    },
+    {
+      "COLUMN_NAME": "weatherConditionEs"
+    },
+    {
+      "COLUMN_NAME": "weatherConditionEn"
+    },
+    {
+      "COLUMN_NAME": "locationAddress"
+    },
+    {
+      "COLUMN_NAME": "locationLat"
+    },
+    {
+      "COLUMN_NAME": "locationLng"
+    },
+    {
+      "COLUMN_NAME": "locationMapsUrl"
+    },
+    {
+      "COLUMN_NAME": "heroImage"
+    },
+    {
+      "COLUMN_NAME": "headlineEs"
+    },
+    {
+      "COLUMN_NAME": "summaryEs"
+    },
+    {
+      "COLUMN_NAME": "categoryEs"
+    },
+    {
+      "COLUMN_NAME": "dateEs"
+    },
+    {
+      "COLUMN_NAME": "contentEs"
+    },
+    {
+      "COLUMN_NAME": "menuItemsEs"
+    },
+    {
+      "COLUMN_NAME": "hoursWeekEs"
+    },
+    {
+      "COLUMN_NAME": "hoursSundayEs"
+    },
+    {
+      "COLUMN_NAME": "headlineEn"
+    },
+    {
+      "COLUMN_NAME": "summaryEn"
+    },
+    {
+      "COLUMN_NAME": "categoryEn"
+    },
+    {
+      "COLUMN_NAME": "dateEn"
+    },
+    {
+      "COLUMN_NAME": "contentEn"
+    },
+    {
+      "COLUMN_NAME": "menuItemsEn"
+    },
+    {
+      "COLUMN_NAME": "hoursWeekEn"
+    },
+    {
+      "COLUMN_NAME": "hoursSundayEn"
+    },
+    {
+      "COLUMN_NAME": "createdAt"
+    },
+    {
+      "COLUMN_NAME": "updatedAt"
+    }
+  ],
+  "messages": [],
+  "stdout": "COLUMN_NAME\nid\nslug\ndateISO\nweatherTemp\nweatherConditionEs\nweatherConditionEn\nlocationAddress\nlocationLat\nlocationLng\nlocationMapsUrl\nheroImage\nheadlineEs\nsummaryEs\ncategoryEs\ndateEs\ncontentEs\nmenuItemsEs\nhoursWeekEs\nhoursSundayEs\nheadlineEn\nsummaryEn\ncategoryEn\ndateEn\ncontentEn\nmenuItemsEn\nhoursWeekEn\nhoursSundayEn\ncreatedAt\nupdatedAt\n",
+  "stderr": "",
+  "execution_time_ms": 1536
+}

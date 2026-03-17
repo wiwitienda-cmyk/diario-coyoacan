@@ -74,28 +74,52 @@ async function startServer() {
       let ogTitle = 'Diario Coyoacán - Noticias locales, cultura y gastronomía';
       let ogDescription = 'Tu periódico digital del barrio. Noticias diarias de Coyoacán, clima en tiempo real, índice UV y lo que pasa en el sur de la CDMX.';
       let ogImage = 'https://diario.superanfitrion.com.mx/logo-diario.png';
-      let ogUrl = 'https://diario.superanfitrion.com.mx' + req.path;
+      let ogUrl = 'https://diario.superanfitrion.com.mx' + req.originalUrl;
       let ogType = 'website';
       
-      // Si es un artículo específico (/diario/slug)
-      const articleMatch = req.path.match(/^\/diario\/(.+)$/);
-      if (articleMatch) {
-        const slug = articleMatch[1];
-        const article = await getArticleBySlug(slug);
+      // Detectar artículo por query param ?slug= O por path /diario/slug
+      const slugFromQuery = req.query.slug as string | undefined;
+      const articlePathMatch = req.path.match(/^\/diario\/(.+)$/);
+      const articleSlug = slugFromQuery || (articlePathMatch ? articlePathMatch[1] : null);
+      
+      if (articleSlug) {
+        const article = await getArticleBySlug(articleSlug);
         if (article) {
+          // Canonical siempre apunta a la URL con ?slug= (formato usado en el sitemap)
+          ogUrl = `https://diario.superanfitrion.com.mx/diario?slug=${encodeURIComponent(articleSlug)}`;
           ogTitle = (article.headlineEs || '').substring(0, 65) + ' | Diario Coyoacán';
           ogDescription = (article.summaryEs || '').substring(0, 160);
           ogImage = article.heroImage || ogImage;
           ogType = 'article';
         }
-      } else {
-        // Página principal: usar imagen del artículo más reciente
+      } else if (req.path === '/diario' || req.path === '/diario/' || req.path === '/' || req.path === '') {
+        // Página principal / portada: canonical a la raíz
+        ogUrl = 'https://diario.superanfitrion.com.mx/';
         const latest = await getLatestArticle();
         if (latest) {
           ogTitle = (latest.headlineEs || '').substring(0, 50) + ' | Diario Coyoacán';
           ogDescription = (latest.summaryEs || '').substring(0, 160);
           ogImage = latest.heroImage || ogImage;
         }
+      } else if (req.path === '/noticias') {
+        ogUrl = 'https://diario.superanfitrion.com.mx/noticias';
+        ogTitle = 'Noticias de Coyoacán | Diario Coyoacán';
+        ogDescription = 'Todas las noticias de Coyoacán: cultura, gastronomía, gobierno local, comunidad y hospedaje.';
+      } else if (req.path === '/hemeroteca') {
+        ogUrl = 'https://diario.superanfitrion.com.mx/hemeroteca';
+        ogTitle = 'Hemeroteca | Diario Coyoacán';
+        ogDescription = 'Archivo completo de artículos y reportajes del Diario Coyoacán.';
+      } else if (req.path === '/hospedaje-mundial-2026') {
+        ogUrl = 'https://diario.superanfitrion.com.mx/hospedaje-mundial-2026';
+        ogTitle = 'Hospedaje en Coyoacán para el Mundial 2026 | SúperAnfitrión';
+        ogDescription = 'Hospédate en el corazón de Coyoacán para el Mundial de Fútbol 2026. Propiedades verificadas, cerca del Estadio Azteca.';
+      } else if (req.path === '/en') {
+        ogUrl = 'https://diario.superanfitrion.com.mx/en';
+        ogTitle = 'Accommodation in Coyoacán for FIFA World Cup 2026 | SúperAnfitrión';
+        ogDescription = 'Stay in Coyoacán, Mexico City for the 2026 FIFA World Cup. Authentic apartments 20 min from Estadio Azteca.';
+      } else {
+        // Cualquier otra página: canonical a su propia URL limpia
+        ogUrl = 'https://diario.superanfitrion.com.mx' + req.path;
       }
       
       // Servir HTML mínimo con meta tags OG para el crawler
