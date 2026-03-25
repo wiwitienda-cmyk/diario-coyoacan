@@ -1,0 +1,34 @@
+{
+  "query": "SELECT id, slug, headlineEs, dateISO FROM articles WHERE slug LIKE '%semana-santa%' OR slug LIKE '%pasion-iztapalapa%' OR slug LIKE '%museos-semana%' OR slug LIKE '%iglesias-coyoacan%' ORDER BY id DESC",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT id, slug, headlineEs, dateISO FROM articles WHERE slug LIKE '%semana-santa%' OR slug LIKE '%pasion-iztapalapa%' OR slug LIKE '%museos-semana%' OR slug LIKE '%iglesias-coyoacan%' ORDER BY id DESC",
+  "rows": [
+    {
+      "id": "900005",
+      "slug": "semana-santa-cdmx-2026-guia-completa-eventos-procesiones-hospedaje-coyoacan-turismo",
+      "headlineEs": "Guía completa de Semana Santa 2026 en CDMX: procesiones, museos, gastronomía y dónde hospedarte cerca de todo",
+      "dateISO": "2026-03-25"
+    },
+    {
+      "id": "900004",
+      "slug": "que-hacer-coyoacan-semana-santa-2026-museos-frida-kahlo-mercados-actividades-cdmx",
+      "headlineEs": "Semana Santa en Coyoacán sin iglesia: museos, mercados, helados y todo lo que puedes hacer del 29 de marzo al 5 de abril",
+      "dateISO": "2026-03-25"
+    },
+    {
+      "id": "900003",
+      "slug": "viacrucis-coyoacan-2026-semana-santa-parroquia-san-juan-bautista-procesion-viernes-santo",
+      "headlineEs": "Semana Santa en Coyoacán 2026: el Viacrucis por las calles del centro y el programa completo de la Parroquia San Juan Bautista",
+      "dateISO": "2026-03-25"
+    },
+    {
+      "id": "900002",
+      "slug": "pasion-cristo-iztapalapa-2026-viacrucis-semana-santa-cdmx-hospedaje-coyoacan",
+      "headlineEs": "Pasión de Cristo en Iztapalapa 2026: la representación número 183 espera más de 2 millones de asistentes",
+      "dateISO": "2026-03-25"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tslug\theadlineEs\tdateISO\n900005\tsemana-santa-cdmx-2026-guia-completa-eventos-procesiones-hospedaje-coyoacan-turismo\tGuía completa de Semana Santa 2026 en CDMX: procesiones, museos, gastronomía y dónde hospedarte cerca de todo\t2026-03-25\n900004\tque-hacer-coyoacan-semana-santa-2026-museos-frida-kahlo-mercados-actividades-cdmx\tSemana Santa en Coyoacán sin iglesia: museos, mercados, helados y todo lo que puedes hacer del 29 de marzo al 5 de abril\t2026-03-25\n900003\tviacrucis-coyoacan-2026-semana-santa-parroquia-san-juan-bautista-procesion-viernes-santo\tSemana Santa en Coyoacán 2026: el Viacrucis por las calles del centro y el programa completo de la Parroquia San Juan Bautista\t2026-03-25\n900002\tpasion-cristo-iztapalapa-2026-viacrucis-semana-santa-cdmx-hospedaje-coyoacan\tPasión de Cristo en Iztapalapa 2026: la representación número 183 espera más de 2 millones de asistentes\t2026-03-25\n",
+  "stderr": "",
+  "execution_time_ms": 2002
+}

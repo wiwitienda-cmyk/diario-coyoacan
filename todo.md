@@ -600,7 +600,7 @@
 
 ## Cambio de estrategia: de diario a semanal
 - [x] Publicar artículo de San Patricio 2026 (último artículo del ritmo diario)
-- [ ] Replantear estrategia: reportajes semanales long-form con SEO pesado en vez de artículos diarios
+- [x] Replantear estrategia: skill actualizada a batch semanal de 3-5 reportajes con imágenes reales y fuentes citadas
 - NOTA: Los artículos del Vive Latino no generaron consultas de hospedaje. El SEO orgánico necesita tiempo (3-6 meses). Cambio a reportajes semanales más sustanciosos con keywords de cola larga.
 
 ## Bug SEO: Google Search Console - "Página alternativa con etiqueta canónica adecuada"
@@ -608,3 +608,18 @@
 - [x] Corregir middleware servidor: ahora detecta ?slug= y genera canonical correcto para cada artículo
 - [x] Agregar canonical específico para cada página estática (/, /noticias, /hemeroteca, /hospedaje-mundial-2026, /en)
 - [x] Verificar con curl + Googlebot UA que todas las páginas devuelven canonical correcto
+
+## Actualizar skill diario-coyoacan-generator a formato semanal
+- [x] Leer skill actual y entender estructura (SKILL.md, journalistic_style.md, article_example.md, generate_article.py)
+- [x] Cambiar formato: de 1 artículo diario corto a 3-5 reportajes semanales por batch, cada uno 600-900 palabras
+- [x] Actualizar guía de estilo: tono investigativo con fuentes citadas, imágenes reales (no IA), SEO pesado
+- [x] Actualizar ejemplo de artículo con formato correcto de CTA y fuentes
+- [x] No publicar artículos hasta indicación del usuario la próxima semana
+
+## Batch semanal: Semana Santa 2026 en CDMX (25 marzo)
+- [x] Investigar Pasión de Iztapalapa 2026: fechas, programa, novedades, cómo llegar desde Coyoacán
+- [x] Investigar otros eventos de Semana Santa 2026 en CDMX (museos, ferias, actividades)
+- [x] Buscar imágenes reales de eventos y subirlas a CDN
+- [x] Redactar 4 reportajes con SEO pesado y fuentes citadas
+- [x] Insertar artículos en BD con CTAs de hospedaje
+- [x] Verificar renderizado y guardar checkpoint
