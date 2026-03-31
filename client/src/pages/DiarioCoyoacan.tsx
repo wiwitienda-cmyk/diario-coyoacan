@@ -225,11 +225,11 @@ export default function DiarioCoyoacan() {
   const currentArticle = articleSlug ? article : latestArticle;
   // En modo portada (sin slug), mostrar 3 tarjetas de artículos
   const isPortadaMode = !articleSlug;
-  // En modo portada esperamos allArticles; en modo artículo esperamos el artículo individual
-  const isLoadingAny = isPortadaMode ? isLoadingAll : (articleSlug ? isLoading : isLoadingLatest);
+  // OPTIMIZACIÓN: Solo bloquear por artículos (datos críticos), NO por divisas/clima (datos secundarios)
+  const isLoadingArticles = isPortadaMode ? isLoadingAll : (articleSlug ? isLoading : isLoadingLatest);
 
-  // ─── Estado de carga ───────────────────────────────────────────────────────
-  if (isLoadingAny) {
+  // ─── Estado de carga (solo artículos bloquean) ───────────────────────────────────────────────────
+  if (isLoadingArticles) {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: PAPER, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center' }}>
@@ -285,7 +285,7 @@ export default function DiarioCoyoacan() {
   const todayIso = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' }); // YYYY-MM-DD
   const editionNum = getEditionNumber(todayIso);
   const dateFormatted = formatDateEs(todayIso);
-  const ad = getContextualAd(safeArticle?.category ?? '', safeArticle?.title ?? '');
+  const ad = getContextualAd(safeArticle?.categoryEs ?? '', safeArticle?.headlineEs ?? '');
   const shareUrl = `https://diario.superanfitrion.com.mx/diario?slug=${safeArticle?.slug ?? ''}`;
 
   // Artículos recientes para columna lateral (modo artículo individual)

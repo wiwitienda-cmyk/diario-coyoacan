@@ -7,7 +7,21 @@ import { getAllArticles, getLatestArticle, getArticleBySlug, addSubscriber, getA
 import { getAllNewsArticles, getLatestNewsArticle, getNewsArticleBySlug } from "./news-articles-db";
 import { sendNewsletter } from "./newsletter";
 
-// ─── Cache de clima Coyoacán (1 hora) ────────────────────────────────────────
+// ─── Fetch con timeout para APIs externas (evita bloqueos) ───────────────────────
+const API_TIMEOUT_MS = 5000; // 5 segundos máximo por API externa
+
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = API_TIMEOUT_MS): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    return res;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// ─── Cache de clima Coyoacán (1 hora) ──────────────────────────────────────────────────────────
 interface WeatherSlot { temp: number; feelsLike: number; code: number; label: string; icon: string; uvIndex: number; uvLabel: string; }
 interface WeatherData {
   morning: WeatherSlot;   // 8am
@@ -44,7 +58,7 @@ async function fetchWeather(): Promise<WeatherData | null> {
   if (weatherCache.data && now - weatherCache.fetchedAt < WEATHER_CACHE_TTL_MS) return weatherCache.data;
   try {
     const url = 'https://api.open-meteo.com/v1/forecast?latitude=19.35&longitude=-99.16&hourly=temperature_2m,apparent_temperature,weathercode,uv_index&timezone=America%2FMexico_City&forecast_days=1';
-    const res = await fetch(url);
+    const res = await fetchWithTimeout(url);
     if (!res.ok) return null;
     const json = await res.json() as { hourly: { temperature_2m: number[]; apparent_temperature: number[]; weathercode: number[]; uv_index: number[] } };
     const temps = json.hourly.temperature_2m;
@@ -100,7 +114,7 @@ async function fetchIPC(): Promise<IpcData | null> {
   const now = Date.now();
   if (ipcCache.data && now - ipcCache.fetchedAt < IPC_CACHE_TTL_MS) return ipcCache.data;
   try {
-    const res = await fetch(
+    const res = await fetchWithTimeout(
       'https://query1.finance.yahoo.com/v8/finance/chart/%5EMXX?interval=1d&range=5d',
       { headers: { 'User-Agent': 'Mozilla/5.0' } }
     );
@@ -139,8 +153,8 @@ async function fetchOilPrices(): Promise<OilData | null> {
   if (oilCache.data && now - oilCache.fetchedAt < OIL_CACHE_TTL_MS) return oilCache.data;
   try {
     const [wtiRes, brentRes] = await Promise.all([
-      fetch('https://query1.finance.yahoo.com/v8/finance/chart/CL%3DF?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
-      fetch('https://query1.finance.yahoo.com/v8/finance/chart/BZ%3DF?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
+      fetchWithTimeout('https://query1.finance.yahoo.com/v8/finance/chart/CL%3DF?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
+      fetchWithTimeout('https://query1.finance.yahoo.com/v8/finance/chart/BZ%3DF?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
     ]);
     if (!wtiRes.ok || !brentRes.ok) return null;
     const [wtiJson, brentJson] = await Promise.all([wtiRes.json(), brentRes.json()]) as [any, any];
@@ -181,9 +195,9 @@ async function fetchLatamRates(): Promise<LatamRates | null> {
   try {
     // Obtener USD/MXN, USD/ARS y USD/COP para calcular cruces
     const [mxnRes, arsRes, copRes] = await Promise.all([
-      fetch('https://query1.finance.yahoo.com/v8/finance/chart/USDMXN%3DX?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
-      fetch('https://query1.finance.yahoo.com/v8/finance/chart/USDARS%3DX?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
-      fetch('https://query1.finance.yahoo.com/v8/finance/chart/COP%3DX?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
+      fetchWithTimeout('https://query1.finance.yahoo.com/v8/finance/chart/USDMXN%3DX?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
+      fetchWithTimeout('https://query1.finance.yahoo.com/v8/finance/chart/USDARS%3DX?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
+      fetchWithTimeout('https://query1.finance.yahoo.com/v8/finance/chart/COP%3DX?interval=1d&range=2d', { headers: { 'User-Agent': 'Mozilla/5.0' } }),
     ]);
     if (!mxnRes.ok) return null;
     const [mxnJson, arsJson, copJson] = await Promise.all([mxnRes.json(), arsRes.json(), copRes.json()]) as [any, any, any];
@@ -228,7 +242,7 @@ async function fetchGold(): Promise<GoldData | null> {
   const now = Date.now();
   if (goldCache.data && now - goldCache.fetchedAt < GOLD_CACHE_TTL_MS) return goldCache.data;
   try {
-    const res = await fetch(
+    const res = await fetchWithTimeout(
       'https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1d&range=2d',
       { headers: { 'User-Agent': 'Mozilla/5.0' } }
     );
@@ -282,7 +296,7 @@ async function fetchExchangeRates(): Promise<ExchangeRates> {
   }
 
   // Obtener tipo de cambio actual: 1 USD = ? MXN, 1 EUR = ? MXN, etc.
-  const latestRes = await fetch('https://api.frankfurter.app/latest?from=MXN&to=USD,EUR,CAD,GBP');
+  const latestRes = await fetchWithTimeout('https://api.frankfurter.app/latest?from=MXN&to=USD,EUR,CAD,GBP');
 
   if (!latestRes.ok) throw new Error('Error al obtener tipos de cambio');
 
@@ -304,7 +318,7 @@ async function fetchExchangeRates(): Promise<ExchangeRates> {
     const yesterday = new Date(latest.date);
     yesterday.setDate(yesterday.getDate() - 1);
     const yDate = yesterday.toISOString().split('T')[0];
-    const prevResponse = await fetch(`https://api.frankfurter.app/${yDate}?from=MXN&to=USD,EUR,CAD,GBP`);
+    const prevResponse = await fetchWithTimeout(`https://api.frankfurter.app/${yDate}?from=MXN&to=USD,EUR,CAD,GBP`);
     if (prevResponse.ok) {
       const prev = await prevResponse.json() as { rates: Record<string, number> };
       prevRates = {
@@ -340,8 +354,19 @@ export const appRouter = router({
   articles: router({
     list: publicProcedure.query(async () => {
       const rows = await getAllArticles();
+      // Solo campos esenciales para listado (sin contenido, sin duplicados)
       return rows.map(a => ({
-        ...a,
+        id: a.id,
+        slug: a.slug,
+        dateISO: a.dateISO,
+        heroImage: a.heroImage,
+        headlineEs: a.headlineEs,
+        headlineEn: a.headlineEn,
+        summaryEs: a.summaryEs,
+        summaryEn: a.summaryEn,
+        categoryEs: a.categoryEs,
+        categoryEn: a.categoryEn,
+        // Alias de compatibilidad
         title: a.headlineEs,
         summary: a.summaryEs,
         date: a.dateISO,

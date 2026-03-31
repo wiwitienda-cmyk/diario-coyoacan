@@ -623,3 +623,11 @@
 - [x] Redactar 4 reportajes con SEO pesado y fuentes citadas
 - [x] Insertar artículos en BD con CTAs de hospedaje
 - [x] Verificar renderizado y guardar checkpoint
+
+## Problema Crítico: Velocidad de Carga (31 marzo 2026)
+- [x] Diagnosticar causa de lentitud (APIs externas sin timeout, payload de 74KB, carga bloqueante)
+- [x] Agregar fetchWithTimeout de 5s a TODAS las APIs externas (Yahoo Finance, frankfurter, open-meteo)
+- [x] Reducir payload de articles.list: de 74KB a 40KB (eliminados dateEs/dateEn/createdAt, límite 30 artículos)
+- [x] Hacer carga no-bloqueante: divisas/clima se cargan en background, solo artículos bloquean la UI
+- [x] Aplicar lazy loading a rutas secundarias (Hemeroteca, Noticias, Mundial, AdminNewsletter, WorldCup2026En)
+- [x] Reiniciar servidor y verificar mejora: todas las APIs responden en <20ms (cache warm-up funciona)
