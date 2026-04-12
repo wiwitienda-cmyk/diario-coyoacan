@@ -631,3 +631,21 @@
 - [x] Hacer carga no-bloqueante: divisas/clima se cargan en background, solo artículos bloquean la UI
 - [x] Aplicar lazy loading a rutas secundarias (Hemeroteca, Noticias, Mundial, AdminNewsletter, WorldCup2026En)
 - [x] Reiniciar servidor y verificar mejora: todas las APIs responden en <20ms (cache warm-up funciona)
+
+## Batch semanal: Pascua y eventos CDMX/Coyoacán (5-12 abril 2026)
+- [ ] Investigar eventos de Pascua 2026 en CDMX y Coyoacán (ferias, actividades, museos)
+- [ ] Investigar festejos y festivales de abril en CDMX (Feria de las Flores, Festival de Cine, etc.)
+- [ ] Buscar imágenes reales de eventos y subirlas a CDN
+- [ ] Redactar 3-5 reportajes con SEO pesado y fuentes citadas
+- [ ] Insertar artículos en BD con CTAs de hospedaje
+- [ ] Verificar renderizado y guardar checkpoint
+
+## Batch: Artículos nuevos - Luchas libres Juan de la Barrera y eventos frescos
+- [x] Investigar luchas libres AAA en Gimnasio Juan de la Barrera (11 abril 2026: Penta vs Vikingo, La Catalina debut)
+- [x] Investigar otros eventos frescos en CDMX/Coyoacán (Slow Art Day, Kati Horna, listening parties)
+- [x] Buscar imágenes reales y subirlas a CDN (3 imágenes subidas)
+- [x] Redactar 3 artículos: Penta/AAA, Gimnasio Juan de la Barrera, Qué hacer CDMX fin de semana
+- [x] Insertar artículos en BD (newsArticles IDs 90001-90003)
+- [x] Crear página de detalle para newsArticles (NewsArticleDetail.tsx)
+- [x] Unificar Noticias.tsx para mostrar articles + newsArticles juntos (36 artículos total)
+- [x] Verificar renderizado y guardar checkpoint

@@ -1,23 +1,86 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Helmet } from 'react-helmet-async';
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import { Calendar, ArrowRight } from "lucide-react";
 
+interface UnifiedArticle {
+  id: number;
+  slug: string;
+  headline: string;
+  summary: string;
+  heroImage: string;
+  category: string;
+  date: string;
+  sortDate: string; // ISO date for sorting
+  source: 'articles' | 'newsArticles';
+}
+
 export default function Noticias() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   
-  const { data: articles, isLoading } = trpc.articles.list.useQuery();
+  const { data: articles, isLoading: loadingArticles } = trpc.articles.list.useQuery();
+  const { data: newsArticles, isLoading: loadingNews } = trpc.newsArticles.list.useQuery();
+
+  // Unificar ambas fuentes en un solo array
+  const allArticles = useMemo(() => {
+    const unified: UnifiedArticle[] = [];
+
+    // Artículos del Diario (tabla articles - bilingüe)
+    if (articles) {
+      for (const a of articles as any[]) {
+        unified.push({
+          id: a.id,
+          slug: a.slug,
+          headline: a.headlineEs || a.headline || '',
+          summary: a.summaryEs || a.summary || '',
+          heroImage: a.heroImage || '',
+          category: a.categoryEs || a.category || '',
+          date: a.dateEs || a.date || '',
+          sortDate: a.dateISO || a.createdAt || '',
+          source: 'articles',
+        });
+      }
+    }
+
+    // Noticias (tabla newsArticles)
+    if (newsArticles) {
+      for (const n of newsArticles as any[]) {
+        unified.push({
+          id: n.id,
+          slug: n.slug,
+          headline: n.title || '',
+          summary: n.summary || '',
+          heroImage: n.heroImage || '',
+          category: n.category || '',
+          date: n.date || '',
+          sortDate: n.createdAt || '',
+          source: 'newsArticles',
+        });
+      }
+    }
+
+    // Ordenar por fecha más reciente primero
+    unified.sort((a, b) => {
+      const da = new Date(a.sortDate).getTime() || 0;
+      const db = new Date(b.sortDate).getTime() || 0;
+      return db - da;
+    });
+
+    return unified;
+  }, [articles, newsArticles]);
+
+  const isLoading = loadingArticles && loadingNews;
 
   // Filtrar artículos por categoría
-  const filteredArticles = articles?.filter((article: any) => {
+  const filteredArticles = allArticles.filter((article) => {
     if (selectedCategory === "all") return true;
-    return article.categoryEs?.toLowerCase() === selectedCategory.toLowerCase();
-  }) || [];
+    return article.category?.toLowerCase() === selectedCategory.toLowerCase();
+  });
 
   // Obtener categorías únicas
   const categories = Array.from(
-    new Set(articles?.map((a: any) => a.categoryEs).filter(Boolean) || [])
+    new Set(allArticles.map((a) => a.category).filter(Boolean))
   ) as string[];
 
   if (isLoading) {
@@ -36,7 +99,7 @@ export default function Noticias() {
       <Helmet>
         <title>Noticias de Coyoacán | Diario Coyoacán</title>
         <meta name="description" content="Todas las noticias de Coyoacán: cultura, gastronomía, gobierno local, comunidad y hospedaje. El periódico digital del corazón de la Ciudad de México." />
-        <meta name="keywords" content="noticias Coyoacán, periódico Coyoacán, cultura CDMX, gastronomía Coyoacán, hospedaje Coyoacán, SúperAnfitrión, Diario Coyoacán" />
+        <meta name="keywords" content="noticias Coyoacán, periódico Coyoacán, cultura CDMX, gastronomía Coyoacán, hospedaje Coyoacán, SúperAnfitrión, Diario Coyoacán, lucha libre AAA, agenda cultural CDMX" />
         <meta name="author" content="Diario Coyoacán" />
         {/* Open Graph */}
         <meta property="og:type" content="website" />
@@ -172,19 +235,19 @@ export default function Noticias() {
                   : "bg-newsprint text-ink hover:bg-gray-100"
               }`}
             >
-              Todas las Ediciones ({articles?.length || 0})
+              Todas las Ediciones ({allArticles.length})
             </button>
             {categories.map((category: string) => (
               <button
                 key={category}
-                onClick={() => setSelectedCategory(category as string)}
+                onClick={() => setSelectedCategory(category)}
                 className={`px-6 py-3 font-subhead uppercase text-sm border-4 border-ink transition-all shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1A1A1A] ${
                   selectedCategory === category
                     ? "bg-ink text-newsprint"
                     : "bg-newsprint text-ink hover:bg-gray-100"
                 }`}
               >
-                {category} ({articles?.filter((a: any) => a.categoryEs === category).length || 0})
+                {category} ({allArticles.filter((a) => a.category === category).length})
               </button>
             ))}
           </div>
@@ -194,51 +257,58 @@ export default function Noticias() {
       {/* Grid de Artículos - Estilo Hemeroteca */}
       <main className="max-w-7xl mx-auto p-4 md:p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredArticles.map((article: any) => (
-            <Link key={article.id} href={`/diario?slug=${article.slug}`}>
-              <article className="group cursor-pointer bg-white border-4 border-ink transition-all duration-300 hover:shadow-[8px_8px_0px_0px_#1A1A1A] hover:translate-x-[-4px] hover:translate-y-[-4px]">
-                {/* Imagen con efecto periódico */}
-                <div className="relative overflow-hidden h-64 border-b-4 border-ink">
-                  <img
-                    src={article.heroImage}
-                    alt={article.headlineEs}
-                    className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
-                    loading="lazy"
-                  />
-                  {/* Etiqueta de categoría estilo periódico */}
-                  <div className="absolute top-4 right-4 bg-rust text-white px-3 py-2 font-subhead uppercase text-xs border-2 border-ink rotate-3 shadow-[4px_4px_0px_0px_#1A1A1A]">
-                    {article.categoryEs}
-                  </div>
-                </div>
+          {filteredArticles.map((article) => {
+            // Determinar la URL correcta según la fuente
+            const href = article.source === 'newsArticles'
+              ? `/noticias/${article.slug}`
+              : `/diario?slug=${article.slug}`;
 
-                {/* Contenido estilo primera plana */}
-                <div className="p-6">
-                  {/* Fecha estilo periódico */}
-                  <div className="flex items-center gap-2 text-sm mb-3 pb-3 border-b-2 border-dashed border-gray-300">
-                    <Calendar className="w-4 h-4 text-rust" />
-                    <span className="font-mono uppercase tracking-wider">{article.dateEs}</span>
+            return (
+              <Link key={`${article.source}-${article.id}`} href={href}>
+                <article className="group cursor-pointer bg-white border-4 border-ink transition-all duration-300 hover:shadow-[8px_8px_0px_0px_#1A1A1A] hover:translate-x-[-4px] hover:translate-y-[-4px]">
+                  {/* Imagen con efecto periódico */}
+                  <div className="relative overflow-hidden h-64 border-b-4 border-ink">
+                    <img
+                      src={article.heroImage}
+                      alt={article.headline}
+                      className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                      loading="lazy"
+                    />
+                    {/* Etiqueta de categoría estilo periódico */}
+                    <div className="absolute top-4 right-4 bg-rust text-white px-3 py-2 font-subhead uppercase text-xs border-2 border-ink rotate-3 shadow-[4px_4px_0px_0px_#1A1A1A]">
+                      {article.category}
+                    </div>
                   </div>
 
-                  {/* Título estilo headline */}
-                  <h2 className="text-2xl font-headline leading-tight mb-4 group-hover:text-rust transition-colors">
-                    {article.headlineEs}
-                  </h2>
+                  {/* Contenido estilo primera plana */}
+                  <div className="p-6">
+                    {/* Fecha estilo periódico */}
+                    <div className="flex items-center gap-2 text-sm mb-3 pb-3 border-b-2 border-dashed border-gray-300">
+                      <Calendar className="w-4 h-4 text-rust" />
+                      <span className="font-mono uppercase tracking-wider">{article.date}</span>
+                    </div>
 
-                  {/* Resumen estilo copete */}
-                  <p className="text-gray-700 leading-relaxed mb-4 text-justify border-l-2 border-rust pl-3 italic">
-                    {article.summaryEs}
-                  </p>
+                    {/* Título estilo headline */}
+                    <h2 className="text-2xl font-headline leading-tight mb-4 group-hover:text-rust transition-colors">
+                      {article.headline}
+                    </h2>
 
-                  {/* Botón Leer Edición Completa */}
-                  <div className="flex items-center justify-between pt-4 border-t-2 border-ink">
-                    <span className="font-subhead uppercase text-sm text-ink group-hover:text-rust transition-colors flex items-center gap-2">
-                      Leer Edición Completa <ArrowRight className="w-4 h-4" />
-                    </span>
+                    {/* Resumen estilo copete */}
+                    <p className="text-gray-700 leading-relaxed mb-4 text-justify border-l-2 border-rust pl-3 italic">
+                      {article.summary}
+                    </p>
+
+                    {/* Botón Leer Edición Completa */}
+                    <div className="flex items-center justify-between pt-4 border-t-2 border-ink">
+                      <span className="font-subhead uppercase text-sm text-ink group-hover:text-rust transition-colors flex items-center gap-2">
+                        Leer Edición Completa <ArrowRight className="w-4 h-4" />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </article>
-            </Link>
-          ))}
+                </article>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Mensaje si no hay artículos */}

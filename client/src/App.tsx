@@ -14,6 +14,7 @@ const Noticias = lazy(() => import("./pages/Noticias"));
 const AdminNewsletter = lazy(() => import("./pages/AdminNewsletter"));
 const HospedajeMundial2026 = lazy(() => import('./pages/HospedajeMundial2026'));
 const WorldCup2026En = lazy(() => import('./pages/WorldCup2026En'));
+const NewsArticleDetail = lazy(() => import('./pages/NewsArticleDetail'));
 
 // Fallback mínimo para lazy loading
 const LazyFallback = () => (
@@ -32,6 +33,7 @@ function Router() {
         <Route path={"/diario"} component={DiarioCoyoacan} />
         <Route path={"/hemeroteca"} component={Hemeroteca} />
         <Route path={"/archivo"} component={Hemeroteca} />
+        <Route path={"/noticias/:slug"} component={NewsArticleDetail} />
         <Route path={"/noticias"} component={Noticias} />
         <Route path={"/hospedaje-mundial-2026"} component={HospedajeMundial2026} />
         <Route path={"/en"} component={WorldCup2026En} />
