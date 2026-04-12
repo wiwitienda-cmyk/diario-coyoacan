@@ -178,6 +178,7 @@ export default function DiarioCoyoacan() {
   );
 
   const { data: allArticles, isLoading: isLoadingAll } = trpc.articles.list.useQuery();
+  const { data: newsArticlesData } = trpc.newsArticles.list.useQuery();
   // ─── Cotizaciones de divisas (se actualiza cada 10 min) ─────────────────────
   const { data: divisas } = trpc.divisas.rates.useQuery(undefined, {
     refetchInterval: 10 * 60 * 1000, // refetch cada 10 minutos
@@ -271,8 +272,25 @@ export default function DiarioCoyoacan() {
   }
 
    // ─── Procesamiento de datos ────────────────────────────────────────────
-  // Artículos para portada (los 3 más recientes)
-  const portadaArticles = (allArticles || []).slice(0, 3);
+  // Combinar newsArticles (más recientes) + articles para la portada
+  // Normalizar newsArticles al formato de articles para la portada
+  const normalizedNews = (newsArticlesData || []).map((n: any) => ({
+    ...n,
+    headlineEs: n.title,
+    summaryEs: n.summary,
+    categoryEs: n.category,
+    heroImage: n.heroImage,
+    slug: n.slug,
+    date: n.date,
+    title: n.title,
+    summary: n.summary,
+    category: n.category,
+    _isNews: true, // Marcar para saber que viene de newsArticles
+  }));
+  // Combinar: newsArticles primero (son los más recientes), luego articles
+  const combinedArticles = [...normalizedNews, ...(allArticles || [])];
+  // Artículos para portada (los 3 más recientes del combinado)
+  const portadaArticles = combinedArticles.slice(0, 3);
   // Artículo de referencia para cabecera/SEO: el más reciente
   // En modo portada currentArticle puede ser undefined; usamos portadaArticles[0] como fallback
   const safeArticle = currentArticle ?? portadaArticles[0];
@@ -289,7 +307,7 @@ export default function DiarioCoyoacan() {
   const shareUrl = `https://diario.superanfitrion.com.mx/diario?slug=${safeArticle?.slug ?? ''}`;
 
   // Artículos recientes para columna lateral (modo artículo individual)
-  const recentArticles = (allArticles || [])
+  const recentArticles = combinedArticles
     .filter((a) => a.slug !== safeArticle?.slug)
     .slice(0, 3);
 
@@ -995,7 +1013,7 @@ export default function DiarioCoyoacan() {
                             Redacción · {formatDateEs(art.date).split(',')[0]}
                           </span>
                           <a
-                            href={`/diario?slug=${art.slug}`}
+                            href={(art as any)._isNews ? `/noticias/${art.slug}` : `/diario?slug=${art.slug}`}
                             style={{
                               display: 'inline-flex',
                               alignItems: 'center',
@@ -1773,7 +1791,7 @@ export default function DiarioCoyoacan() {
               {recentArticles.map((art, i) => (
                 <a
                   key={art.slug}
-                  href={`/diario?slug=${art.slug}`}
+                  href={(art as any)._isNews ? `/noticias/${art.slug}` : `/diario?slug=${art.slug}`}
                   style={{
                     display: 'block',
                     padding: '0.75rem 1rem',

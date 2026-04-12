@@ -649,3 +649,8 @@
 - [x] Crear página de detalle para newsArticles (NewsArticleDetail.tsx)
 - [x] Unificar Noticias.tsx para mostrar articles + newsArticles juntos (36 artículos total)
 - [x] Verificar renderizado y guardar checkpoint
+
+## Poner artículos nuevos de lucha libre en la portada principal
+- [x] Hacer que la portada muestre los newsArticles nuevos como artículo principal
+- [x] Bajar los artículos viejos (Semana Santa) de la primera plana
+- [x] Verificar renderizado y guardar checkpoint
