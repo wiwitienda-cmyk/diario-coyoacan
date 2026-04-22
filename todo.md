@@ -654,3 +654,10 @@
 - [x] Hacer que la portada muestre los newsArticles nuevos como artículo principal
 - [x] Bajar los artículos viejos (Semana Santa) de la primera plana
 - [x] Verificar renderizado y guardar checkpoint
+
+## Artículo de última hora - Acontecimientos Coyoacán (22 abril 2026)
+- [x] Investigar noticias: telescopios+cerveza+terror, CCXP MX (Aaron Paul), Leonora Carrington, Fiesta del Libro UNAM, 31 Minutos Zócalo, Carrillo Gil
+- [x] Buscar imágenes reales con créditos: Chilango, CCXP México, Caras, Milenio, DóndeIr, MACG/INBAL
+- [x] Redactar artículo mega-SEO con 6 secciones, slug largo, fuentes citadas y CTAs agresivos
+- [x] Insertar artículo en BD (newsArticle ID 120001) y verificar en portada
+- [x] Verificar renderizado y guardar checkpoint
