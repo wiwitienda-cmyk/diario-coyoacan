@@ -661,3 +661,12 @@
 - [x] Redactar artículo mega-SEO con 6 secciones, slug largo, fuentes citadas y CTAs agresivos
 - [x] Insertar artículo en BD (newsArticle ID 120001) y verificar en portada
 - [x] Verificar renderizado y guardar checkpoint
+
+## Rediseño profesional del Diario Coyoacán (igualar calidad del blog superanfitrion.com)
+- [x] Rediseñar NewsArticleDetail.tsx: layout 2 columnas, imágenes con créditos, CTAs de hospedaje integrados
+- [x] Agregar botones de compartir (WhatsApp, Facebook, X/Twitter, Copiar enlace)
+- [x] Agregar sidebar sticky con banner de reserva directa, 7 propiedades con precios y ratings
+- [x] Mejorar tipografía (Playfair Display), espaciado y jerarquía visual profesional
+- [x] Agregar breadcrumbs (Inicio > Noticias > título) + header con Portada/Noticias/Reservar
+- [x] Agregar tiempo de lectura, artículos relacionados, CTA móvil, footer de 3 columnas
+- [x] Verificar renderizado y guardar checkpoint
