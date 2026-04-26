@@ -670,3 +670,13 @@
 - [x] Agregar breadcrumbs (Inicio > Noticias > título) + header con Portada/Noticias/Reservar
 - [x] Agregar tiempo de lectura, artículos relacionados, CTA móvil, footer de 3 columnas
 - [x] Verificar renderizado y guardar checkpoint
+
+## Rediseño profesional de la página de inicio (Home/Portada)
+- [x] Rediseñar DiarioCoyoacan.tsx con el mismo estilo profesional que NewsArticleDetail
+- [x] Implementar layout 2 columnas con sidebar sticky de propiedades (ReservaSidebar reutilizable)
+- [x] Header y footer consistentes con la vista de artículos (4 columnas)
+- [x] Tipografía Playfair Display, colores amber, diseño limpio con Tailwind CSS
+- [x] Mantener ticker de divisas, clima, newsletter, agenda del barrio, efeméride
+- [x] Artículo principal grande + 4 secundarios en grid 2 columnas
+- [x] CTA banner de hospedaje + CTA móvil
+- [x] Verificar renderizado responsive y ejecutar tests (59 tests passed)

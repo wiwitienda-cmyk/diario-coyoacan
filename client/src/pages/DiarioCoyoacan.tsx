@@ -3,69 +3,33 @@ import { Helmet } from 'react-helmet-async';
 import { trpc } from '@/lib/trpc';
 import { toast } from 'sonner';
 import { WhatsAppWidget } from '@/components/WhatsAppWidget';
-import { Share2, Facebook, Instagram, Youtube, Mail, Phone } from 'lucide-react';
+import { Link } from 'wouter';
+import {
+  Star, ExternalLink, Calendar, Clock, ChevronRight, Home,
+  Facebook, Instagram, Youtube, Mail, Phone, ArrowRight,
+} from 'lucide-react';
+
+// ─── Constants ──────────────────────────────────────────────────────────────
+const LODGIFY_URL = 'https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades';
+
+const PROPERTIES = [
+  { name: 'Flamingo 38', price: 24, rating: 4.97, reviews: 186 },
+  { name: 'La Pequeña París', price: 26, rating: 4.95, reviews: 142 },
+  { name: 'El Balcón de Buda', price: 32, rating: 4.95, reviews: 128 },
+  { name: 'King 1', price: 39, rating: 4.95, reviews: 97 },
+  { name: 'El Alebrije', price: 43, rating: 4.95, reviews: 84 },
+  { name: 'Rompecabezas', price: 39, rating: 4.89, reviews: 76 },
+  { name: 'El Cuarto Cuatro', price: 60, rating: 4.88, reviews: 52 },
+];
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
-
-/** Convierte el texto plano separado por ";" en un array de párrafos */
-interface ContentSection {
-  title?: string;
-  text: string;
-  cta?: Array<{ label: string; url: string; style?: 'primary' | 'secondary' }>;
-}
-
-function parseSectionsRich(raw: string): ContentSection[] {
-  // Handle JSON array format: [{"title":"...","text":"...","cta":[...]},...]
-  if (raw && raw.trim().startsWith('[')) {
-    try {
-      const sections = JSON.parse(raw) as Array<{ title?: string; text?: string; content?: string; cta?: Array<{ label: string; url: string; style?: 'primary' | 'secondary' }> }>;
-      if (Array.isArray(sections)) {
-        return sections
-          .map((s) => ({ title: s.title, text: s.text || s.content || '', cta: s.cta }))
-          .filter((s) => s.text);
-      }
-    } catch {
-      // Fall through to plain text parsing
-    }
-  }
-  // Handle plain text separated by semicolons
-  return raw
-    .split(';')
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .filter((s) => !s.startsWith('---') && !s.startsWith('**Fuentes') && !s.startsWith('Fuentes:'))
-    .map((s) => ({ text: s }));
-}
-
-/** Legacy wrapper for compatibility */
-function parseSections(raw: string): string[] {
-  return parseSectionsRich(raw).map((s) => s.text);
-}
-
-/** Extrae la primera cita directa o frase destacable para pull quote */
-function extractPullQuote(paragraphs: string[]): string {
-  for (const p of paragraphs) {
-    const match = p.match(/"([^"]{40,150})"/);
-    if (match) return match[1];
-  }
-  const first = paragraphs.find((p) => p.length > 120);
-  if (first) {
-    const sentences = first.split(/(?<=[.!?])\s+/);
-    if (sentences[1] && sentences[1].length > 40) return sentences[1].substring(0, 150);
-  }
-  return paragraphs[0]?.substring(0, 130) || '';
-}
-
-/** Calcula el número de edición desde el 1 de enero de 2026. Maneja formato ISO y texto largo */
 function getEditionNumber(dateStr: string): string {
   let d: Date;
   if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
     d = new Date(dateStr + 'T12:00:00');
   } else {
-    // Texto largo: extraer números para parsear
     d = new Date(dateStr);
     if (isNaN(d.getTime())) {
-      // Intentar extraer año, mes y día del texto en español
       const meses: Record<string, number> = {
         enero: 0, febrero: 1, marzo: 2, abril: 3, mayo: 4, junio: 5,
         julio: 6, agosto: 7, septiembre: 8, octubre: 9, noviembre: 10, diciembre: 11,
@@ -87,80 +51,99 @@ function getEditionNumber(dateStr: string): string {
   return String(Math.max(1, diff + 1)).padStart(3, '0');
 }
 
-/** Formatea fecha en español largo. Maneja tanto formato ISO (2026-02-28) como texto largo ya formateado */
 function formatDateEs(dateStr: string): string {
-  // Si ya viene en formato de texto largo (ej: "Domingo, 15 de febrero de 2026"), devolverlo tal cual
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    return dateStr;
-  }
-  // Formato ISO: parsear y formatear
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
   const d = new Date(dateStr + 'T12:00:00');
   if (isNaN(d.getTime())) return dateStr;
   return d.toLocaleDateString('es-MX', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
 }
 
-/** Genera anuncio contextual según categoría/título */
-function getContextualAd(category: string, title: string): {
-  headline: string;
-  body: string;
-  cta: string;
-  url: string;
-} {
-  const lower = (category + ' ' + title).toLowerCase();
-  if (lower.includes('mundial') || lower.includes('fútbol') || lower.includes('futbol')) {
-    return {
-      headline: 'Asegura tu lugar para el Mundial 2026',
-      body: 'SúperAnfitrión Coyoacán tiene disponibilidad para junio y julio con tarifas directas, sin comisiones de plataforma y con factura incluida. A 20–25 minutos del Estadio Azteca.',
-      cta: 'Reservar para el Mundial →',
-      url: 'https://superanfitrion.com.mx/mundial-2026',
-    };
-  }
-  if (lower.includes('gentrificaci') || lower.includes('vivienda') || lower.includes('vecin')) {
-    return {
-      headline: 'Hospédate con quienes conocen el barrio',
-      body: 'Antes de que se acaben los lugares. SúperAnfitrión Coyoacán ofrece hospedaje directo con anfitriones locales, no con corporativos. Reserva sin intermediarios.',
-      cta: 'Reservar directo →',
-      url: 'https://superanfitrion.com.mx',
-    };
-  }
-  if (lower.includes('festival') || lower.includes('feria') || lower.includes('cultura') || lower.includes('arte')) {
-    return {
-      headline: 'Vive el festival desde adentro del barrio',
-      body: 'SúperAnfitrión Coyoacán tiene alojamientos auténticos a pasos del Jardín Centenario. WiFi de alta velocidad, sin hoteles, sin clichés.',
-      cta: 'Ver alojamientos →',
-      url: 'https://superanfitrion.com.mx',
-    };
-  }
-  return {
-    headline: 'Hospédate en el corazón de Coyoacán',
-    body: 'Alojamientos auténticos en el barrio más bonito de México. Reserva directa sin comisiones. Anfitriones locales que conocen cada rincón de Coyoacán.',
-    cta: 'Ver disponibilidad →',
-    url: 'https://superanfitrion.com.mx',
-  };
+// ─── Sidebar de Reserva (reutilizable, igual que en NewsArticleDetail) ──────
+function ReservaSidebar() {
+  return (
+    <div className="sticky top-24">
+      {/* Banner de reserva directa */}
+      <div className="bg-gradient-to-br from-amber-800 via-amber-900 to-amber-950 rounded-2xl p-6 text-white mb-6 shadow-xl">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+          <span className="text-xs font-semibold uppercase tracking-wider text-amber-200">Reserva directa</span>
+        </div>
+        <h3 className="text-xl font-bold mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+          Hospédate en Coyoacán
+        </h3>
+        <p className="text-amber-100 text-sm mb-4 leading-relaxed">
+          Sin comisiones de Airbnb. Departamentos completos a pasos del Jardín Centenario.
+        </p>
+        <a
+          href={LODGIFY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full text-center py-3 px-4 bg-white text-amber-900 font-bold rounded-xl hover:bg-amber-50 transition-colors text-sm shadow-lg"
+        >
+          Ver Disponibilidad
+        </a>
+      </div>
+
+      {/* Lista de propiedades */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-100">
+          <h4 className="font-bold text-gray-900 text-sm" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Nuestros alojamientos
+          </h4>
+          <p className="text-xs text-gray-500 mt-0.5">Precios desde — por noche</p>
+        </div>
+        <div className="divide-y divide-gray-50">
+          {PROPERTIES.map((prop) => (
+            <a
+              key={prop.name}
+              href={LODGIFY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between px-5 py-3 hover:bg-amber-50/50 transition-colors group"
+            >
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-gray-900 group-hover:text-amber-800 transition-colors truncate">
+                  {prop.name}
+                </p>
+                <div className="flex items-center gap-1 mt-0.5">
+                  <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                  <span className="text-xs text-gray-600">{prop.rating}</span>
+                  <span className="text-xs text-gray-400">({prop.reviews})</span>
+                </div>
+              </div>
+              <div className="text-right flex-shrink-0 ml-3">
+                <p className="text-sm font-bold text-amber-800">${prop.price} USD</p>
+                <p className="text-[10px] text-gray-400">por noche</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div className="px-5 py-3 bg-gray-50 border-t border-gray-100">
+          <a
+            href={LODGIFY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-1.5 text-sm font-semibold text-amber-800 hover:text-amber-900 transition-colors"
+          >
+            Ver todos los alojamientos
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
+
+      {/* Nota de confianza */}
+      <div className="mt-4 px-4 py-3 bg-green-50 rounded-xl border border-green-100">
+        <p className="text-xs text-green-800 leading-relaxed">
+          <strong>100% satisfacción.</strong> Entrada autónoma, WiFi de alta velocidad, a una cuadra del transporte público. Reserva directo y ahorra.
+        </p>
+      </div>
+    </div>
+  );
 }
 
-// ─── Paleta de colores ───────────────────────────────────────────────────────
-const PAPER = '#f5f0e8';
-const INK = '#1a1008';
-const WINE = '#8b1a1a';
-const GOLD = '#c9a96e';
-const PAPER_DARK = '#ede8dc';
-const INK_LIGHT = '#3a2a1a';
-const INK_MUTED = '#6b5a3e';
-
-// ─── Familias tipográficas ───────────────────────────────────────────────────
-const SERIF_BODY = "'Source Serif 4', 'Merriweather', Georgia, serif";
-const SERIF_HEADLINE = "'Playfair Display', 'Merriweather', Georgia, serif";
-const GOTHIC = "'UnifrakturMaguntia', 'Playfair Display', serif";
-const SANS_SUBHEAD = "'Oswald', 'Arial Narrow', sans-serif";
-
 // ─── Componente principal ────────────────────────────────────────────────────
-
 export default function DiarioCoyoacan() {
   const [email, setEmail] = useState('');
 
@@ -179,36 +162,27 @@ export default function DiarioCoyoacan() {
 
   const { data: allArticles, isLoading: isLoadingAll } = trpc.articles.list.useQuery();
   const { data: newsArticlesData } = trpc.newsArticles.list.useQuery();
-  // ─── Cotizaciones de divisas (se actualiza cada 10 min) ─────────────────────
+
+  // ─── Datos secundarios (no bloquean render) ──────────────────────────────
   const { data: divisas } = trpc.divisas.rates.useQuery(undefined, {
-    refetchInterval: 10 * 60 * 1000, // refetch cada 10 minutos
-    staleTime: 9 * 60 * 1000,
+    refetchInterval: 10 * 60 * 1000, staleTime: 9 * 60 * 1000,
   });
-  // ─── Índice IPC/BMV (se actualiza cada 15 min) ──────────────────────────────────────────
   const { data: ipc } = trpc.divisas.ipc.useQuery(undefined, {
-    refetchInterval: 15 * 60 * 1000,
-    staleTime: 14 * 60 * 1000,
+    refetchInterval: 15 * 60 * 1000, staleTime: 14 * 60 * 1000,
   });
-  // ─── Petróleo WTI/Brent (se actualiza cada 15 min) ──────────────────────────
   const { data: oil } = trpc.divisas.oil.useQuery(undefined, {
-    refetchInterval: 15 * 60 * 1000,
-    staleTime: 14 * 60 * 1000,
+    refetchInterval: 15 * 60 * 1000, staleTime: 14 * 60 * 1000,
   });
-  // ─── Tipos de cambio Latam ARS/COP (se actualiza cada 15 min) ─────────────────
   const { data: latam } = trpc.divisas.latam.useQuery(undefined, {
-    refetchInterval: 15 * 60 * 1000,
-    staleTime: 14 * 60 * 1000,
+    refetchInterval: 15 * 60 * 1000, staleTime: 14 * 60 * 1000,
   });
-  // ─── Clima Coyoacán (se actualiza cada hora) ─────────────────────────────────────────────
   const { data: weather } = trpc.weather.coyoacan.useQuery(undefined, {
-    refetchInterval: 60 * 60 * 1000, // refetch cada hora
-    staleTime: 59 * 60 * 1000,
+    refetchInterval: 60 * 60 * 1000, staleTime: 59 * 60 * 1000,
   });
-  // ─── Precio del Oro XAU/USD (se actualiza cada 15 min) ──────────────────────────
   const { data: gold } = trpc.divisas.gold.useQuery(undefined, {
-    refetchInterval: 15 * 60 * 1000,
-    staleTime: 14 * 60 * 1000,
+    refetchInterval: 15 * 60 * 1000, staleTime: 14 * 60 * 1000,
   });
+
   const subscribeMutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: (data) => {
       if (data.success) {
@@ -224,56 +198,48 @@ export default function DiarioCoyoacan() {
   });
 
   const currentArticle = articleSlug ? article : latestArticle;
-  // En modo portada (sin slug), mostrar 3 tarjetas de artículos
   const isPortadaMode = !articleSlug;
-  // OPTIMIZACIÓN: Solo bloquear por artículos (datos críticos), NO por divisas/clima (datos secundarios)
   const isLoadingArticles = isPortadaMode ? isLoadingAll : (articleSlug ? isLoading : isLoadingLatest);
 
-  // ─── Estado de carga (solo artículos bloquean) ───────────────────────────────────────────────────
+  // ─── Loading ──────────────────────────────────────────────────────────────
   if (isLoadingArticles) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: PAPER, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ textAlign: 'center' }}>
-          <p style={{ fontFamily: GOTHIC, fontSize: '4rem', color: INK, marginBottom: '1rem' }}>
-            Diario Coyoacán
-          </p>
-          <p style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', letterSpacing: '0.15em', color: WINE, fontSize: '0.85rem' }}>
-            Cargando edición…
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-300 border-t-amber-800 mx-auto mb-4" />
+          <p className="text-sm text-gray-500 tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Cargando Diario Coyoacán...
           </p>
         </div>
       </div>
     );
   }
 
-  // ─── Sin  // ─── Sin artículo ──────────────────────────────────────────────
-  // En modo portada, no necesitamos currentArticle (usamos allArticles)
+  // ─── Sin artículo ─────────────────────────────────────────────────────────
   if (!isPortadaMode && !currentArticle) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: PAPER, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ textAlign: 'center', maxWidth: '480px', padding: '0 1rem' }}>
-          <p style={{ fontFamily: GOTHIC, fontSize: '4rem', color: INK, marginBottom: '1rem' }}>
-            Diario Coyoacán
-          </p>
-          <p style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', letterSpacing: '0.15em', color: WINE, marginBottom: '2rem', fontSize: '0.85rem' }}>
-            La edición de hoy está en preparación
-          </p>
-          <p style={{ fontFamily: SERIF_BODY, color: INK, marginBottom: '1.5rem', lineHeight: 1.7 }}>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-bold text-gray-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Edición no disponible
+          </h2>
+          <p className="text-gray-600 mb-6 text-sm leading-relaxed">
             Nuestros redactores están trabajando en el artículo del día. Vuelve pronto.
           </p>
           <a
             href="https://superanfitrion.com.mx"
-            style={{ display: 'inline-block', backgroundColor: WINE, color: PAPER, padding: '0.75rem 1.5rem', fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem', textDecoration: 'none' }}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-800 text-white rounded-lg hover:bg-amber-900 transition-colors text-sm font-medium"
           >
-            Visitar SúperAnfitrión →
+            Visitar SúperAnfitrión <ArrowRight className="w-4 h-4" />
           </a>
         </div>
       </div>
     );
   }
 
-   // ─── Procesamiento de datos ────────────────────────────────────────────
-  // Combinar newsArticles (más recientes) + articles para la portada
-  // Normalizar newsArticles al formato de articles para la portada
+  // ─── Procesamiento de datos ───────────────────────────────────────────────
   const normalizedNews = (newsArticlesData || []).map((n: any) => ({
     ...n,
     headlineEs: n.title,
@@ -285,69 +251,62 @@ export default function DiarioCoyoacan() {
     title: n.title,
     summary: n.summary,
     category: n.category,
-    _isNews: true, // Marcar para saber que viene de newsArticles
+    _isNews: true,
   }));
-  // Combinar: newsArticles primero (son los más recientes), luego articles
   const combinedArticles = [...normalizedNews, ...(allArticles || [])];
-  // Artículos para portada (los 3 más recientes del combinado)
-  const portadaArticles = combinedArticles.slice(0, 3);
-  // Artículo de referencia para cabecera/SEO: el más reciente
-  // En modo portada currentArticle puede ser undefined; usamos portadaArticles[0] como fallback
+  const portadaArticles = combinedArticles.slice(0, 6);
   const safeArticle = currentArticle ?? portadaArticles[0];
-  const refArticle = portadaArticles[0] ?? safeArticle;
 
-  const richSections = parseSectionsRich((safeArticle as any)?.content ?? (safeArticle as any)?.contentEs ?? '');
-  const paragraphs = richSections.map((s) => s.text);
-  const pullQuote = extractPullQuote(paragraphs);
-   // Fecha de la cabecera: siempre la fecha real de hoy en zona horaria CDMX
-  const todayIso = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' }); // YYYY-MM-DD
+  const todayIso = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' });
   const editionNum = getEditionNumber(todayIso);
   const dateFormatted = formatDateEs(todayIso);
-  const ad = getContextualAd(safeArticle?.categoryEs ?? '', safeArticle?.headlineEs ?? '');
+
+  // SEO
+  const rawTitle = safeArticle?.title ?? 'Diario Coyoacán';
+  const seoTitle = rawTitle.length > 42 ? rawTitle.substring(0, 39) + '…' : rawTitle;
+  const displaySummary = (safeArticle?.summary ?? '').length > 160
+    ? (safeArticle?.summary ?? '').substring(0, 157) + '…'
+    : (safeArticle?.summary ?? '');
   const shareUrl = `https://diario.superanfitrion.com.mx/diario?slug=${safeArticle?.slug ?? ''}`;
 
-  // Artículos recientes para columna lateral (modo artículo individual)
-  const recentArticles = combinedArticles
-    .filter((a) => a.slug !== safeArticle?.slug)
-    .slice(0, 3);
+  // ─── Currency ticker helper ───────────────────────────────────────────────
+  const renderCurrencyTicker = () => {
+    if (!divisas) return null;
+    const pairs = [
+      { label: 'USD/MXN', cur: 'USD_MXN' as const, flag: '🇺🇸' },
+      { label: 'EUR/MXN', cur: 'EUR_MXN' as const, flag: '🇪🇺' },
+      { label: 'CAD/MXN', cur: 'CAD_MXN' as const, flag: '🇨🇦' },
+      { label: 'GBP/MXN', cur: 'GBP_MXN' as const, flag: '🇬🇧' },
+    ] as const;
 
-  // Distribución de párrafos
-  const firstParagraph = paragraphs[0] || '';
-  const firstSection = richSections[0];
-  const restParagraphs = paragraphs.slice(1);
-  const restSections = richSections.slice(1);
-  const beforePullQuote = restParagraphs.slice(0, 2);
-  const beforePullQuoteSections = restSections.slice(0, 2);
-  const afterPullQuote = restParagraphs.slice(2);
-  const afterPullQuoteSections = restSections.slice(2);
-
-  // Título para <title> SEO: máximo 42 chars + " | Diario Coyoacán" (18) = 60 total
-  const rawTitle = safeArticle?.title ?? '';
-  const seoTitle = rawTitle.length > 42
-      ? rawTitle.substring(0, 39) + '…'
-      : rawTitle;
-
-  // Título visible en H2 (≤78 chars para dejar margen)
-  const displayTitle = rawTitle.length > 78
-      ? rawTitle.substring(0, 75) + '…'
-      : rawTitle;
-
-  // Summary truncado (≤160 chars)
-  const displaySummary = (safeArticle?.summary ?? '').length > 160
-      ? (safeArticle?.summary ?? '').substring(0, 157) + '…'
-      : (safeArticle?.summary ?? '');
+    return pairs.map(({ label, cur, flag }) => {
+      const rate = divisas.rates[cur];
+      const prev = divisas.prevRates?.[cur];
+      const diff = prev ? rate - prev : null;
+      const isUp = diff !== null && diff > 0;
+      const isDown = diff !== null && diff < 0;
+      return (
+        <span key={label} className="inline-flex items-center gap-1.5 px-3 text-xs whitespace-nowrap">
+          <span>{flag}</span>
+          <span className="font-semibold text-amber-300">{label}</span>
+          <span className="text-gray-200">{rate.toFixed(2)}</span>
+          {diff !== null && (
+            <span className={isUp ? 'text-green-400' : isDown ? 'text-red-400' : 'text-gray-400'} style={{ fontSize: '0.6rem' }}>
+              {isUp ? '▲' : isDown ? '▼' : '▶'} ({isUp ? '+' : ''}{diff.toFixed(2)})
+            </span>
+          )}
+        </span>
+      );
+    });
+  };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: PAPER, color: INK }}>
+    <div className="min-h-screen bg-white">
       <Helmet>
         <title>{seoTitle} | Diario Coyoacán</title>
         <meta name="description" content={displaySummary} />
-        <meta
-          name="keywords"
-          content={`Coyoacán, ${safeArticle?.category}, qué hacer en Coyoacán, hospedaje Coyoacán, nómadas digitales CDMX, Mundial 2026 CDMX, Diario Coyoacán`}
-        />
+        <meta name="keywords" content={`Coyoacán, ${safeArticle?.category}, qué hacer en Coyoacán, hospedaje Coyoacán, nómadas digitales CDMX, Mundial 2026 CDMX, Diario Coyoacán`} />
         <meta name="author" content="Diario Coyoacán" />
-        {/* Open Graph - sobreescribe los que inyecta la plataforma */}
         <meta property="og:type" content="article" />
         <meta property="og:url" content={shareUrl} />
         <meta property="og:title" content={`${seoTitle} | Diario Coyoacán`} />
@@ -355,1770 +314,538 @@ export default function DiarioCoyoacan() {
         <meta property="og:site_name" content="Diario Coyoacán" />
         <meta property="og:locale" content="es_MX" />
         {safeArticle?.heroImage && <meta property="og:image" content={safeArticle.heroImage} />}
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${seoTitle} | Diario Coyoacán`} />
         <meta name="twitter:description" content={displaySummary} />
         {safeArticle?.heroImage && <meta name="twitter:image" content={safeArticle.heroImage} />}
-        {/* Canonical */}
         <link rel="canonical" href={shareUrl} />
-        {/* ld+json Schema.org - NewsArticle completo para Google News */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'NewsArticle',
-            headline: (displayTitle || '').substring(0, 110),
+            headline: (rawTitle || '').substring(0, 110),
             description: (displaySummary || '').substring(0, 300),
-            image: safeArticle?.heroImage ? [{
-              '@type': 'ImageObject',
-              url: safeArticle.heroImage,
-              width: 1200,
-              height: 630,
-            }] : undefined,
+            image: safeArticle?.heroImage ? [{ '@type': 'ImageObject', url: safeArticle.heroImage, width: 1200, height: 630 }] : undefined,
             datePublished: (() => { try { if (safeArticle?.date && /^\d{4}-\d{2}-\d{2}$/.test(safeArticle.date)) return new Date(safeArticle.date + 'T12:00:00Z').toISOString(); } catch {} return new Date().toISOString(); })(),
             dateModified: (() => { try { if (safeArticle?.date && /^\d{4}-\d{2}-\d{2}$/.test(safeArticle.date)) return new Date(safeArticle.date + 'T12:00:00Z').toISOString(); } catch {} return new Date().toISOString(); })(),
-            author: [{
-              '@type': 'Organization',
-              name: 'Diario Coyoacán',
-              url: 'https://diario.superanfitrion.com.mx',
-            }],
-            publisher: {
-              '@type': 'NewsMediaOrganization',
-              name: 'Diario Coyoacán',
-              url: 'https://diario.superanfitrion.com.mx',
-              logo: {
-                '@type': 'ImageObject',
-                url: 'https://diario.superanfitrion.com.mx/logo-diario.png',
-                width: 600,
-                height: 60,
-              },
-            },
-            mainEntityOfPage: {
-              '@type': 'WebPage',
-              '@id': shareUrl,
-            },
+            author: [{ '@type': 'Organization', name: 'Diario Coyoacán', url: 'https://diario.superanfitrion.com.mx' }],
+            publisher: { '@type': 'NewsMediaOrganization', name: 'Diario Coyoacán', url: 'https://diario.superanfitrion.com.mx', logo: { '@type': 'ImageObject', url: 'https://diario.superanfitrion.com.mx/logo-diario.png', width: 600, height: 60 } },
+            mainEntityOfPage: { '@type': 'WebPage', '@id': shareUrl },
             articleSection: safeArticle?.category || 'Noticias',
             inLanguage: 'es-MX',
             isAccessibleForFree: true,
-            keywords: `Coyoacán, CDMX, ${safeArticle?.category || 'noticias'}, hospedaje Coyoacán, SúperAnfitrión`,
-            about: {
-              '@type': 'Place',
-              name: 'Coyoacán',
-              address: {
-                '@type': 'PostalAddress',
-                addressLocality: 'Coyoacán',
-                addressRegion: 'Ciudad de México',
-                addressCountry: 'MX',
-              },
-            },
           })}
         </script>
       </Helmet>
 
-      {/* ── BANNER SUPERIOR NEGRO ─────────────────────────────────────────── */}
-      <div
-        style={{
-          backgroundColor: INK,
-          color: PAPER,
-          padding: '0.4rem 1rem',
-          textAlign: 'center',
-          fontSize: '0.7rem',
-          fontFamily: SANS_SUBHEAD,
-          textTransform: 'uppercase',
-          letterSpacing: '0.12em',
-        }}
-      >
-        <a
-          href="https://superanfitrion.com.mx"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: GOLD, textDecoration: 'none' }}
-        >
-          🏠 Hospédate en Coyoacán con SúperAnfitrión · superanfitrion.com.mx
-        </a>
-      </div>
-
-      {/* ── MARQUEE DE NOTICIAS ───────────────────────────────────────────── */}
-      <div
-        style={{
-          backgroundColor: WINE,
-          color: PAPER,
-          padding: '0.35rem 0',
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        <div
-          style={{
-            display: 'inline-block',
-            animation: 'marquee 35s linear infinite',
-            fontFamily: SANS_SUBHEAD,
-            textTransform: 'uppercase',
-            letterSpacing: '0.12em',
-            fontSize: '0.7rem',
-          }}
-        >
-          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: {weather ? `${weather.morning.icon} MAÑANA ${weather.morning.temp}°C · ${weather.afternoon.icon} TARDE ${weather.afternoon.temp}°C · ${weather.night.icon} NOCHE ${weather.night.temp}°C · ☀️ UV ${weather.current.uvIndex} (${weather.current.uvLabel})` : 'CARGANDO CLIMA...'} &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
-          HOY EN COYOACÁN: {safeArticle?.title.substring(0, 60)} &bull; CLIMA: {weather ? `${weather.morning.icon} MAÑANA ${weather.morning.temp}°C · ${weather.afternoon.icon} TARDE ${weather.afternoon.temp}°C · ${weather.night.icon} NOCHE ${weather.night.temp}°C · ☀️ UV ${weather.current.uvIndex} (${weather.current.uvLabel})` : 'CARGANDO CLIMA...'} &bull; HOSPÉDATE EN EL CORAZÓN DE COYOACÁN: RESERVA EN SUPERANFITRION.COM.MX &bull; ALCALDÍAS: COYOACÁN · BENITO JUÁREZ · XOCHIMILCO · ÁLVARO OBREGÓN · MILPA ALTA · IZTACALCO · CENTRO HISTÓRICO &bull;&nbsp;
+      {/* ── Currency Ticker ──────────────────────────────────────────── */}
+      <div className="bg-gray-950 text-gray-300 overflow-hidden whitespace-nowrap border-b border-gray-800" style={{ fontSize: '0.68rem' }}>
+        <div className="inline-flex py-1.5 animate-[marquee_30s_linear_infinite]">
+          {renderCurrencyTicker()}
+          {ipc && (
+            <span className="inline-flex items-center gap-1.5 px-3 text-xs whitespace-nowrap border-l border-gray-700 ml-1">
+              <span className="font-semibold text-blue-300">IPC BMV</span>
+              <span className="text-gray-200">{ipc.price.toLocaleString('es-MX')}</span>
+              <span className={ipc.change >= 0 ? 'text-green-400' : 'text-red-400'} style={{ fontSize: '0.6rem' }}>
+                {ipc.change >= 0 ? '▲' : '▼'} {ipc.changePct.toFixed(2)}%
+              </span>
+            </span>
+          )}
+          {oil && (
+            <>
+              <span className="inline-flex items-center gap-1.5 px-3 text-xs whitespace-nowrap border-l border-gray-700 ml-1">
+                <span>🛢️</span>
+                <span className="font-semibold text-orange-300">WTI</span>
+                <span className="text-gray-200">${oil.wti.price.toFixed(2)}</span>
+                <span className={oil.wti.change >= 0 ? 'text-green-400' : 'text-red-400'} style={{ fontSize: '0.6rem' }}>
+                  {oil.wti.change >= 0 ? '▲' : '▼'} {oil.wti.change >= 0 ? '+' : ''}{oil.wti.change.toFixed(2)}%
+                </span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 text-xs whitespace-nowrap">
+                <span>🛢️</span>
+                <span className="font-semibold text-orange-300">BRENT</span>
+                <span className="text-gray-200">${oil.brent.price.toFixed(2)}</span>
+                <span className={oil.brent.change >= 0 ? 'text-green-400' : 'text-red-400'} style={{ fontSize: '0.6rem' }}>
+                  {oil.brent.change >= 0 ? '▲' : '▼'} {oil.brent.change >= 0 ? '+' : ''}{oil.brent.change.toFixed(2)}%
+                </span>
+              </span>
+            </>
+          )}
+          {gold && (
+            <span className="inline-flex items-center gap-1.5 px-3 text-xs whitespace-nowrap border-l border-gray-700 ml-1">
+              <span className="font-semibold text-yellow-300">ORO XAU/USD</span>
+              <span className="text-gray-200">${gold.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              <span className={gold.change >= 0 ? 'text-green-400' : 'text-red-400'} style={{ fontSize: '0.6rem' }}>
+                {gold.change >= 0 ? '▲' : '▼'} {gold.change >= 0 ? '+' : ''}{gold.change.toFixed(2)} ({gold.changePct >= 0 ? '+' : ''}{gold.changePct.toFixed(2)}%)
+              </span>
+            </span>
+          )}
+          {/* Duplicate for seamless loop */}
+          {renderCurrencyTicker()}
         </div>
       </div>
-      {/* ── CINTILLA DE DIVISAS ───────────────────────────────── */}
-      <div
-        style={{
-          backgroundColor: '#0d1117',
-          color: '#e6edf3',
-          padding: '0.3rem 0',
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-          borderBottom: `1px solid ${GOLD}`,
-          fontSize: '0.68rem',
-          fontFamily: SANS_SUBHEAD,
-          letterSpacing: '0.08em',
-        }}
-      >
-        {divisas ? (
-          <div
-            style={{
-              display: 'inline-flex',
-              gap: '0',
-              animation: 'marquee 28s linear infinite',
-            }}
-          >
-            {([
-              { label: 'USD/MXN', cur: 'USD_MXN' as const, flag: '🇺🇸' },
-              { label: 'EUR/MXN', cur: 'EUR_MXN' as const, flag: '🇪🇺' },
-              { label: 'CAD/MXN', cur: 'CAD_MXN' as const, flag: '🇨🇦' },
-              { label: 'GBP/MXN', cur: 'GBP_MXN' as const, flag: '🇬🇧' },
-            ] as const).map(({ label, cur, flag }) => {
-              const rate = divisas.rates[cur];
-              const prev = divisas.prevRates?.[cur];
-              const diff = prev ? rate - prev : null;
-              const isUp = diff !== null && diff > 0;
-              const isDown = diff !== null && diff < 0;
-              const arrow = isUp ? '▲' : isDown ? '▼' : '▶';
-              const arrowColor = isUp ? '#4ade80' : isDown ? '#f87171' : GOLD;
-              const diffText = diff !== null ? ` (${isUp ? '+' : ''}${diff.toFixed(2)})` : '';
-              return (
-                <span
-                  key={label}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.3rem',
-                    padding: '0 1.2rem',
-                    borderRight: `1px solid #30363d`,
-                  }}
-                >
-                  <span>{flag}</span>
-                  <span style={{ color: GOLD, fontWeight: 700 }}>{label}</span>
-                  <span style={{ color: '#e6edf3' }}>{rate.toFixed(2)}</span>
-                  <span style={{ color: arrowColor, fontSize: '0.6rem' }}>
-                    {arrow}{diffText}
-                  </span>
-                </span>
-              );
-            })}
-            {/* IPC/BMV */}
-            {ipc && (
-              <span
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.3rem',
-                  padding: '0 1.2rem',
-                  borderRight: `1px solid #30363d`,
-                  borderLeft: `2px solid ${GOLD}`,
-                  marginLeft: '0.5rem',
-                }}
-              >
-                <span style={{ color: GOLD, fontWeight: 700 }}>IPC BMV</span>
-                <span style={{ color: '#e6edf3' }}>{ipc.price.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                <span style={{ color: ipc.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
-                  {ipc.change >= 0 ? '▲' : '▼'} {ipc.change >= 0 ? '+' : ''}{ipc.change.toFixed(0)} ({ipc.changePct >= 0 ? '+' : ''}{ipc.changePct.toFixed(2)}%)
-                </span>
-              </span>
-            )}
-            {/* Petróleo WTI/Brent */}
-            {oil && (
-              <>
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.3rem',
-                    padding: '0 1.2rem',
-                    borderRight: `1px solid #30363d`,
-                    borderLeft: `2px solid #f97316`,
-                    marginLeft: '0.5rem',
-                  }}
-                >
-                  <span>🛢️</span>
-                  <span style={{ color: '#f97316', fontWeight: 700 }}>WTI</span>
-                  <span style={{ color: '#e6edf3' }}>${oil.wti.price.toFixed(2)}</span>
-                  <span style={{ color: oil.wti.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
-                    {oil.wti.change >= 0 ? '▲' : '▼'} {oil.wti.change >= 0 ? '+' : ''}{oil.wti.change.toFixed(2)} ({oil.wti.changePct >= 0 ? '+' : ''}{oil.wti.changePct.toFixed(2)}%)
-                  </span>
-                </span>
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.3rem',
-                    padding: '0 1.2rem',
-                    borderRight: `1px solid #30363d`,
-                  }}
-                >
-                  <span>🛢️</span>
-                  <span style={{ color: '#f97316', fontWeight: 700 }}>BRENT</span>
-                  <span style={{ color: '#e6edf3' }}>${oil.brent.price.toFixed(2)}</span>
-                  <span style={{ color: oil.brent.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
-                    {oil.brent.change >= 0 ? '▲' : '▼'} {oil.brent.change >= 0 ? '+' : ''}{oil.brent.change.toFixed(2)} ({oil.brent.changePct >= 0 ? '+' : ''}{oil.brent.changePct.toFixed(2)}%)
-                  </span>
-                </span>
-              </>
-            )}
-            {/* Latam: ARS/MXN y COP/MXN */}
-            {latam && (
-              <>
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.3rem',
-                    padding: '0 1.2rem',
-                    borderRight: `1px solid #30363d`,
-                    borderLeft: `2px solid #a78bfa`,
-                    marginLeft: '0.5rem',
-                  }}
-                >
-                  <span>🇦🇷</span>
-                  <span style={{ color: '#a78bfa', fontWeight: 700 }}>ARS/MXN</span>
-                  <span style={{ color: '#e6edf3' }}>{latam.ARS_MXN.toFixed(4)}</span>
-                  <span style={{ color: latam.ARS_MXN >= latam.ARS_MXN_prev ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
-                    {latam.ARS_MXN >= latam.ARS_MXN_prev ? '▲' : '▼'}
-                  </span>
-                </span>
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.3rem',
-                    padding: '0 1.2rem',
-                    borderRight: `1px solid #30363d`,
-                  }}
-                >
-                  <span>🇨🇴</span>
-                  <span style={{ color: '#a78bfa', fontWeight: 700 }}>COP/MXN</span>
-                  <span style={{ color: '#e6edf3' }}>{latam.COP_MXN.toFixed(5)}</span>
-                  <span style={{ color: latam.COP_MXN >= latam.COP_MXN_prev ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
-                    {latam.COP_MXN >= latam.COP_MXN_prev ? '▲' : '▼'}
-                  </span>
-                </span>
-              </>
-            )}
-            {/* Oro XAU/USD */}
-            {gold && (
-              <span
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.3rem',
-                  padding: '0 1.2rem',
-                  borderRight: `1px solid #30363d`,
-                  borderLeft: `2px solid #fbbf24`,
-                  marginLeft: '0.5rem',
-                }}
-              >
-                <span>ORO</span>
-                <span style={{ color: '#fbbf24', fontWeight: 700 }}>XAU/USD</span>
-                <span style={{ color: '#e6edf3' }}>${gold.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                <span style={{ color: gold.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>
-                  {gold.change >= 0 ? '\u25b2' : '\u25bc'} {gold.change >= 0 ? '+' : ''}{gold.change.toFixed(2)} ({gold.changePct >= 0 ? '+' : ''}{gold.changePct.toFixed(2)}%)
-                </span>
-              </span>
-            )}
-            {/* Separador y fuente */}
-            <span style={{ padding: '0 1.5rem', color: '#8b949e', borderRight: `1px solid #30363d` }}>
-              TIPO DE CAMBIO REFERENCIAL · FUENTE: BCE/YAHOO
-            </span>
-            {/* Repetir para loop continuo */}
-            {([
-              { label: 'USD/MXN', cur: 'USD_MXN' as const, flag: '🇺🇸' },
-              { label: 'EUR/MXN', cur: 'EUR_MXN' as const, flag: '🇪🇺' },
-              { label: 'CAD/MXN', cur: 'CAD_MXN' as const, flag: '🇨🇦' },
-              { label: 'GBP/MXN', cur: 'GBP_MXN' as const, flag: '🇬🇧' },
-            ] as const).map(({ label, cur, flag }) => {
-              const rate = divisas.rates[cur];
-              const prev = divisas.prevRates?.[cur];
-              const diff = prev ? rate - prev : null;
-              const isUp = diff !== null && diff > 0;
-              const isDown = diff !== null && diff < 0;
-              const arrow = isUp ? '▲' : isDown ? '▼' : '▶';
-              const arrowColor = isUp ? '#4ade80' : isDown ? '#f87171' : GOLD;
-              const diffText = diff !== null ? ` (${isUp ? '+' : ''}${diff.toFixed(2)})` : '';
-              return (
-                <span
-                  key={`${label}-2`}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.3rem',
-                    padding: '0 1.2rem',
-                    borderRight: `1px solid #30363d`,
-                  }}
-                >
-                  <span>{flag}</span>
-                  <span style={{ color: GOLD, fontWeight: 700 }}>{label}</span>
-                  <span style={{ color: '#e6edf3' }}>{rate.toFixed(2)}</span>
-                  <span style={{ color: arrowColor, fontSize: '0.6rem' }}>
-                    {arrow}{diffText}
-                  </span>
-                </span>
-              );
-            })}
-            {/* Petróleo WTI/Brent (loop 2) */}
-            {oil && (
-              <>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0 1.2rem', borderRight: `1px solid #30363d`, borderLeft: `2px solid #f97316`, marginLeft: '0.5rem' }}>
-                  <span>🛢️</span>
-                  <span style={{ color: '#f97316', fontWeight: 700 }}>WTI</span>
-                  <span style={{ color: '#e6edf3' }}>${oil.wti.price.toFixed(2)}</span>
-                  <span style={{ color: oil.wti.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{oil.wti.change >= 0 ? '▲' : '▼'} {oil.wti.change >= 0 ? '+' : ''}{oil.wti.change.toFixed(2)}%</span>
-                </span>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0 1.2rem', borderRight: `1px solid #30363d` }}>
-                  <span>🛢️</span>
-                  <span style={{ color: '#f97316', fontWeight: 700 }}>BRENT</span>
-                  <span style={{ color: '#e6edf3' }}>${oil.brent.price.toFixed(2)}</span>
-                  <span style={{ color: oil.brent.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{oil.brent.change >= 0 ? '▲' : '▼'} {oil.brent.change >= 0 ? '+' : ''}{oil.brent.change.toFixed(2)}%</span>
-                </span>
-              </>
-            )}
-            {/* Latam ARS/COP (loop 2) */}
-            {latam && (
-              <>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0 1.2rem', borderRight: `1px solid #30363d`, borderLeft: `2px solid #a78bfa`, marginLeft: '0.5rem' }}>
-                  <span>🇦🇷</span>
-                  <span style={{ color: '#a78bfa', fontWeight: 700 }}>ARS/MXN</span>
-                  <span style={{ color: '#e6edf3' }}>{latam.ARS_MXN.toFixed(4)}</span>
-                  <span style={{ color: latam.ARS_MXN >= latam.ARS_MXN_prev ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{latam.ARS_MXN >= latam.ARS_MXN_prev ? '▲' : '▼'}</span>
-                </span>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0 1.2rem', borderRight: `1px solid #30363d` }}>
-                  <span>🇨🇴</span>
-                  <span style={{ color: '#a78bfa', fontWeight: 700 }}>COP/MXN</span>
-                  <span style={{ color: '#e6edf3' }}>{latam.COP_MXN.toFixed(5)}</span>
-                  <span style={{ color: latam.COP_MXN >= latam.COP_MXN_prev ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{latam.COP_MXN >= latam.COP_MXN_prev ? '\u25b2' : '\u25bc'}</span>
-                </span>
-              </>
-            )}
-            {/* Oro XAU/USD (loop 2) */}
-            {gold && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0 1.2rem', borderRight: `1px solid #30363d`, borderLeft: `2px solid #fbbf24`, marginLeft: '0.5rem' }}>
-                <span>ORO</span>
-                <span style={{ color: '#fbbf24', fontWeight: 700 }}>XAU/USD</span>
-                <span style={{ color: '#e6edf3' }}>${gold.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                <span style={{ color: gold.change >= 0 ? '#4ade80' : '#f87171', fontSize: '0.6rem' }}>{gold.change >= 0 ? '\u25b2' : '\u25bc'} {gold.change >= 0 ? '+' : ''}{gold.change.toFixed(2)}%</span>
-              </span>
-            )}
-          </div>
-        ) : (
-          <div
-            style={{
-              display: 'inline-block',
-              padding: '0 1.5rem',
-              color: '#8b949e',
-              animation: 'marquee 20s linear infinite',
-            }}
-          >
-            CARGANDO COTIZACIONES · USD/MXN · EUR/MXN · CAD/MXN · GBP/MXN &nbsp;&nbsp;
-            CARGANDO COTIZACIONES · USD/MXN · EUR/MXN · CAD/MXN · GBP/MXN
-          </div>
-        )}
-      </div>
-      {/* CABECERA PRINCIPAL */}
-      <header
-        style={{
-          borderBottom: `4px solid ${INK}`,
-          backgroundColor: PAPER,
-          padding: '1.5rem 2rem 0.75rem',
-        }}
-      >
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          {/* Línea de información superior */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderBottom: `1px solid ${INK}`,
-              paddingBottom: '0.4rem',
-              marginBottom: '0.75rem',
-              fontSize: '0.65rem',
-              fontFamily: SANS_SUBHEAD,
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-            }}
-          >
-            <span>Coyoacán · Benito Juárez · Xochimilco · Álvaro Obregón · Milpa Alta · Iztacalco · Centro Histórico</span>
-            <span>Edición N.º {editionNum}</span>
-          </div>
 
-          {/* Título gótico central */}
-          <div
-            style={{
-              textAlign: 'center',
-              borderBottom: `2px solid ${INK}`,
-              paddingBottom: '0.75rem',
-              marginBottom: '0.75rem',
-            }}
-          >
-            <h1
-              style={{
-                fontFamily: GOTHIC,
-                fontSize: 'clamp(2.8rem, 9vw, 6.5rem)',
-                lineHeight: 1,
-                color: INK,
-                margin: 0,
-              }}
-            >
-              Diario Coyoacán
-            </h1>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: '0.5rem',
-                fontSize: '0.65rem',
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-              }}
-            >
-              <span>Periodismo local · Cultura · Gastronomía · Comunidad</span>
-              <span style={{ textTransform: 'capitalize' }}>{dateFormatted}</span>
-              {weather && (
-                <span style={{ color: WINE, fontWeight: 600 }}>
-                  {weather.morning.icon} {weather.morning.temp}°C &middot; {weather.afternoon.icon} {weather.afternoon.temp}°C &middot; {weather.night.icon} {weather.night.temp}°C &middot; <span title="Índice UV actual">UV {weather.current.uvIndex} — {weather.current.uvLabel}</span>
-                </span>
-              )}
-              <span>Precio: Gratuito</span>
-            </div>
-          </div>
-
-          {/* Barra de navegación */}
-          <nav
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: '0.5rem',
-              paddingTop: '0.5rem',
-            }}
-          >
-            <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.7rem', fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              <a href="/" style={{ color: INK, textDecoration: 'none', borderBottom: `2px solid ${WINE}` }}>Portada</a>
-              <a href="/noticias" style={{ color: INK, textDecoration: 'none' }}>Noticias</a>
-              <a href="/hemeroteca" style={{ color: INK, textDecoration: 'none' }}>Hemeroteca</a>
-              <a href="/hospedaje-mundial-2026" style={{ color: INK, textDecoration: 'none' }}>Mundial 2026</a>
-            </div>
-            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+      {/* ── Header ───────────────────────────────────────────────────── */}
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <Link href="/">
+              <div className="flex items-center gap-3 cursor-pointer group">
+                <h1
+                  className="text-2xl font-bold text-gray-900 group-hover:text-amber-800 transition-colors"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  Diario Coyoacán
+                </h1>
+              </div>
+            </Link>
+            <nav className="flex items-center gap-1 sm:gap-2">
+              <Link
+                href="/"
+                className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors hidden sm:inline-flex items-center gap-1.5"
+              >
+                <Home className="w-4 h-4" />
+                Portada
+              </Link>
+              <Link
+                href="/noticias"
+                className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+              >
+                Noticias
+              </Link>
+              <Link
+                href="/hemeroteca"
+                className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors hidden sm:inline-flex"
+              >
+                Hemeroteca
+              </Link>
+              <Link
+                href="/hospedaje-mundial-2026"
+                className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors hidden md:inline-flex"
+              >
+                Mundial 2026
+              </Link>
               <a
-                href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
+                href={LODGIFY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => {
-                  if (typeof window !== 'undefined' && (window as any).gtag) {
-                    (window as any).gtag('event', 'clic_reserva', {
-                      event_category: 'conversion',
-                      event_label: 'header_nav',
-                      cta_location: 'header',
-                    });
-                  }
-                }}
-                style={{
-                  padding: '0.35rem 1rem',
-                  backgroundColor: WINE,
-                  color: PAPER,
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  fontSize: '0.7rem',
-                  letterSpacing: '0.1em',
-                  textDecoration: 'none',
-                }}
+                className="px-4 py-2 bg-amber-800 text-white text-sm font-medium rounded-lg hover:bg-amber-900 transition-colors shadow-sm"
               >
-                Reservaciones
+                Reservar
               </a>
-              <a
-                href="https://superanfitrion.com.mx"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: INK, textDecoration: 'none', fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.7rem', letterSpacing: '0.1em' }}
-              >
-                Inicio
-              </a>
-            </div>
-          </nav>
+            </nav>
+          </div>
         </div>
       </header>
 
-      {/* ── CUERPO PRINCIPAL: DOS COLUMNAS ───────────────────────────────── */}
-      <main
-        style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          padding: '2rem',
-          display: 'grid',
-          gridTemplateColumns: '1fr',
-          gap: '2.5rem',
-        }}
-        className="newspaper-grid"
-      >
-        {/* ── COLUMNA IZQUIERDA: ARTÍCULO PRINCIPAL ─────────────────────── */}
-        {/* ── COLUMNA IZQUIERDA: PORTADA O ARTÍCULO ─────────────────────── */}
-        {isPortadaMode ? (
-          /* ── MODO PORTADA: 3 TARJETAS DE PRIMERA PLANA ────────────────── */
-          <section style={{ minWidth: 0 }}>
-            {/* Línea divisoria de sección */}
-            <div style={{ borderBottom: `4px double ${INK}`, marginBottom: '1.5rem', paddingBottom: '0.5rem', display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
-              <span style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.7rem', color: WINE }}>
-                Edición del Día
-              </span>
-              <span style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.65rem', color: INK_MUTED }}>
-                {dateFormatted}
-              </span>
+      {/* ── Sub-header: Edition info + Weather ───────────────────────── */}
+      <div className="bg-gray-50 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-500">
+            <div className="flex items-center gap-3">
+              <span className="font-semibold text-gray-700 capitalize">{dateFormatted}</span>
+              <span className="text-gray-300">|</span>
+              <span>Edición N.° {editionNum}</span>
             </div>
-
-            {portadaArticles.length === 0 ? (
-              <div style={{ padding: '3rem', textAlign: 'center', border: `2px dashed ${INK}` }}>
-                <p style={{ fontFamily: SERIF_BODY, color: INK_MUTED, fontSize: '1rem' }}>
-                  La redacción está preparando la edición de hoy. Vuelve pronto.
-                </p>
+            {weather && (
+              <div className="flex items-center gap-2 text-xs">
+                <span>{weather.morning.icon} {weather.morning.temp}°C</span>
+                <span className="text-gray-300">·</span>
+                <span>{weather.afternoon.icon} {weather.afternoon.temp}°C</span>
+                <span className="text-gray-300">·</span>
+                <span>{weather.night.icon} {weather.night.temp}°C</span>
+                <span className="text-gray-300">·</span>
+                <span className="font-medium text-amber-700">UV {weather.current.uvIndex} ({weather.current.uvLabel})</span>
               </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-                {portadaArticles.map((art, idx) => {
-                  const isMain = idx === 0;
-                  const artSummary = art.summary.length > 180
-                    ? art.summary.substring(0, 177) + '…'
-                    : art.summary;
-                  const artTitle = art.title.length > 90
-                    ? art.title.substring(0, 87) + '…'
-                    : art.title;
+            )}
+          </div>
+        </div>
+      </div>
 
-                  return (
-                    <div
-                      key={art.slug}
-                      style={{
-                        borderBottom: `2px solid ${INK}`,
-                        paddingBottom: isMain ? '2rem' : '1.25rem',
-                        marginBottom: isMain ? '2rem' : '1.25rem',
-                        display: isMain ? 'block' : 'grid',
-                        gridTemplateColumns: isMain ? undefined : '1fr 3fr',
-                        gap: isMain ? undefined : '1rem',
-                        alignItems: isMain ? undefined : 'start',
-                      }}
-                    >
-                      {/* Imagen (solo artículo principal) */}
-                      {isMain && art.heroImage && (
-                        <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
-                          <div style={{ position: 'absolute', inset: 0, backgroundColor: INK, transform: 'translate(4px,4px)', zIndex: 0 }} />
-                          <img
-                            src={art.heroImage}
-                            alt={artTitle}
-                            loading={idx === 0 ? 'eager' : 'lazy'}
-                            fetchPriority={idx === 0 ? 'high' : 'low'}
-                            style={{
-                              position: 'relative',
-                              width: '100%',
-                              height: '320px',
-                              objectFit: 'cover',
-                              border: `3px solid ${INK}`,
-                              filter: 'grayscale(10%)',
-                              display: 'block',
-                              zIndex: 1,
-                            }}
-                          />
-                          <div style={{
-                            position: 'absolute', top: '0.75rem', left: '0.75rem',
-                            backgroundColor: WINE, color: PAPER,
-                            padding: '0.2rem 0.6rem',
-                            fontFamily: SANS_SUBHEAD, textTransform: 'uppercase',
-                            fontSize: '0.6rem', letterSpacing: '0.12em',
-                            border: `1.5px solid ${INK}`, zIndex: 2,
-                          }}>
-                            {art.category}
+      {/* ── Main Content ─────────────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex gap-10">
+          {/* ── Content Column ────────────────────────────────────── */}
+          <main className="flex-1 min-w-0">
+            {isPortadaMode ? (
+              /* ── PORTADA MODE ─────────────────────────────────── */
+              <>
+                {/* Section label */}
+                <div className="flex items-center gap-3 mb-6 pb-3 border-b-2 border-gray-900">
+                  <span className="text-xs font-bold uppercase tracking-wider text-amber-800">Edición del Día</span>
+                  <span className="text-xs text-gray-400 capitalize">{dateFormatted}</span>
+                </div>
+
+                {portadaArticles.length === 0 ? (
+                  <div className="py-16 text-center">
+                    <p className="text-gray-500 text-sm">La redacción está preparando la edición de hoy. Vuelve pronto.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-0">
+                    {/* Main article (first) */}
+                    {portadaArticles[0] && (() => {
+                      const art = portadaArticles[0];
+                      const artTitle = art.title.length > 90 ? art.title.substring(0, 87) + '…' : art.title;
+                      const artSummary = art.summary.length > 200 ? art.summary.substring(0, 197) + '…' : art.summary;
+                      const artUrl = (art as any)._isNews ? `/noticias/${art.slug}` : `/diario?slug=${art.slug}`;
+                      return (
+                        <article className="pb-8 mb-8 border-b border-gray-200">
+                          {art.heroImage && (
+                            <Link href={artUrl}>
+                              <div className="relative mb-5 overflow-hidden rounded-xl cursor-pointer group">
+                                <img
+                                  src={art.heroImage}
+                                  alt={artTitle}
+                                  loading="eager"
+                                  fetchPriority="high"
+                                  className="w-full h-[320px] sm:h-[400px] object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                                <div className="absolute top-4 left-4">
+                                  <span className="inline-block bg-amber-800 text-white px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-md shadow-lg">
+                                    {art.category}
+                                  </span>
+                                </div>
+                              </div>
+                            </Link>
+                          )}
+                          <Link href={artUrl}>
+                            <h2
+                              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4 hover:text-amber-800 transition-colors cursor-pointer"
+                              style={{ fontFamily: "'Playfair Display', serif" }}
+                            >
+                              {artTitle}
+                            </h2>
+                          </Link>
+                          <p className="text-lg text-gray-600 leading-relaxed mb-4 border-l-4 border-amber-800 pl-5 italic">
+                            {artSummary}
+                          </p>
+                          <div className="flex items-center justify-between flex-wrap gap-3">
+                            <div className="flex items-center gap-3 text-sm text-gray-500">
+                              <div className="flex items-center gap-1.5">
+                                <Calendar className="w-4 h-4" />
+                                <span>{formatDateEs(art.date).split(',')[0]}</span>
+                              </div>
+                              <span className="text-gray-300">|</span>
+                              <span className="font-medium text-gray-700">Redacción</span>
+                            </div>
+                            <Link
+                              href={artUrl}
+                              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-amber-800 transition-colors"
+                            >
+                              Leer artículo <ArrowRight className="w-4 h-4" />
+                            </Link>
                           </div>
-                        </div>
-                      )}
+                        </article>
+                      );
+                    })()}
 
-                      {/* Thumbnail pequeño para artículos 2 y 3 */}
-                      {!isMain && art.heroImage && (
-                        <img
-                          src={art.heroImage}
-                          alt={artTitle}
-                          loading="lazy"
-                          style={{
-                            width: '100%',
-                            height: '80px',
-                            objectFit: 'cover',
-                            border: `2px solid ${INK}`,
-                            filter: 'grayscale(20%)',
-                            display: 'block',
-                          }}
-                        />
-                      )}
+                    {/* Secondary articles (2-column grid) */}
+                    {portadaArticles.length > 1 && (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+                        {portadaArticles.slice(1, 5).map((art, idx) => {
+                          const artTitle = art.title.length > 80 ? art.title.substring(0, 77) + '…' : art.title;
+                          const artSummary = art.summary.length > 120 ? art.summary.substring(0, 117) + '…' : art.summary;
+                          const artUrl = (art as any)._isNews ? `/noticias/${art.slug}` : `/diario?slug=${art.slug}`;
+                          return (
+                            <article key={art.slug} className="group">
+                              {art.heroImage && (
+                                <Link href={artUrl}>
+                                  <div className="aspect-[16/10] rounded-xl overflow-hidden mb-3 bg-gray-100 cursor-pointer">
+                                    <img
+                                      src={art.heroImage}
+                                      alt={artTitle}
+                                      loading="lazy"
+                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    />
+                                  </div>
+                                </Link>
+                              )}
+                              <span className="text-xs font-semibold text-amber-800 uppercase tracking-wider">
+                                {art.category}
+                              </span>
+                              <Link href={artUrl}>
+                                <h3
+                                  className="text-base sm:text-lg font-bold text-gray-900 mt-1 mb-2 leading-snug group-hover:text-amber-800 transition-colors cursor-pointer line-clamp-3"
+                                  style={{ fontFamily: "'Playfair Display', serif" }}
+                                >
+                                  {artTitle}
+                                </h3>
+                              </Link>
+                              <p className="text-sm text-gray-600 leading-relaxed line-clamp-2 mb-2">
+                                {artSummary}
+                              </p>
+                              <div className="flex items-center gap-2 text-xs text-gray-400">
+                                <Calendar className="w-3 h-3" />
+                                <span>{formatDateEs(art.date).split(',')[0]}</span>
+                              </div>
+                            </article>
+                          );
+                        })}
+                      </div>
+                    )}
 
-                      {/* Contenido textual */}
-                      <div>
-                        {/* Categoría */}
-                        <span style={{
-                          fontFamily: SANS_SUBHEAD, textTransform: 'uppercase',
-                          fontSize: '0.6rem', letterSpacing: '0.15em', color: WINE,
-                          display: 'block', marginBottom: '0.3rem',
-                        }}>
-                          {art.category}
+                    {/* Hemeroteca link */}
+                    <div className="text-center py-6 border-t border-gray-200">
+                      <Link
+                        href="/hemeroteca"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-900 text-sm font-semibold rounded-xl hover:bg-gray-200 transition-colors"
+                      >
+                        Ver Hemeroteca Completa <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+
+                    {/* CTA Banner */}
+                    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl p-8 text-white mt-8 shadow-xl">
+                      <div className="text-center max-w-lg mx-auto">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-amber-400 mb-3 block">
+                          Recomendación del Diario
                         </span>
-
-                        {/* Titular */}
-                        <h2 style={{
-                          fontFamily: SERIF_HEADLINE,
-                          fontSize: isMain ? 'clamp(1.4rem, 3.5vw, 2.4rem)' : 'clamp(1rem, 2.5vw, 1.3rem)',
-                          color: INK,
-                          fontWeight: 700,
-                          lineHeight: 1.2,
-                          marginBottom: '0.5rem',
-                        }}>
-                          {artTitle}
-                        </h2>
-
-                        {/* Lead / Sumario */}
-                        <p style={{
-                          fontFamily: SERIF_BODY,
-                          fontSize: isMain ? '1rem' : '0.875rem',
-                          fontStyle: 'italic',
-                          color: INK_LIGHT,
-                          lineHeight: 1.6,
-                          marginBottom: '0.75rem',
-                        }}>
-                          {artSummary}
+                        <h3
+                          className="text-2xl font-bold mb-3"
+                          style={{ fontFamily: "'Playfair Display', serif" }}
+                        >
+                          Hospédate en el corazón de Coyoacán
+                        </h3>
+                        <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                          Alojamientos auténticos en el barrio más bonito de México. Reserva directa sin comisiones. Anfitriones locales que conocen cada rincón de Coyoacán.
                         </p>
-
-                        {/* Firma y botón */}
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-                          <span style={{
-                            fontFamily: SANS_SUBHEAD, textTransform: 'uppercase',
-                            fontSize: '0.6rem', letterSpacing: '0.1em', color: INK_MUTED,
-                          }}>
-                            Redacción · {formatDateEs(art.date).split(',')[0]}
-                          </span>
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
                           <a
-                            href={(art as any)._isNews ? `/noticias/${art.slug}` : `/diario?slug=${art.slug}`}
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '0.3rem',
-                              padding: '0.35rem 0.85rem',
-                              backgroundColor: INK,
-                              color: PAPER,
-                              fontFamily: SANS_SUBHEAD,
-                              textTransform: 'uppercase',
-                              fontSize: '0.65rem',
-                              letterSpacing: '0.1em',
-                              textDecoration: 'none',
-                              border: `2px solid ${INK}`,
-                              transition: 'background 0.15s',
-                            }}
-                            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = WINE; }}
-                            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = INK; }}
+                            href="https://superanfitrion.com.mx"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-amber-700 text-white text-sm font-bold rounded-xl hover:bg-amber-600 transition-colors shadow-lg"
                           >
-                            Leer más →
+                            Ver disponibilidad <ExternalLink className="w-4 h-4" />
                           </a>
+                          <Link
+                            href="/hospedaje-mundial-2026"
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-transparent text-white text-sm font-bold rounded-xl border-2 border-amber-600 hover:bg-amber-600/20 transition-colors"
+                          >
+                            Mundial 2026 <ArrowRight className="w-4 h-4" />
+                          </Link>
                         </div>
                       </div>
                     </div>
-                  );
-                })}
 
-                {/* Enlace a hemeroteca */}
-                <div style={{ textAlign: 'center', paddingTop: '0.5rem' }}>
-                  <a
-                    href="/hemeroteca"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.4rem',
-                      padding: '0.6rem 1.5rem',
-                      backgroundColor: PAPER,
-                      color: INK,
-                      fontFamily: SANS_SUBHEAD,
-                      textTransform: 'uppercase',
-                      fontSize: '0.7rem',
-                      letterSpacing: '0.15em',
-                      textDecoration: 'none',
-                      border: `2px solid ${INK}`,
-                      boxShadow: `3px 3px 0 ${INK}`,
-                    }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = INK; (e.currentTarget as HTMLAnchorElement).style.color = PAPER; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = PAPER; (e.currentTarget as HTMLAnchorElement).style.color = INK; }}
-                  >
-                    Ver Hemeroteca Completa →
-                  </a>
-                </div>
+                    {/* Newsletter (portada mode) */}
+                    <div className="mt-8 bg-amber-50 rounded-2xl border border-amber-100 p-6">
+                      <h3 className="font-bold text-gray-900 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+                        Recibe el Diario cada mañana
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                        Suscríbete y recibe las noticias de Coyoacán directamente en tu correo.
+                      </p>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          if (email) subscribeMutation.mutate({ email });
+                        }}
+                        className="flex gap-2"
+                      >
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="tu@correo.com"
+                          required
+                          className="flex-1 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                        />
+                        <button
+                          type="submit"
+                          disabled={subscribeMutation.isPending}
+                          className="px-5 py-2.5 bg-amber-800 text-white text-sm font-semibold rounded-xl hover:bg-amber-900 transition-colors disabled:opacity-50"
+                        >
+                          {subscribeMutation.isPending ? '...' : 'Suscribir'}
+                        </button>
+                      </form>
+                    </div>
 
-                {/* Anuncio de primera plana en modo portada */}
-                <div style={{
-                  marginTop: '2.5rem',
-                  padding: '2rem 2.5rem',
-                  backgroundColor: INK,
-                  color: PAPER,
-                  border: `4px solid ${WINE}`,
-                  boxShadow: `6px 6px 0px 0px ${WINE}`,
-                  textAlign: 'center',
-                }}>
-                  <p style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.65rem', letterSpacing: '0.18em', color: GOLD, marginBottom: '0.75rem' }}>
-                    — Anuncio de Primera Plana —
-                  </p>
-                  <h3 style={{ fontFamily: SERIF_HEADLINE, fontSize: 'clamp(1.3rem, 3vw, 2rem)', color: PAPER, fontWeight: 700, lineHeight: 1.3, marginBottom: '0.75rem' }}>
-                    Hospédate en el corazón de Coyoacán
-                  </h3>
-                  <p style={{ fontFamily: SERIF_BODY, fontSize: '0.9rem', color: '#d4c4a8', lineHeight: 1.7, marginBottom: '1.5rem' }}>
-                    Alojamientos auténticos en el barrio más bonito de México. Reserva directa sin comisiones. Anfitriones locales que conocen cada rincón de Coyoacán.
-                  </p>
-                  <a
-                    href="https://superanfitrion.com.mx"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-block',
-                      padding: '0.75rem 2rem',
-                      backgroundColor: WINE,
-                      color: PAPER,
-                      fontFamily: SANS_SUBHEAD,
-                      textTransform: 'uppercase',
-                      fontSize: '0.8rem',
-                      letterSpacing: '0.12em',
-                      textDecoration: 'none',
-                      border: `2px solid ${PAPER}`,
-                      boxShadow: `3px 3px 0px 0px ${PAPER}`,
-                    }}
-                  >
-                    Ver disponibilidad →
-                  </a>
+                    {/* Mobile CTA */}
+                    <div className="lg:hidden bg-gradient-to-r from-amber-800 to-amber-900 rounded-2xl p-6 text-white mt-8 shadow-lg">
+                      <h3 className="text-lg font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                        ¿Vienes a la CDMX?
+                      </h3>
+                      <p className="text-amber-100 text-sm mb-4 leading-relaxed">
+                        Hospédate en el corazón de Coyoacán con SúperAnfitrión. Departamentos completos, sin comisiones de Airbnb.
+                      </p>
+                      <div className="grid grid-cols-2 gap-2 mb-4">
+                        {PROPERTIES.slice(0, 4).map((prop) => (
+                          <div key={prop.name} className="bg-white/10 rounded-lg px-3 py-2">
+                            <p className="text-xs font-semibold text-white">{prop.name}</p>
+                            <div className="flex items-center gap-1 mt-0.5">
+                              <Star className="w-3 h-3 text-amber-300 fill-amber-300" />
+                              <span className="text-xs text-amber-200">{prop.rating}</span>
+                              <span className="text-xs text-amber-300 ml-auto">${prop.price}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <a
+                        href={LODGIFY_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block w-full text-center py-3 px-4 bg-white text-amber-900 font-bold rounded-xl hover:bg-amber-50 transition-colors text-sm shadow-lg"
+                      >
+                        Ver Alojamientos Disponibles
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              /* ── ARTICLE MODE (legacy /diario?slug=...) ────────── */
+              <article>
+                <p className="text-sm text-gray-500 mb-8">
+                  Este artículo está en el archivo del Diario. Para artículos recientes, visita la{' '}
+                  <Link href="/" className="text-amber-800 font-semibold hover:underline">portada</Link>.
+                </p>
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="inline-block bg-amber-800 text-white px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-md">
+                    {safeArticle?.category}
+                  </span>
                 </div>
-              </div>
-            )}
-          </section>
-        ) : (
-          /* ── MODO ARTÍCULO INDIVIDUAL: contenido completo ──────────────── */
-          <article style={{ minWidth: 0 }}>
-          {/* Categoría + Titular */}
-          <div style={{ borderBottom: `3px double ${INK}`, paddingBottom: '1.25rem', marginBottom: '1.5rem' }}>
-            <span
-              style={{
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.7rem',
-                letterSpacing: '0.15em',
-                color: WINE,
-              }}
-            >
-              {safeArticle?.category}
-            </span>
-            <h2
-              style={{
-                fontFamily: SERIF_HEADLINE,
-                fontSize: 'clamp(1.6rem, 4vw, 2.8rem)',
-                color: INK,
-                fontWeight: 700,
-                lineHeight: 1.2,
-                marginTop: '0.5rem',
-                marginBottom: '0.75rem',
-              }}
-            >
-              {displayTitle}
-            </h2>
-            <p
-              style={{
-                fontFamily: SERIF_BODY,
-                fontSize: '1.05rem',
-                fontStyle: 'italic',
-                color: INK_LIGHT,
-                lineHeight: 1.6,
-                marginBottom: '0.5rem',
-              }}
-            >
-              {displaySummary}
-            </p>
-            <p
-              style={{
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.65rem',
-                letterSpacing: '0.12em',
-                color: WINE,
-              }}
-            >
-              Por la Redacción del Diario Coyoacán &bull; {dateFormatted}
-            </p>
-          </div>
-          {/* Imagen hero */}
-          <div style={{ position: 'relative', marginBottom: '1.75rem' }}>
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                backgroundColor: INK,
-                transform: 'translate(5px, 5px)',
-                zIndex: 0,
-              }}
-            />
-            <img
-              src={safeArticle?.heroImage}
-              alt={`Fotografía editorial: ${safeArticle?.title}`}
-              loading="eager"
-              fetchPriority="high"
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '420px',
-                objectFit: 'cover',
-                border: `3px solid ${INK}`,
-                filter: 'grayscale(12%)',
-                display: 'block',
-                zIndex: 1,
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                top: '1rem',
-                right: '1rem',
-                backgroundColor: WINE,
-                color: PAPER,
-                padding: '0.25rem 0.75rem',
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.65rem',
-                letterSpacing: '0.12em',
-                border: `2px solid ${INK}`,
-                transform: 'rotate(2deg)',
-                zIndex: 2,
-              }}
-            >
-              {safeArticle?.category}
-            </div>
-          </div>
-          {/* Primer párrafo con LETRA CAPITAL */}
-          {firstParagraph && (
-            <p
-              style={{
-                fontFamily: SERIF_BODY,
-                fontSize: '1rem',
-                lineHeight: 1.8,
-                textAlign: 'justify',
-                marginBottom: '1.25rem',
-                overflow: 'hidden',
-              }}
-            >
-              <span
-                style={{
-                  float: 'left',
-                  fontFamily: SERIF_HEADLINE,
-                  fontSize: '5rem',
-                  lineHeight: '0.75',
-                  color: WINE,
-                  fontWeight: 700,
-                  marginRight: '0.15rem',
-                  marginTop: '0.1rem',
-                }}
-              >
-                {firstParagraph.charAt(0)}
-              </span>
-              {firstParagraph.substring(1)}
-            </p>
-          )}
-          {/* Párrafos 2 y 3 */}
-          {beforePullQuoteSections.map((sec, i) => (
-            <div key={i}>
-              {sec.title && (
-                <h3 style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.12em', borderBottom: `2px solid ${INK}`, display: 'inline-block', paddingBottom: '0.25rem', marginBottom: '0.75rem', marginTop: '1.5rem' }}>{sec.title}</h3>
-              )}
-              <p style={{ fontFamily: SERIF_BODY, fontSize: '1rem', lineHeight: 1.8, textAlign: 'justify', marginBottom: '1.25rem' }}>{sec.text}</p>
-              {sec.cta && sec.cta.length > 0 && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', margin: '1rem 0 1.5rem' }}>
-                  {sec.cta.map((btn, j) => (
-                    <a key={j} href={btn.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', padding: '0.7rem 1.5rem', backgroundColor: btn.style === 'secondary' ? 'transparent' : WINE, color: btn.style === 'secondary' ? INK : PAPER, fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em', textDecoration: 'none', fontWeight: 700, border: `2px solid ${btn.style === 'secondary' ? INK : WINE}` }}>{btn.label}</a>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-          {/* PULL QUOTE con líneas dobles */}
-          {pullQuote && (
-            <blockquote
-              style={{
-                margin: '2rem 0',
-                padding: '1.25rem 2rem',
-                borderTop: `3px double ${INK}`,
-                borderBottom: `3px double ${INK}`,
-                textAlign: 'center',
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: SERIF_HEADLINE,
-                  fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
-                  fontStyle: 'italic',
-                  color: INK,
-                  fontWeight: 600,
-                  lineHeight: 1.4,
-                  margin: 0,
-                }}
-              >
-                "{pullQuote}"
-              </p>
-            </blockquote>
-          )}
-          {/* Párrafos restantes */}
-          {afterPullQuoteSections.map((sec, i) => (
-            <div key={i}>
-              {sec.title && (
-                <h3 style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.12em', borderBottom: `2px solid ${INK}`, display: 'inline-block', paddingBottom: '0.25rem', marginBottom: '0.75rem', marginTop: '1.5rem' }}>{sec.title}</h3>
-              )}
-              <p style={{ fontFamily: SERIF_BODY, fontSize: '1rem', lineHeight: 1.8, textAlign: 'justify', marginBottom: '1.25rem' }}>{sec.text}</p>
-              {sec.cta && sec.cta.length > 0 && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', margin: '1rem 0 1.5rem' }}>
-                  {sec.cta.map((btn, j) => (
-                    <a key={j} href={btn.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', padding: '0.7rem 1.5rem', backgroundColor: btn.style === 'secondary' ? 'transparent' : WINE, color: btn.style === 'secondary' ? INK : PAPER, fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em', textDecoration: 'none', fontWeight: 700, border: `2px solid ${btn.style === 'secondary' ? INK : WINE}` }}>{btn.label}</a>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-          {/* ── CTA DE RESERVA CLICABLE (R1 + R2 SEO) ──────────────── */}
-          <div
-            style={{
-              margin: '2.5rem 0 2rem',
-              padding: '2rem',
-              background: `linear-gradient(135deg, ${WINE} 0%, #5a1010 100%)`,
-              color: PAPER,
-              border: `3px solid ${GOLD}`,
-              position: 'relative',
-              overflow: 'hidden',
-            }}
-          >
-            <div style={{ position: 'absolute', top: 0, right: 0, width: '120px', height: '120px', background: `linear-gradient(135deg, transparent 50%, rgba(201,169,110,0.15) 50%)` }} />
-            <p
-              style={{
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.6rem',
-                letterSpacing: '0.2em',
-                color: GOLD,
-                marginBottom: '0.5rem',
-              }}
-            >
-              Recomendación del Diario
-            </p>
-            <h4
-              style={{
-                fontFamily: SERIF_HEADLINE,
-                fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
-                fontWeight: 700,
-                lineHeight: 1.3,
-                marginBottom: '0.75rem',
-                color: PAPER,
-              }}
-            >
-              ¿Planeas visitar Coyoacán?
-            </h4>
-            <p
-              style={{
-                fontFamily: SERIF_BODY,
-                fontSize: '0.85rem',
-                lineHeight: 1.7,
-                color: '#e8d8c0',
-                marginBottom: '1.25rem',
-              }}
-            >
-              Hospédate en el corazón del barrio con SúperAnfitrión Coyoacán. Alojamientos auténticos a pasos del Jardín Centenario, sin comisiones de plataforma, con WiFi de alta velocidad y anfitriones locales.
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-              <a
-                href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                  if (typeof window !== 'undefined' && (window as any).gtag) {
-                    (window as any).gtag('event', 'clic_reserva', {
-                      event_category: 'conversion',
-                      event_label: safeArticle?.title || 'articulo',
-                      article_slug: safeArticle?.slug || '',
-                      article_category: safeArticle?.category || '',
-                      cta_location: 'articulo_body',
-                    });
-                  }
-                }}
-                style={{
-                  display: 'inline-block',
-                  padding: '0.7rem 1.5rem',
-                  backgroundColor: GOLD,
-                  color: INK,
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  fontSize: '0.75rem',
-                  letterSpacing: '0.1em',
-                  textDecoration: 'none',
-                  fontWeight: 700,
-                  border: `2px solid ${PAPER}`,
-                }}
-              >
-                Reservar ahora →
-              </a>
-              <a
-                href="/hospedaje-mundial-2026"
-                onClick={() => {
-                  if (typeof window !== 'undefined' && (window as any).gtag) {
-                    (window as any).gtag('event', 'clic_mundial_2026', {
-                      event_category: 'engagement',
-                      event_label: safeArticle?.title || 'articulo',
-                      article_slug: safeArticle?.slug || '',
-                      cta_location: 'articulo_body',
-                    });
-                  }
-                }}
-                style={{
-                  display: 'inline-block',
-                  padding: '0.7rem 1.5rem',
-                  backgroundColor: 'transparent',
-                  color: PAPER,
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  fontSize: '0.75rem',
-                  letterSpacing: '0.1em',
-                  textDecoration: 'none',
-                  border: `2px solid ${GOLD}`,
-                }}
-              >
-                Mundial 2026 →
-              </a>
-            </div>
-          </div>
-          {/* Botón volver a portada */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <a
-              href="/diario"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                padding: '0.4rem 1rem',
-                backgroundColor: PAPER,
-                color: INK,
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
-                textDecoration: 'none',
-                border: `2px solid ${INK}`,
-              }}
-            >
-              ← Volver a Portada
-            </a>
-          </div>
-          {/* Botones de compartir */}
-          <div
-            style={{
-              borderTop: `2px solid ${INK}`,
-              borderBottom: `2px solid ${INK}`,
-              padding: '1rem 0',
-              margin: '2rem 0',
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '0.75rem',
-              alignItems: 'center',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.7rem',
-                letterSpacing: '0.12em',
-                color: INK,
-              }}
-            >
-              Compartir:
-            </span>
-            <a
-              href={`https://wa.me/?text=${encodeURIComponent(safeArticle?.title + ' ' + shareUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                padding: '0.4rem 0.85rem',
-                backgroundColor: '#25D366',
-                color: '#fff',
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
-                textDecoration: 'none',
-                border: `2px solid ${INK}`,
-              }}
-            >
-              <Share2 size={12} aria-hidden="true" /> WhatsApp
-            </a>
-            <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                padding: '0.4rem 0.85rem',
-                backgroundColor: '#1877F2',
-                color: '#fff',
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
-                textDecoration: 'none',
-                border: `2px solid ${INK}`,
-              }}
-            >
-              <Facebook size={12} aria-hidden="true" /> Facebook
-            </a>
-            <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(safeArticle?.title)}&url=${encodeURIComponent(shareUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                padding: '0.4rem 0.85rem',
-                backgroundColor: INK,
-                color: PAPER,
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
-                textDecoration: 'none',
-                border: `2px solid ${INK}`,
-              }}
-            >
-              <Share2 size={12} aria-hidden="true" /> X / Twitter
-            </a>
-          </div>
-          {/* ── ANUNCIO DE PRIMERA PLANA ────────────────────────────────── */}
-          <div
-            style={{
-              margin: '2.5rem 0',
-              padding: '2rem 2.5rem',
-              backgroundColor: INK,
-              color: PAPER,
-              border: `4px solid ${WINE}`,
-              boxShadow: `6px 6px 0px 0px ${WINE}`,
-              textAlign: 'center',
-            }}
-          >
-            <p
-              style={{
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.65rem',
-                letterSpacing: '0.18em',
-                color: GOLD,
-                marginBottom: '0.75rem',
-              }}
-            >
-              — Anuncio de Primera Plana —
-            </p>
-            <h3
-              style={{
-                fontFamily: SERIF_HEADLINE,
-                fontSize: 'clamp(1.3rem, 3vw, 2rem)',
-                color: PAPER,
-                fontWeight: 700,
-                lineHeight: 1.3,
-                marginBottom: '0.75rem',
-              }}
-            >
-              {ad.headline}
-            </h3>
-            <p
-              style={{
-                fontFamily: SERIF_BODY,
-                fontSize: '0.9rem',
-                color: '#d4c4a8',
-                lineHeight: 1.7,
-                marginBottom: '1.5rem',
-              }}
-            >
-              {ad.body}
-            </p>
-            <a
-              href={ad.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                if (typeof window !== 'undefined' && (window as any).gtag) {
-                  (window as any).gtag('event', 'clic_reserva', {
-                    event_category: 'conversion',
-                    event_label: ad.headline,
-                    cta_location: 'anuncio_primera_plana',
-                    article_slug: safeArticle?.slug || '',
-                  });
-                }
-              }}
-              style={{
-                display: 'inline-block',
-                padding: '0.75rem 2rem',
-                backgroundColor: WINE,
-                color: PAPER,
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.8rem',
-                letterSpacing: '0.12em',
-                textDecoration: 'none',
-                border: `2px solid ${PAPER}`,
-                boxShadow: `3px 3px 0px 0px ${PAPER}`,
-              }}
-            >
-              {ad.cta}
-            </a>
-          </div>
-          {/* Newsletter */}
-          <div
-            style={{
-              margin: '2rem 0',
-              padding: '1.5rem',
-              border: `3px solid ${INK}`,
-              backgroundColor: PAPER,
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                letterSpacing: '0.15em',
-                fontSize: '0.75rem',
-                color: WINE,
-                marginBottom: '0.5rem',
-              }}
-            >
-              Recibe el Diario cada mañana
-            </h3>
-            <p
-              style={{
-                fontFamily: SERIF_BODY,
-                fontSize: '0.9rem',
-                color: INK,
-                marginBottom: '1rem',
-                lineHeight: 1.6,
-              }}
-            >
-              Suscríbete y recibe las noticias de Coyoacán directamente en tu correo, antes de que salga el sol.
-            </p>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (email) subscribeMutation.mutate({ email });
-              }}
-              style={{ display: 'flex', gap: '0.5rem' }}
-            >
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="tu@correo.com"
-                required
-                style={{
-                  flex: 1,
-                  padding: '0.5rem 0.75rem',
-                  border: `2px solid ${INK}`,
-                  backgroundColor: '#fff',
-                  fontFamily: SERIF_BODY,
-                  fontSize: '0.9rem',
-                  outline: 'none',
-                }}
-              />
-              <button
-                type="submit"
-                disabled={subscribeMutation.isPending}
-                style={{
-                  padding: '0.5rem 1rem',
-                  backgroundColor: WINE,
-                  color: PAPER,
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  fontSize: '0.7rem',
-                  letterSpacing: '0.1em',
-                  border: `2px solid ${INK}`,
-                  cursor: 'pointer',
-                  opacity: subscribeMutation.isPending ? 0.6 : 1,
-                }}
-              >
-                {subscribeMutation.isPending ? '…' : 'Suscribir'}
-              </button>
-            </form>
-          </div>
-        </article>
-        )}
-
-        {/* ── COLUMNA DERECHA: NOTAS SECUNDARIAS ────────────────────────── */}
-        <aside style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: '2rem' }} className="article-aside">
-
-          {/* Agenda del barrio */}
-          <div style={{ border: `3px solid ${INK}` }}>
-            <div style={{ padding: '0.5rem 1rem', backgroundColor: INK }}>
-              <h3
-                style={{
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.15em',
-                  fontSize: '0.7rem',
-                  color: PAPER,
-                  margin: 0,
-                }}
-              >
-                Agenda del Barrio
-              </h3>
-            </div>
-            <div style={{ padding: '1rem' }}>
-              <p
-                style={{
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.12em',
-                  color: WINE,
-                  marginBottom: '0.75rem',
-                }}
-              >
-                Coyoacán &bull; {dateFormatted.split(',')[0]}
-              </p>
-              {[
-                { title: 'Mercado de Artesanías', desc: 'Jardín Centenario · 10:00–20:00 hrs · Entrada libre' },
-                { title: 'Museo Frida Kahlo', desc: 'Londres 247, Del Carmen · Mar–Dom 10:00–17:30 hrs' },
-                { title: 'Cineteca Nacional', desc: 'Av. México-Coyoacán 389 · Cartelera en cineteca.mx' },
-                { title: 'Mercado de Coyoacán', desc: 'Ignacio Allende s/n · Lun–Dom 7:00–18:00 hrs' },
-              ].map((item, i, arr) => (
-                <div
-                  key={i}
-                  style={{
-                    borderBottom: i < arr.length - 1 ? `1px dashed ${INK}` : 'none',
-                    paddingBottom: '0.6rem',
-                    marginBottom: '0.6rem',
-                  }}
+                <h1
+                  className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-5"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
                 >
-                  <strong style={{ fontFamily: SANS_SUBHEAD, textTransform: 'uppercase', fontSize: '0.7rem', display: 'block' }}>
-                    {item.title}
-                  </strong>
-                  <p style={{ fontFamily: SERIF_BODY, fontSize: '0.8rem', color: INK_MUTED, margin: '0.15rem 0 0' }}>
-                    {item.desc}
-                  </p>
+                  {safeArticle?.title}
+                </h1>
+                <p className="text-lg text-gray-600 leading-relaxed mb-6 border-l-4 border-amber-800 pl-5 italic">
+                  {safeArticle?.summary}
+                </p>
+                <div className="flex items-center gap-4 text-sm text-gray-500 mb-8 pb-6 border-b border-gray-200">
+                  <div className="flex items-center gap-1.5">
+                    <Calendar className="w-4 h-4" />
+                    <time>{safeArticle?.date}</time>
+                  </div>
+                  <span className="text-gray-300">|</span>
+                  <span className="font-medium text-gray-700">Redacción Diario Coyoacán</span>
                 </div>
-              ))}
-            </div>
-          </div>
+                {safeArticle?.heroImage && (
+                  <figure className="mb-10 -mx-4 sm:mx-0">
+                    <img
+                      src={safeArticle.heroImage}
+                      alt={safeArticle.title}
+                      className="w-full h-auto sm:rounded-xl object-cover"
+                      loading="eager"
+                    />
+                  </figure>
+                )}
+                {/* Article content */}
+                <div className="prose-article">
+                  {((safeArticle as any)?.content ?? (safeArticle as any)?.contentEs ?? '').split(';').filter(Boolean).map((p: string, i: number) => (
+                    <p key={i} className="text-base sm:text-lg leading-relaxed text-gray-700 mb-4">
+                      {p.trim()}
+                    </p>
+                  ))}
+                </div>
+              </article>
+            )}
+          </main>
 
-          {/* Efeméride del barrio */}
-          <div style={{ border: `3px solid ${INK}`, backgroundColor: INK, color: PAPER }}>
-            <div style={{ padding: '0.5rem 1rem', borderBottom: `2px solid ${WINE}` }}>
-              <h3
-                style={{
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.15em',
-                  fontSize: '0.7rem',
-                  color: GOLD,
-                  margin: 0,
-                }}
-              >
-                Efeméride del Barrio
-              </h3>
+          {/* ── Sidebar ───────────────────────────────────────────── */}
+          <aside className="hidden lg:block w-[340px] flex-shrink-0">
+            <ReservaSidebar />
+
+            {/* Agenda del barrio */}
+            <div className="mt-6 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="px-5 py-3 bg-gray-900">
+                <h4 className="font-bold text-white text-sm uppercase tracking-wider">Agenda del Barrio</h4>
+              </div>
+              <div className="px-5 py-4">
+                <p className="text-xs font-semibold text-amber-800 uppercase tracking-wider mb-3">
+                  Coyoacán · {dateFormatted.split(',')[0]}
+                </p>
+                {[
+                  { title: 'Mercado de Artesanías', desc: 'Jardín Centenario · 10:00–20:00 hrs · Entrada libre' },
+                  { title: 'Museo Frida Kahlo', desc: 'Londres 247, Del Carmen · Mar–Dom 10:00–17:30 hrs' },
+                  { title: 'Cineteca Nacional', desc: 'Av. México-Coyoacán 389 · Cartelera en cineteca.mx' },
+                  { title: 'Mercado de Coyoacán', desc: 'Ignacio Allende s/n · Lun–Dom 7:00–18:00 hrs' },
+                ].map((item, i, arr) => (
+                  <div key={i} className={`pb-3 mb-3 ${i < arr.length - 1 ? 'border-b border-gray-100' : ''}`}>
+                    <p className="text-sm font-semibold text-gray-900">{item.title}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div style={{ padding: '1rem' }}>
-              <p
-                style={{
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.12em',
-                  color: WINE,
-                  marginBottom: '0.5rem',
-                }}
-              >
-                Hoy en la historia de Coyoacán
-              </p>
-              <p
-                style={{
-                  fontFamily: SERIF_BODY,
-                  fontSize: '0.85rem',
-                  color: '#d4c4a8',
-                  lineHeight: 1.7,
-                  margin: 0,
-                }}
-              >
+
+            {/* Efeméride */}
+            <div className="mt-6 bg-gray-900 rounded-2xl p-5 text-white shadow-sm">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">Efeméride del Barrio</h4>
+              <p className="text-xs text-gray-300 leading-relaxed">
                 En 1524, Hernán Cortés estableció en Coyoacán la primera capital de la Nueva España, antes de que la Ciudad de México fuera fundada sobre las ruinas de Tenochtitlan. El barrio fue sede del primer ayuntamiento del continente americano.
               </p>
             </div>
-          </div>
+          </aside>
+        </div>
+      </div>
 
-          {/* Artículos recientes */}
-          {recentArticles.length > 0 && (
-            <div style={{ border: `3px solid ${INK}` }}>
-              <div style={{ padding: '0.5rem 1rem', backgroundColor: WINE }}>
-                <h3
-                  style={{
-                    fontFamily: SANS_SUBHEAD,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.15em',
-                    fontSize: '0.7rem',
-                    color: PAPER,
-                    margin: 0,
-                  }}
-                >
-                  Ediciones Anteriores
-                </h3>
-              </div>
-              {recentArticles.map((art, i) => (
-                <a
-                  key={art.slug}
-                  href={(art as any)._isNews ? `/noticias/${art.slug}` : `/diario?slug=${art.slug}`}
-                  style={{
-                    display: 'block',
-                    padding: '0.75rem 1rem',
-                    borderBottom: i < recentArticles.length - 1 ? `1px solid ${INK}` : 'none',
-                    textDecoration: 'none',
-                    backgroundColor: PAPER,
-                    transition: 'background-color 0.15s',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = PAPER_DARK)}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = PAPER)}
-                >
-                  <p
-                    style={{
-                      fontFamily: SANS_SUBHEAD,
-                      textTransform: 'uppercase',
-                      fontSize: '0.6rem',
-                      letterSpacing: '0.12em',
-                      color: WINE,
-                      margin: '0 0 0.25rem',
-                    }}
-                  >
-                    {art.category}
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: SERIF_HEADLINE,
-                      fontSize: '0.9rem',
-                      fontWeight: 600,
-                      color: INK,
-                      lineHeight: 1.3,
-                      margin: '0 0 0.25rem',
-                    }}
-                  >
-                    {art.title.length > 70 ? art.title.substring(0, 67) + '…' : art.title}
-                  </p>
-                  <p style={{ fontFamily: SERIF_BODY, fontSize: '0.75rem', color: INK_MUTED, margin: 0 }}>
-                    {art.date}
-                  </p>
-                </a>
-              ))}
-              <div style={{ padding: '0.6rem 1rem', borderTop: `2px solid ${INK}` }}>
-                <a
-                  href="/hemeroteca"
-                  style={{
-                    fontFamily: SANS_SUBHEAD,
-                    textTransform: 'uppercase',
-                    fontSize: '0.65rem',
-                    letterSpacing: '0.12em',
-                    color: WINE,
-                    textDecoration: 'none',
-                  }}
-                >
-                  Ver hemeroteca completa →
-                </a>
-              </div>
-            </div>
-          )}
-
-          {/* Mini anuncio lateral */}
-          <div
-            style={{
-              padding: '1.25rem',
-              textAlign: 'center',
-              border: `3px solid ${WINE}`,
-              backgroundColor: PAPER,
-            }}
-          >
-            <p
-              style={{
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.65rem',
-                letterSpacing: '0.15em',
-                color: WINE,
-                marginBottom: '0.5rem',
-              }}
-            >
-              Hospedaje en Coyoacán
-            </p>
-            <p
-              style={{
-                fontFamily: SERIF_BODY,
-                fontSize: '0.85rem',
-                color: INK,
-                lineHeight: 1.6,
-                marginBottom: '1rem',
-              }}
-            >
-              Alojamientos auténticos en el barrio más bonito de México. Anfitriones locales. Sin comisiones.
-            </p>
-            <a
-              href="https://superanfitrion.com.mx"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'block',
-                padding: '0.6rem',
-                backgroundColor: WINE,
-                color: PAPER,
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                fontSize: '0.7rem',
-                letterSpacing: '0.1em',
-                textDecoration: 'none',
-              }}
-            >
-              Ver Alojamientos →
-            </a>
-          </div>
-        </aside>
-      </main>
-
-      {/* ── FOOTER ───────────────────────────────────────────────────────── */}
-      <footer
-        style={{
-          backgroundColor: INK,
-          color: PAPER,
-          borderTop: `6px solid ${WINE}`,
-          marginTop: '3rem',
-        }}
-      >
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '3rem 2rem' }}>
-          {/* Cabecera del footer */}
-          <div
-            style={{
-              textAlign: 'center',
-              borderBottom: `2px solid ${WINE}`,
-              paddingBottom: '2rem',
-              marginBottom: '2.5rem',
-            }}
-          >
-            <h2
-              style={{
-                fontFamily: GOTHIC,
-                fontSize: 'clamp(2rem, 6vw, 4rem)',
-                color: PAPER,
-                lineHeight: 1,
-                marginBottom: '0.5rem',
-              }}
-            >
-              Diario Coyoacán
-            </h2>
-            <p
-              style={{
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                letterSpacing: '0.15em',
-                fontSize: '0.65rem',
-                color: GOLD,
-              }}
-            >
-              Periodismo local · Cultura · Gastronomía · Comunidad
-            </p>
-          </div>
-
-          {/* Columnas del directorio */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '2rem',
-              marginBottom: '2.5rem',
-            }}
-            className="footer-grid"
-          >
-            {/* Diario */}
+      {/* ── Footer ───────────────────────────────────────────────────── */}
+      <footer className="bg-gray-900 text-white mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Brand */}
             <div>
-              <h4
-                style={{
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.15em',
-                  fontSize: '0.65rem',
-                  color: WINE,
-                  borderBottom: `1px solid ${WINE}`,
-                  paddingBottom: '0.4rem',
-                  marginBottom: '0.75rem',
-                }}
+              <h2
+                className="text-2xl font-bold mb-3"
+                style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 Diario Coyoacán
-              </h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                {[
-                  { label: 'Portada', href: '/' },
-                  { label: 'Noticias', href: '/noticias' },
-                  { label: 'Hemeroteca', href: '/hemeroteca' },
-                  { label: 'Hospedaje Mundial 2026', href: '/hospedaje-mundial-2026' },
-                ].map((link) => (
-                  <li key={link.href}>
-                    <a href={link.href} style={{ fontFamily: SERIF_BODY, fontSize: '0.8rem', color: '#d4c4a8', textDecoration: 'none' }}>
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              </h2>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Periodismo local, cultura y gastronomía desde el corazón de Coyoacán, Ciudad de México.
+              </p>
+            </div>
+
+            {/* Navegación */}
+            <div>
+              <h4 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-3">Navegación</h4>
+              <div className="space-y-2">
+                <Link href="/" className="block text-sm text-gray-300 hover:text-white transition-colors">Portada</Link>
+                <Link href="/noticias" className="block text-sm text-gray-300 hover:text-white transition-colors">Noticias</Link>
+                <Link href="/hemeroteca" className="block text-sm text-gray-300 hover:text-white transition-colors">Hemeroteca</Link>
+                <Link href="/hospedaje-mundial-2026" className="block text-sm text-gray-300 hover:text-white transition-colors">Mundial 2026</Link>
+              </div>
             </div>
 
             {/* Hospedaje */}
             <div>
-              <h4
-                style={{
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.15em',
-                  fontSize: '0.65rem',
-                  color: WINE,
-                  borderBottom: `1px solid ${WINE}`,
-                  paddingBottom: '0.4rem',
-                  marginBottom: '0.75rem',
-                }}
-              >
-                Hospedaje
-              </h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                {[
-                  { label: 'SúperAnfitrión', href: 'https://superanfitrion.com.mx' },
-                  { label: 'Alojamientos', href: 'https://superanfitrion.com.mx/alojamientos' },
-                  { label: 'Para Estudiantes', href: 'https://superanfitrion.com.mx/estudiantes' },
-                  { label: 'Nómadas Digitales', href: 'https://superanfitrion.com.mx/nomadas' },
-                  { label: 'Renta Mensual', href: 'https://superanfitrion.com.mx/renta-mensual' },
-                  { label: 'Mundial 2026', href: 'https://superanfitrion.com.mx/mundial-2026' },
-                ].map((link) => (
-                  <li key={link.href}>
-                    <a href={link.href} target="_blank" rel="noopener noreferrer" style={{ fontFamily: SERIF_BODY, fontSize: '0.8rem', color: '#d4c4a8', textDecoration: 'none' }}>
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <h4 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-3">Hospedaje</h4>
+              <div className="space-y-2">
+                <a href="https://superanfitrion.com.mx" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-300 hover:text-white transition-colors">SúperAnfitrión</a>
+                <a href="https://superanfitrion.com.mx/alojamientos" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-300 hover:text-white transition-colors">Alojamientos</a>
+                <a href="https://superanfitrion.com.mx/estudiantes" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-300 hover:text-white transition-colors">Para Estudiantes</a>
+                <a href="https://superanfitrion.com.mx/nomadas" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-300 hover:text-white transition-colors">Nómadas Digitales</a>
+                <a href="https://superanfitrion.com.mx/mundial-2026" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-300 hover:text-white transition-colors">Mundial 2026</a>
+              </div>
             </div>
 
-            {/* El Barrio */}
+            {/* Contacto */}
             <div>
-              <h4
-                style={{
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.15em',
-                  fontSize: '0.65rem',
-                  color: WINE,
-                  borderBottom: `1px solid ${WINE}`,
-                  paddingBottom: '0.4rem',
-                  marginBottom: '0.75rem',
-                }}
-              >
-                El Barrio
-              </h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <h4 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-3">Contacto</h4>
+              <div className="space-y-2">
+                <a
+                  href="https://wa.me/5215511427252"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
+                >
+                  <Phone className="w-3.5 h-3.5" /> 55 1142 7252
+                </a>
+                <a
+                  href="mailto:superanfitrioncoyoacan@gmail.com"
+                  className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
+                >
+                  <Mail className="w-3.5 h-3.5" /> superanfitrioncoyoacan@gmail.com
+                </a>
+              </div>
+              <div className="flex gap-3 mt-4">
                 {[
-                  { label: 'Coyoacán', href: 'https://superanfitrion.com.mx/coyoacan' },
-                  { label: 'Pet-Friendly', href: 'https://superanfitrion.com.mx/pet-friendly' },
-                  { label: 'Blog', href: 'https://superanfitrion.com.mx/blog' },
-                  { label: 'Ayuda', href: 'https://superanfitrion.com.mx/ayuda' },
-                  { label: 'Política Mascotas', href: 'https://superanfitrion.com.mx/politica-mascotas' },
-                ].map((link) => (
-                  <li key={link.href}>
-                    <a href={link.href} target="_blank" rel="noopener noreferrer" style={{ fontFamily: SERIF_BODY, fontSize: '0.8rem', color: '#d4c4a8', textDecoration: 'none' }}>
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contacto y Redes */}
-            <div>
-              <h4
-                style={{
-                  fontFamily: SANS_SUBHEAD,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.15em',
-                  fontSize: '0.65rem',
-                  color: WINE,
-                  borderBottom: `1px solid ${WINE}`,
-                  paddingBottom: '0.4rem',
-                  marginBottom: '0.75rem',
-                }}
-              >
-                Contacto
-              </h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <li>
-                  <a
-                    href="https://wa.me/5215511427252"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontFamily: SERIF_BODY, fontSize: '0.8rem', color: '#d4c4a8', textDecoration: 'none' }}
-                  >
-                    <Phone size={12} aria-hidden="true" /> 55 1142 7252
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="mailto:superanfitrioncoyoacan@gmail.com"
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontFamily: SERIF_BODY, fontSize: '0.8rem', color: '#d4c4a8', textDecoration: 'none' }}
-                  >
-                    <Mail size={12} aria-hidden="true" /> superanfitrioncoyoacan@gmail.com
-                  </a>
-                </li>
-              </ul>
-              {/* Redes sociales */}
-              <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem' }}>
-                {[
-                  {
-                    href: 'https://www.facebook.com/SuperAnfitrionCoyoacan',
-                    label: 'Facebook de SúperAnfitrión Coyoacán',
-                    icon: <Facebook size={16} aria-hidden="true" />,
-                  },
-                  {
-                    href: 'https://www.instagram.com/superanfitrioncoyo/',
-                    label: 'Instagram de SúperAnfitrión Coyoacán',
-                    icon: <Instagram size={16} aria-hidden="true" />,
-                  },
-                  {
-                    href: 'https://www.youtube.com/@SuperAnfitrioncoyo',
-                    label: 'YouTube de SúperAnfitrión Coyoacán',
-                    icon: <Youtube size={16} aria-hidden="true" />,
-                  },
-                  {
-                    href: 'https://wa.me/5215511427252',
-                    label: 'WhatsApp de SúperAnfitrión Coyoacán',
-                    icon: (
-                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-                      </svg>
-                    ),
-                  },
+                  { href: 'https://www.facebook.com/SuperAnfitrionCoyoacan', label: 'Facebook', icon: <Facebook className="w-4 h-4" /> },
+                  { href: 'https://www.instagram.com/superanfitrioncoyo/', label: 'Instagram', icon: <Instagram className="w-4 h-4" /> },
+                  { href: 'https://www.youtube.com/@SuperAnfitrioncoyo', label: 'YouTube', icon: <Youtube className="w-4 h-4" /> },
                 ].map((social) => (
                   <a
                     key={social.href}
@@ -2126,15 +853,7 @@ export default function DiarioCoyoacan() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: '0.4rem',
-                      border: `1px solid ${WINE}`,
-                      color: PAPER,
-                      textDecoration: 'none',
-                    }}
+                    className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-800 text-gray-400 hover:bg-amber-800 hover:text-white transition-colors"
                   >
                     {social.icon}
                   </a>
@@ -2143,42 +862,16 @@ export default function DiarioCoyoacan() {
             </div>
           </div>
 
-          {/* Pie de créditos */}
-          <div
-            style={{
-              borderTop: `1px solid ${WINE}`,
-              paddingTop: '1.5rem',
-              textAlign: 'center',
-            }}
-          >
-            <p
-              style={{
-                fontFamily: SANS_SUBHEAD,
-                textTransform: 'uppercase',
-                letterSpacing: '0.12em',
-                fontSize: '0.65rem',
-                color: INK_MUTED,
-              }}
-            >
-              © {new Date().getFullYear()} Diario Coyoacán · Publicado por{' '}
-              <a
-                href="https://superanfitrion.com.mx"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: '#d4c4a8', textDecoration: 'underline' }}
-              >
+          <div className="border-t border-gray-800 mt-8 pt-6 text-center">
+            <p className="text-xs text-gray-500">
+              © {new Date().getFullYear()} Diario Coyoacán — Publicado por{' '}
+              <a href="https://superanfitrion.com.mx" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors underline">
                 SúperAnfitrión Coyoacán
               </a>
-              {' '}·{' '}
-              <a
-                href="https://diario.superanfitrion.com.mx"
-                style={{ color: '#d4c4a8', textDecoration: 'underline' }}
-              >
+              {' · '}
+              <a href="https://diario.superanfitrion.com.mx" className="text-gray-400 hover:text-white transition-colors underline">
                 diario.superanfitrion.com.mx
               </a>
-            </p>
-            <p style={{ fontFamily: SERIF_BODY, fontSize: '0.7rem', color: '#4a3a2a', marginTop: '0.25rem' }}>
-              Periodismo local independiente · Coyoacán, Ciudad de México
             </p>
           </div>
         </div>
@@ -2187,19 +880,11 @@ export default function DiarioCoyoacan() {
       {/* WhatsApp Widget */}
       <WhatsAppWidget />
 
-      {/* Estilos globales para este componente */}
+      {/* Marquee animation */}
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
-        }
-        @media (min-width: 768px) {
-          .newspaper-grid {
-            grid-template-columns: 8fr 4fr !important;
-          }
-          .footer-grid {
-            grid-template-columns: repeat(4, 1fr) !important;
-          }
         }
       `}</style>
     </div>
