@@ -286,7 +286,8 @@ export default function HospedajeMundial2026() {
             </span>
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-subhead uppercase tracking-wider">
-            <Link href="/"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer flex items-center gap-1"><Home className="w-3.5 h-3.5" /> Portada</span></Link>
+            <a href="https://superanfitrion.com.mx/" target="_blank" rel="noopener noreferrer"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer flex items-center gap-1"><Home className="w-3.5 h-3.5" /> Home</span></a>
+            <Link href="/"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer">Portada</span></Link>
             <Link href="/noticias"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer flex items-center gap-1"><Newspaper className="w-3.5 h-3.5" /> Noticias</span></Link>
             <Link href="/hemeroteca"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer">Hemeroteca</span></Link>
             <span className="text-amber-700 font-bold border-b-2 border-amber-600 pb-0.5 flex items-center gap-1"><Trophy className="w-3.5 h-3.5" /> Mundial 2026</span>
