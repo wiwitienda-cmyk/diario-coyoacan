@@ -3,19 +3,7 @@ import { trpc } from "@/lib/trpc";
 import { Link, useRoute } from "wouter";
 import { Calendar, ArrowLeft, Clock, Star, ExternalLink, ChevronRight, Home, Copy, Check } from "lucide-react";
 import { useEffect, useMemo, useState } from 'react';
-
-// ── Propiedades SúperAnfitrión ──────────────────────────────────────────
-const PROPERTIES = [
-  { name: 'Flamingo 38', price: 24, rating: 4.97, reviews: 186 },
-  { name: 'La Pequeña París', price: 26, rating: 4.95, reviews: 142 },
-  { name: 'El Balcón de Buda', price: 32, rating: 4.95, reviews: 128 },
-  { name: 'King 1', price: 39, rating: 4.95, reviews: 97 },
-  { name: 'El Alebrije', price: 43, rating: 4.95, reviews: 84 },
-  { name: 'Rompecabezas', price: 39, rating: 4.89, reviews: 76 },
-  { name: 'El Cuarto Cuatro', price: 60, rating: 4.88, reviews: 52 },
-];
-
-const LODGIFY_URL = 'https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades';
+import ReservaSidebarShared, { LODGIFY_URL, PROPERTIES, MobileCTA } from '@/components/ReservaSidebar';
 
 // ── Helpers ─────────────────────────────────────────────────────────────
 function estimateReadingTime(text: string): number {
@@ -101,124 +89,8 @@ function ShareButtons({ title, url }: { title: string; url: string }) {
   );
 }
 
-// ── Sidebar de Reserva ──────────────────────────────────────────────────
-function ReservaSidebar() {
-  return (
-    <aside className="hidden lg:block w-[340px] flex-shrink-0">
-      <div className="sticky top-28">
-        {/* Banner de reserva directa */}
-        <div className="bg-gradient-to-br from-amber-800 via-amber-900 to-amber-950 rounded-2xl p-6 text-white mb-6 shadow-xl">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-amber-200">Reserva directa</span>
-          </div>
-          <h3 className="text-xl font-bold mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Hospédate en Coyoacán
-          </h3>
-          <p className="text-amber-100 text-sm mb-4 leading-relaxed">
-            Sin comisiones de Airbnb. Departamentos completos a pasos del Jardín Centenario.
-          </p>
-          <a
-            href={LODGIFY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full text-center py-3 px-4 bg-white text-amber-900 font-bold rounded-xl hover:bg-amber-50 transition-colors text-sm shadow-lg"
-          >
-            Ver Disponibilidad
-          </a>
-        </div>
-
-        {/* Lista de propiedades */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100">
-            <h4 className="font-bold text-gray-900 text-sm" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Nuestros alojamientos
-            </h4>
-            <p className="text-xs text-gray-500 mt-0.5">Precios desde — por noche</p>
-          </div>
-          <div className="divide-y divide-gray-50">
-            {PROPERTIES.map((prop) => (
-              <a
-                key={prop.name}
-                href={LODGIFY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between px-5 py-3 hover:bg-amber-50/50 transition-colors group"
-              >
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 group-hover:text-amber-800 transition-colors truncate">
-                    {prop.name}
-                  </p>
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
-                    <span className="text-xs text-gray-600">{prop.rating}</span>
-                    <span className="text-xs text-gray-400">({prop.reviews})</span>
-                  </div>
-                </div>
-                <div className="text-right flex-shrink-0 ml-3">
-                  <p className="text-sm font-bold text-amber-800">${prop.price} USD</p>
-                  <p className="text-[10px] text-gray-400">por noche</p>
-                </div>
-              </a>
-            ))}
-          </div>
-          <div className="px-5 py-3 bg-gray-50 border-t border-gray-100">
-            <a
-              href={LODGIFY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1.5 text-sm font-semibold text-amber-800 hover:text-amber-900 transition-colors"
-            >
-              Ver todos los alojamientos
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          </div>
-        </div>
-
-        {/* Nota de confianza */}
-        <div className="mt-4 px-4 py-3 bg-green-50 rounded-xl border border-green-100">
-          <p className="text-xs text-green-800 leading-relaxed">
-            <strong>100% satisfacción.</strong> Entrada autónoma, WiFi de alta velocidad, a una cuadra del transporte público. Reserva directo y ahorra.
-          </p>
-        </div>
-      </div>
-    </aside>
-  );
-}
-
-// ── CTA Móvil (visible solo en pantallas pequeñas) ──────────────────────
-function MobileCTA() {
-  return (
-    <div className="lg:hidden bg-gradient-to-r from-amber-800 to-amber-900 rounded-2xl p-6 text-white my-8 shadow-lg">
-      <h3 className="text-lg font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-        ¿Vienes a la CDMX?
-      </h3>
-      <p className="text-amber-100 text-sm mb-4 leading-relaxed">
-        Hospédate en el corazón de Coyoacán con SúperAnfitrión. Departamentos completos, sin comisiones de Airbnb.
-      </p>
-      <div className="grid grid-cols-2 gap-2 mb-4">
-        {PROPERTIES.slice(0, 4).map((prop) => (
-          <div key={prop.name} className="bg-white/10 rounded-lg px-3 py-2">
-            <p className="text-xs font-semibold text-white">{prop.name}</p>
-            <div className="flex items-center gap-1 mt-0.5">
-              <Star className="w-3 h-3 text-amber-300 fill-amber-300" />
-              <span className="text-xs text-amber-200">{prop.rating}</span>
-              <span className="text-xs text-amber-300 ml-auto">${prop.price}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-      <a
-        href={LODGIFY_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block w-full text-center py-3 px-4 bg-white text-amber-900 font-bold rounded-xl hover:bg-amber-50 transition-colors text-sm shadow-lg"
-      >
-        Ver Alojamientos Disponibles
-      </a>
-    </div>
-  );
-}
+// ReservaSidebar y MobileCTA ahora se importan desde @/components/ReservaSidebar
+const ReservaSidebar = () => <ReservaSidebarShared asAside stickyTop="top-28" />;
 
 // ── Componente Principal ────────────────────────────────────────────────
 export default function NewsArticleDetail() {
@@ -448,62 +320,7 @@ export default function NewsArticleDetail() {
 
             {/* ── Article Body ─────────────────────────────────── */}
             <div className="prose-article">
-              {contentSections.map((section, idx) => (
-                <div key={idx} className="mb-8">
-                  {section.heading && (
-                    <h2
-                      className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 mt-10 leading-snug"
-                      style={{ fontFamily: "'Playfair Display', serif" }}
-                    >
-                      {section.heading}
-                    </h2>
-                  )}
-                  {section.image && (
-                    <figure className="my-6 -mx-4 sm:mx-0">
-                      <img
-                        src={section.image}
-                        alt={section.imageAlt || section.heading || ''}
-                        className="w-full h-auto sm:rounded-xl object-cover"
-                        loading="lazy"
-                      />
-                      {section.imageCaption && (
-                        <figcaption className="mt-2 px-4 sm:px-0 text-xs text-gray-500 italic">
-                          {section.imageCaption}
-                        </figcaption>
-                      )}
-                    </figure>
-                  )}
-                  {section.paragraphs.map((p, pIdx) => {
-                    // Check if it's a table
-                    if (p.startsWith('<table')) {
-                      return (
-                        <div
-                          key={pIdx}
-                          className="my-6 overflow-x-auto rounded-xl border border-gray-200"
-                          dangerouslySetInnerHTML={{ __html: p }}
-                        />
-                      );
-                    }
-                    // Check if it's a CTA link paragraph
-                    if (p.includes('superanfitrion') || p.includes('SúperAnfitrión') || p.includes('Lodgify')) {
-                      return (
-                        <p
-                          key={pIdx}
-                          className="text-base sm:text-lg leading-relaxed text-gray-700 mb-4 bg-amber-50 border-l-4 border-amber-600 pl-4 py-3 rounded-r-lg"
-                          dangerouslySetInnerHTML={{ __html: p }}
-                        />
-                      );
-                    }
-                    return (
-                      <p
-                        key={pIdx}
-                        className="text-base sm:text-lg leading-relaxed text-gray-700 mb-4"
-                        dangerouslySetInnerHTML={{ __html: p }}
-                      />
-                    );
-                  })}
-                </div>
-              ))}
+              {renderArticleContent(article.content || '')}
             </div>
 
             {/* ── Mobile CTA ───────────────────────────────────── */}
@@ -607,6 +424,177 @@ export default function NewsArticleDetail() {
     </div>
   );
 }
+
+// ── JSON Content Renderer ─────────────────────────────────────────────────
+function renderArticleContent(content: string): React.ReactNode {
+  // Try to parse as JSON array first (new structured format)
+  let parsed: any[] | null = null;
+  try {
+    const trimmed = content.trim();
+    if (trimmed.startsWith('[')) {
+      parsed = JSON.parse(trimmed);
+    }
+  } catch {
+    parsed = null;
+  }
+
+  if (parsed && Array.isArray(parsed)) {
+    return (
+      <>
+        {parsed.map((block: any, idx: number) => {
+          if (block.type === 'intro') {
+            return (
+              <p key={idx} className="text-lg sm:text-xl leading-relaxed text-gray-700 mb-8 font-medium border-l-4 border-amber-600 pl-5 py-1">
+                {block.text}
+              </p>
+            );
+          }
+
+          if (block.type === 'section') {
+            return (
+              <div key={idx} className="mb-10">
+                {block.title && (
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 mt-10 leading-snug" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    {block.title}
+                  </h2>
+                )}
+                <p className="text-base sm:text-lg leading-relaxed text-gray-700 mb-5">{block.text}</p>
+                {block.image && (
+                  <figure className="my-6 -mx-4 sm:mx-0">
+                    <img
+                      src={block.image}
+                      alt={block.imageAlt || block.title || ''}
+                      className="w-full h-auto sm:rounded-xl object-cover max-h-[480px]"
+                      loading="lazy"
+                    />
+                    {block.imageCredit && (
+                      <figcaption className="mt-2 px-4 sm:px-0 text-xs text-gray-500 italic flex items-center gap-1">
+                        {block.imageSource ? (
+                          <a href={block.imageSource} target="_blank" rel="noopener noreferrer" className="hover:text-amber-800 transition-colors">
+                            {block.imageCredit}
+                          </a>
+                        ) : block.imageCredit}
+                      </figcaption>
+                    )}
+                  </figure>
+                )}
+              </div>
+            );
+          }
+
+          if (block.type === 'ranking') {
+            return (
+              <div key={idx} className="mb-10">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 mt-10 leading-snug" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  {block.title}
+                </h2>
+                <p className="text-base sm:text-lg leading-relaxed text-gray-700 mb-5">{block.text}</p>
+                {block.table && (
+                  <div className="overflow-x-auto rounded-xl border border-gray-200 my-6">
+                    <table className="w-full text-sm">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-4 py-3 text-left font-semibold text-gray-700">#</th>
+                          <th className="px-4 py-3 text-left font-semibold text-gray-700">Artista</th>
+                          <th className="px-4 py-3 text-left font-semibold text-gray-700">Año</th>
+                          <th className="px-4 py-3 text-right font-semibold text-gray-700">Asistencia</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {block.table.map((row: any, rIdx: number) => (
+                          <tr key={rIdx} className={`border-t border-gray-100 ${row.artista === '31 Minutos' ? 'bg-amber-50 font-semibold' : 'hover:bg-gray-50'}`}>
+                            <td className="px-4 py-3 text-gray-500">{row.pos}</td>
+                            <td className="px-4 py-3 text-gray-900">{row.artista}</td>
+                            <td className="px-4 py-3 text-gray-600">{row.año}</td>
+                            <td className="px-4 py-3 text-right text-gray-900">{row.asistencia}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          if (block.type === 'cta') {
+            return (
+              <div key={idx} className="my-10 bg-amber-50 border border-amber-200 rounded-2xl p-6 sm:p-8">
+                <h3 className="text-lg sm:text-xl font-bold text-amber-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  {block.title}
+                </h3>
+                <p className="text-base text-amber-800 leading-relaxed mb-5">{block.text}</p>
+                <a
+                  href={block.ctaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-amber-800 text-white font-semibold rounded-xl hover:bg-amber-900 transition-colors shadow-sm text-sm"
+                >
+                  {block.ctaLabel} <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            );
+          }
+
+          if (block.type === 'sources') {
+            return (
+              <div key={idx} className="mt-10 pt-8 border-t border-gray-200">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-4">{block.title}</h3>
+                <ul className="space-y-2">
+                  {block.sources?.map((src: any, sIdx: number) => (
+                    <li key={sIdx} className="flex items-start gap-2 text-sm text-gray-600">
+                      <span className="text-amber-600 mt-0.5">↗</span>
+                      <a href={src.url} target="_blank" rel="noopener noreferrer" className="hover:text-amber-800 hover:underline transition-colors">
+                        {src.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          }
+
+          return null;
+        })}
+      </>
+    );
+  }
+
+  // Fallback: render as Markdown-style plain text
+  const sections = parseContent(content);
+  return (
+    <>
+      {sections.map((section, idx) => (
+        <div key={idx} className="mb-8">
+          {section.heading && (
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 mt-10 leading-snug" style={{ fontFamily: "'Playfair Display', serif" }}>
+              {section.heading}
+            </h2>
+          )}
+          {section.image && (
+            <figure className="my-6 -mx-4 sm:mx-0">
+              <img src={section.image} alt={section.imageAlt || section.heading || ''} className="w-full h-auto sm:rounded-xl object-cover" loading="lazy" />
+              {section.imageCaption && (
+                <figcaption className="mt-2 px-4 sm:px-0 text-xs text-gray-500 italic">{section.imageCaption}</figcaption>
+              )}
+            </figure>
+          )}
+          {section.paragraphs.map((p, pIdx) => {
+            if (p.startsWith('<table')) {
+              return <div key={pIdx} className="my-6 overflow-x-auto rounded-xl border border-gray-200" dangerouslySetInnerHTML={{ __html: p }} />;
+            }
+            if (p.includes('superanfitrion') || p.includes('SúperAnfitrión') || p.includes('Lodgify')) {
+              return <p key={pIdx} className="text-base sm:text-lg leading-relaxed text-gray-700 mb-4 bg-amber-50 border-l-4 border-amber-600 pl-4 py-3 rounded-r-lg" dangerouslySetInnerHTML={{ __html: p }} />;
+            }
+            return <p key={pIdx} className="text-base sm:text-lg leading-relaxed text-gray-700 mb-4" dangerouslySetInnerHTML={{ __html: p }} />;
+          })}
+        </div>
+      ))}
+    </>
+  );
+}
+
+import React from 'react';
 
 // ── Content Parser ──────────────────────────────────────────────────────
 interface ContentSection {

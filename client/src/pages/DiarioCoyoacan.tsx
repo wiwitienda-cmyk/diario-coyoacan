@@ -3,24 +3,12 @@ import { Helmet } from 'react-helmet-async';
 import { trpc } from '@/lib/trpc';
 import { toast } from 'sonner';
 import { WhatsAppWidget } from '@/components/WhatsAppWidget';
+import ReservaSidebarShared, { LODGIFY_URL, PROPERTIES } from '@/components/ReservaSidebar';
 import { Link } from 'wouter';
 import {
   Star, ExternalLink, Calendar, Clock, ChevronRight, Home,
   Facebook, Instagram, Youtube, Mail, Phone, ArrowRight,
 } from 'lucide-react';
-
-// ─── Constants ──────────────────────────────────────────────────────────────
-const LODGIFY_URL = 'https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades';
-
-const PROPERTIES = [
-  { name: 'Flamingo 38', price: 24, rating: 4.97, reviews: 186 },
-  { name: 'La Pequeña París', price: 26, rating: 4.95, reviews: 142 },
-  { name: 'El Balcón de Buda', price: 32, rating: 4.95, reviews: 128 },
-  { name: 'King 1', price: 39, rating: 4.95, reviews: 97 },
-  { name: 'El Alebrije', price: 43, rating: 4.95, reviews: 84 },
-  { name: 'Rompecabezas', price: 39, rating: 4.89, reviews: 76 },
-  { name: 'El Cuarto Cuatro', price: 60, rating: 4.88, reviews: 52 },
-];
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 function getEditionNumber(dateStr: string): string {
@@ -60,88 +48,8 @@ function formatDateEs(dateStr: string): string {
   });
 }
 
-// ─── Sidebar de Reserva (reutilizable, igual que en NewsArticleDetail) ──────
-function ReservaSidebar() {
-  return (
-    <div className="sticky top-24">
-      {/* Banner de reserva directa */}
-      <div className="bg-gradient-to-br from-amber-800 via-amber-900 to-amber-950 rounded-2xl p-6 text-white mb-6 shadow-xl">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-xs font-semibold uppercase tracking-wider text-amber-200">Reserva directa</span>
-        </div>
-        <h3 className="text-xl font-bold mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
-          Hospédate en Coyoacán
-        </h3>
-        <p className="text-amber-100 text-sm mb-4 leading-relaxed">
-          Sin comisiones de Airbnb. Departamentos completos a pasos del Jardín Centenario.
-        </p>
-        <a
-          href={LODGIFY_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full text-center py-3 px-4 bg-white text-amber-900 font-bold rounded-xl hover:bg-amber-50 transition-colors text-sm shadow-lg"
-        >
-          Ver Disponibilidad
-        </a>
-      </div>
-
-      {/* Lista de propiedades */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h4 className="font-bold text-gray-900 text-sm" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Nuestros alojamientos
-          </h4>
-          <p className="text-xs text-gray-500 mt-0.5">Precios desde — por noche</p>
-        </div>
-        <div className="divide-y divide-gray-50">
-          {PROPERTIES.map((prop) => (
-            <a
-              key={prop.name}
-              href={LODGIFY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between px-5 py-3 hover:bg-amber-50/50 transition-colors group"
-            >
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-gray-900 group-hover:text-amber-800 transition-colors truncate">
-                  {prop.name}
-                </p>
-                <div className="flex items-center gap-1 mt-0.5">
-                  <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
-                  <span className="text-xs text-gray-600">{prop.rating}</span>
-                  <span className="text-xs text-gray-400">({prop.reviews})</span>
-                </div>
-              </div>
-              <div className="text-right flex-shrink-0 ml-3">
-                <p className="text-sm font-bold text-amber-800">${prop.price} USD</p>
-                <p className="text-[10px] text-gray-400">por noche</p>
-              </div>
-            </a>
-          ))}
-        </div>
-        <div className="px-5 py-3 bg-gray-50 border-t border-gray-100">
-          <a
-            href={LODGIFY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-1.5 text-sm font-semibold text-amber-800 hover:text-amber-900 transition-colors"
-          >
-            Ver todos los alojamientos
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
-        </div>
-      </div>
-
-      {/* Nota de confianza */}
-      <div className="mt-4 px-4 py-3 bg-green-50 rounded-xl border border-green-100">
-        <p className="text-xs text-green-800 leading-relaxed">
-          <strong>100% satisfacción.</strong> Entrada autónoma, WiFi de alta velocidad, a una cuadra del transporte público. Reserva directo y ahorra.
-        </p>
-      </div>
-    </div>
-  );
-}
+// ReservaSidebar ahora se importa desde @/components/ReservaSidebar
+const ReservaSidebar = () => <ReservaSidebarShared stickyTop="top-24" />;
 
 // ─── Componente principal ────────────────────────────────────────────────────
 export default function DiarioCoyoacan() {

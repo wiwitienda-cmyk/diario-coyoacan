@@ -680,3 +680,20 @@
 - [x] Artículo principal grande + 4 secundarios en grid 2 columnas
 - [x] CTA banner de hospedaje + CTA móvil
 - [x] Verificar renderizado responsive y ejecutar tests (59 tests passed)
+
+## Mejoras aprobadas: Hemeroteca, Modo Oscuro, Paginación Infinita
+- [ ] Rediseñar Hemeroteca con el mismo estilo profesional (header, sidebar, footer consistentes)
+- [ ] Implementar modo oscuro con toggle en el header
+- [ ] Implementar paginación infinita en grid de artículos secundarios
+
+## Banner de Alerta CDMX en Sidebar
+- [ ] Agregar banner de alerta amarilla en el sidebar con enlace a superanfitrion.com/aviso-cdmx
+- [ ] Mostrar que SúperAnfitrión se preocupa por la seguridad y salud de los huéspedes
+- [ ] Integrar en el componente ReservaSidebar compartido (DiarioCoyoacan + NewsArticleDetail)
+
+## Noticia Semanal: Coyoacán explota (semana 23-30 abril 2026) — Diario Coyoacán
+- [ ] Publicar crónica periodística en pasado: telescopios, CCXP, Leonora Carrington, Fiesta del Libro, 31 Minutos
+- [ ] Imágenes reales con créditos: Reuters/Raquel Cunha, Infobae, UNAM, Chilango, CDMX Secreta
+- [ ] SEO completo: schema.org NewsArticle, meta description, keywords long-tail, H1/H2/H3 semántico
+- [ ] CTAs de conversión a reservas integrados naturalmente en el contenido
+- [ ] Script de inserción directa en base de datos
