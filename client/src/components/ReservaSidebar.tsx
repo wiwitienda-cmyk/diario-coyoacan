@@ -1,4 +1,5 @@
-import { Star, ExternalLink, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Star, ExternalLink, AlertTriangle, ShieldCheck, Phone, BookOpen, Trophy, Home, Newspaper } from 'lucide-react';
+import { Link } from 'wouter';
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 const LODGIFY_URL = 'https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades';
@@ -18,12 +19,8 @@ export { LODGIFY_URL, PROPERTIES };
 // ─── Alerta CDMX Banner ────────────────────────────────────────────────────
 function AlertaCDMX() {
   return (
-    <a
-      href="https://superanfitrion.com/aviso-cdmx"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block mb-6 rounded-2xl overflow-hidden border-2 border-yellow-400 shadow-md hover:shadow-lg transition-shadow group"
-    >
+    <div className="mb-6 rounded-2xl overflow-hidden border-2 border-yellow-400 shadow-md">
+      {/* Cabecera de alerta */}
       <div className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-amber-300 px-5 py-3">
         <div className="flex items-center gap-2">
           <AlertTriangle className="w-5 h-5 text-yellow-900 flex-shrink-0" />
@@ -32,28 +29,94 @@ function AlertaCDMX() {
           </span>
         </div>
       </div>
+
+      {/* Cuerpo: descripción + links de emergencia */}
       <div className="bg-yellow-50 px-5 py-4">
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3 mb-4">
           <ShieldCheck className="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-sm text-gray-800 leading-relaxed">
-              <strong className="text-amber-900">Tu seguridad es nuestra prioridad.</strong>{' '}
-              Consulta las instrucciones y recomendaciones vigentes para huéspedes en la Ciudad de México.
-            </p>
-            <p className="text-xs text-amber-700 mt-2 font-semibold group-hover:underline">
-              Ver aviso completo →
-            </p>
+          <p className="text-sm text-gray-800 leading-relaxed">
+            <strong className="text-amber-900">Tu seguridad es nuestra prioridad.</strong>{' '}
+            Consulta las instrucciones vigentes para huéspedes en la Ciudad de México.
+          </p>
+        </div>
+
+        {/* Links de emergencia */}
+        <div className="flex flex-col gap-2 mb-4">
+          <a
+            href="https://superanfitrion.com/aviso-cdmx"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between w-full px-3 py-2 bg-amber-800 text-white text-xs font-bold rounded-lg hover:bg-amber-900 transition-colors"
+          >
+            <span>Ver aviso completo para huéspedes</span>
+            <ExternalLink className="w-3.5 h-3.5 flex-shrink-0" />
+          </a>
+
+          <div className="grid grid-cols-2 gap-2">
+            <a
+              href="https://proteccioncivil.cdmx.gob.mx/comunicacion"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-2 bg-yellow-100 border border-yellow-300 text-yellow-900 text-xs font-semibold rounded-lg hover:bg-yellow-200 transition-colors"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 flex-shrink-0" />
+              Protección Civil
+            </a>
+            <a
+              href="tel:911"
+              className="flex items-center gap-1.5 px-3 py-2 bg-red-50 border border-red-200 text-red-800 text-xs font-bold rounded-lg hover:bg-red-100 transition-colors"
+            >
+              <Phone className="w-3.5 h-3.5 flex-shrink-0" />
+              Emergencias 911
+            </a>
+          </div>
+        </div>
+
+        {/* Mini-nav: salida para no quedar atrapado */}
+        <div className="border-t border-yellow-200 pt-3">
+          <p className="text-[10px] text-amber-700 font-semibold uppercase tracking-wide mb-2">
+            Navegar el Diario Coyoacán
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            <Link
+              href="/"
+              className="flex items-center gap-1 px-2.5 py-1 bg-white border border-gray-200 text-gray-700 text-xs rounded-lg hover:bg-gray-50 hover:text-amber-800 transition-colors"
+            >
+              <Home className="w-3 h-3" />
+              Portada
+            </Link>
+            <Link
+              href="/noticias"
+              className="flex items-center gap-1 px-2.5 py-1 bg-white border border-gray-200 text-gray-700 text-xs rounded-lg hover:bg-gray-50 hover:text-amber-800 transition-colors"
+            >
+              <Newspaper className="w-3 h-3" />
+              Noticias
+            </Link>
+            <Link
+              href="/hemeroteca"
+              className="flex items-center gap-1 px-2.5 py-1 bg-white border border-gray-200 text-gray-700 text-xs rounded-lg hover:bg-gray-50 hover:text-amber-800 transition-colors"
+            >
+              <BookOpen className="w-3 h-3" />
+              Hemeroteca
+            </Link>
+            <Link
+              href="/hospedaje-mundial-2026"
+              className="flex items-center gap-1 px-2.5 py-1 bg-white border border-gray-200 text-gray-700 text-xs rounded-lg hover:bg-gray-50 hover:text-amber-800 transition-colors"
+            >
+              <Trophy className="w-3 h-3" />
+              Mundial 2026
+            </Link>
           </div>
         </div>
       </div>
-    </a>
+    </div>
   );
 }
 
 // ─── ReservaSidebar Component ───────────────────────────────────────────────
 /**
  * Sidebar compartido con:
- * 1. Banner de Alerta CDMX (seguridad para huéspedes)
+ * 1. Banner de Alerta CDMX (seguridad para huéspedes) con links de emergencia y mini-nav
  * 2. Banner de reserva directa
  * 3. Lista de propiedades con precios y ratings
  * 4. Nota de confianza
@@ -195,18 +258,34 @@ export function MobileCTA() {
         Ver Disponibilidad y Reservar
       </a>
 
-      {/* Alerta CDMX en móvil */}
-      <a
-        href="https://superanfitrion.com/aviso-cdmx"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center gap-2 mt-4 px-4 py-3 bg-yellow-400/20 rounded-xl border border-yellow-400/40"
-      >
-        <AlertTriangle className="w-4 h-4 text-yellow-300 flex-shrink-0" />
-        <span className="text-xs text-yellow-100 leading-snug">
-          <strong className="text-yellow-200">Alerta CDMX:</strong> Consulta las recomendaciones de seguridad para tu estancia →
-        </span>
-      </a>
+      {/* Alerta CDMX en móvil — con links de emergencia */}
+      <div className="mt-4 px-4 py-3 bg-yellow-400/20 rounded-xl border border-yellow-400/40">
+        <div className="flex items-center gap-2 mb-2">
+          <AlertTriangle className="w-4 h-4 text-yellow-300 flex-shrink-0" />
+          <span className="text-xs text-yellow-100 font-bold">Alerta CDMX Activa</span>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <a
+            href="https://superanfitrion.com/aviso-cdmx"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-yellow-200 hover:text-white underline"
+          >
+            Ver aviso completo para huéspedes →
+          </a>
+          <a
+            href="https://proteccioncivil.cdmx.gob.mx/comunicacion"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-yellow-200 hover:text-white underline"
+          >
+            Protección Civil CDMX →
+          </a>
+          <a href="tel:911" className="text-xs text-red-300 hover:text-red-200 font-bold">
+            Emergencias: 911
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

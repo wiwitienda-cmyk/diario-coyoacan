@@ -638,7 +638,7 @@
 - [ ] Buscar imágenes reales de eventos y subirlas a CDN
 - [ ] Redactar 3-5 reportajes con SEO pesado y fuentes citadas
 - [ ] Insertar artículos en BD con CTAs de hospedaje
-- [ ] Verificar renderizado y guardar checkpoint
+- [x] Verificar renderizado y guardar checkpoint
 
 ## Batch: Artículos nuevos - Luchas libres Juan de la Barrera y eventos frescos
 - [x] Investigar luchas libres AAA en Gimnasio Juan de la Barrera (11 abril 2026: Penta vs Vikingo, La Catalina debut)
@@ -733,7 +733,7 @@
 - [ ] Noticias más relevantes del torneo hasta la fecha
 - [ ] CTAs de conversión a reservas en Coyoacán para visitantes del Mundial
 - [ ] SEO completo: schema.org SportsEvent, meta tags, keywords long-tail
-- [ ] Verificar renderizado y guardar checkpoint
+- [x] Verificar renderizado y guardar checkpoint
 
 ## Sección: Atractivos turísticos y culturales cerca del Estadio Azteca
 - [ ] Investigar atractivos reales con datos verificados (distancia, horarios, precios)
@@ -752,3 +752,9 @@
 - [x] Agregar redirect 301 de `/diario?slug=X` → `/noticias/X` en el servidor Express
 - [x] Verificar redirect: HTTP 301 confirmado con curl (slug → /noticias/{slug}, sin slug → /)
 - [x] Guardar checkpoint
+
+## Fix: Banner Alerta CDMX sin salida (5 mayo 2026)
+
+- [x] Agregar links de salida en el banner de alerta: Protección Civil CDMX, aviso completo SúperAnfitrión, 911
+- [x] Agregar mini-nav (Portada, Noticias, Hemeroteca, Mundial 2026) dentro del banner de alerta CDMX
+- [x] Verificar renderizado y guardar checkpoint
