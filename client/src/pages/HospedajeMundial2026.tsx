@@ -235,7 +235,7 @@ export default function HospedajeMundial2026() {
     <div className="min-h-screen bg-[#FAFAF8] font-body">
       <Helmet>
         <title>Mundial 2026: Grupos, Selecciones y Sedes en México | Diario Coyoacán</title>
-        <meta name="description" content="Guía completa del Mundial 2026: los 12 grupos, 48 selecciones clasificadas, sedes en México (Azteca, Guadalajara, Monterrey), noticias más relevantes y cómo hospedarte en Coyoacán a 20 min del Azteca." />
+        <meta name="description" content="Guía completa del Mundial 2026: los 12 grupos, 48 selecciones clasificadas, sedes en México (Azteca, Guadalajara, Monterrey), noticias más relevantes y cómo hospedarte en Coyoacán a 40 min del Azteca en Metro + Tren Ligero." />
         <meta name="keywords" content="Mundial 2026 grupos, Copa del Mundo 2026 México, selecciones clasificadas Mundial 2026, Estadio Azteca Mundial 2026, hospedaje Mundial 2026 CDMX, Coyoacán Mundial 2026, donde ver Mundial 2026 Ciudad de México" />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://diario.superanfitrion.com.mx/mundial-2026" />
@@ -264,12 +264,7 @@ export default function HospedajeMundial2026() {
       {/* ── Ticker ── */}
       <div className="bg-[#1A1A1A] text-[#F5F0E8] py-1.5 overflow-hidden border-b-2 border-amber-600">
         <div className="animate-marquee whitespace-nowrap inline-block text-xs font-mono tracking-widest uppercase">
-          ⚽ MUNDIAL 2026 — 11 JUN: MÉXICO VS SUDÁFRICA EN EL AZTECA (INAUGURACIÓN) &nbsp;•&nbsp;
-          48 SELECCIONES · 104 PARTIDOS · 3 PAÍSES SEDE &nbsp;•&nbsp;
-          MESSI Y RONALDO EN SU POSIBLE ÚLTIMO MUNDIAL &nbsp;•&nbsp;
-          COYOACÁN A 20 MIN DEL ESTADIO AZTECA &nbsp;•&nbsp;
-          RESERVA TU HOSPEDAJE EN SUPERANFITRION.COM.MX &nbsp;•&nbsp;
-          ⚽ MUNDIAL 2026 — 11 JUN: MÉXICO VS SUDÁFRICA EN EL AZTECA (INAUGURACIÓN) &nbsp;•&nbsp;
+          ⚽ MUNDIAL 2026 — 11 JUN: MÉXICO VS SUDÁFRICA EN EL AZTECA (INAUGURACIÓN)  •  48 SELECCIONES · 104 PARTIDOS · 3 PAÍSES SEDE  •  MESSI Y RONALDO EN SU POSIBLE ÚLTIMO MUNDIAL  •  COYOACÁN A ~40 MIN DEL AZTECA: METRO L2 TASQUEÑA + TREN LIGERO  •  RESERVA TU HOSPEDAJE EN SUPERANFITRION.COM.MX  •  ⚽ MUNDIAL 2026 — 11 JUN: MÉXICO VS SUDÁFRICA EN EL AZTECA (INAUGURACIÓN)  • 
         </div>
       </div>
 
@@ -403,8 +398,8 @@ export default function HospedajeMundial2026() {
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
                   <p className="font-subhead uppercase tracking-widest text-amber-400 text-xs mb-1">Para aficionados del Mundial</p>
-                  <h3 className="font-headline text-xl mb-1">Coyoacán está a 20 minutos del Azteca</h3>
-                  <p className="text-[#F5F0E8]/70 text-sm">Metro Línea 3 directo. Sin comisiones de Airbnb. Departamentos completos en el barrio más cultural de la CDMX.</p>
+                  <h3 className="font-headline text-xl mb-1">Coyoacán está a ~40 minutos del Azteca</h3>
+                  <p className="text-[#F5F0E8]/70 text-sm">Metro Línea 2 hasta Tasqueña + Tren Ligero directo al Estadio Azteca. Los DEA enfrente. Sin comisiones de Airbnb. Departamentos completos en el barrio más cultural de la CDMX.</p>
                 </div>
                 <a
                   href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
@@ -545,11 +540,11 @@ export default function HospedajeMundial2026() {
           <section className="bg-white border border-[#1A1A1A]/15 p-6">
             <h2 className="font-headline text-2xl text-[#1A1A1A] mb-3">Hospédate en Coyoacán para el Mundial 2026</h2>
             <p className="text-[#1A1A1A]/70 leading-relaxed mb-4">
-              Si vas a vivir el Mundial 2026 desde la Ciudad de México, Coyoacán es tu base ideal. A 20 minutos del Estadio Azteca en Metro Línea 3, en el barrio más cultural y seguro de la CDMX. SúperAnfitrión tiene 7 propiedades verificadas con reserva directa, sin comisiones de plataformas externas, con precios competitivos y atención personalizada.
+              Si vas a vivir el Mundial 2026 desde la Ciudad de México, Coyoacán es tu base ideal. A ~40 minutos del Estadio Azteca: Metro Línea 2 hasta Tasqueña, luego Tren Ligero directo al Azteca. Los Deportivos Azteca (DEA) justo enfrente. El barrio más cultural y seguro de la CDMX. SúperAnfitrión tiene 7 propiedades verificadas con reserva directa, sin comisiones de plataformas externas, con precios competitivos y atención personalizada.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5 text-center">
               {[
-                { icon: '🏟️', label: '20 min al Azteca', sub: 'Metro Línea 3' },
+                { icon: '🏟️', label: '~40 min al Azteca', sub: 'Metro L2 + Tren Ligero' },
                 { icon: '🏠', label: '7 propiedades', sub: 'Verificadas' },
                 { icon: '⭐', label: 'Calificación 4.97', sub: '186 reseñas' },
                 { icon: '💳', label: 'Sin comisiones', sub: 'Reserva directa' },
