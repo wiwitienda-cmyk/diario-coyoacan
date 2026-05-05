@@ -68,10 +68,10 @@ export async function generateSitemap(): Promise<string> {
       .from(newsArticles)
       .orderBy(desc(newsArticles.createdAt));
 
-    const allArticles = [...articlesData, ...newsData];
     const today = new Date().toISOString().split('T')[0];
 
-    const articleUrls = allArticles
+    // Artículos legacy: /diario?slug=
+    const legacyArticleUrls = articlesData
       .filter(a => a.slug)
       .map((article) => {
         const lastmod = article.dateISO || today;
@@ -92,6 +92,31 @@ export async function generateSitemap(): Promise<string> {
   </url>`;
       })
       .join('');
+
+    // Noticias nuevas: /noticias/{slug}
+    const newsArticleUrls = newsData
+      .filter(a => a.slug)
+      .map((article) => {
+        const lastmod = article.dateISO || today;
+        const imageTag = article.heroImage
+          ? `
+    <image:image>
+      <image:loc>${escapeXml(article.heroImage)}</image:loc>
+      <image:title>${escapeXml(article.headlineEs)}</image:title>
+      <image:caption>${escapeXml((article.summaryEs || '').substring(0, 200))}</image:caption>
+    </image:image>`
+          : '';
+        return `
+  <url>
+    <loc>${BASE_URL}/noticias/${encodeURIComponent(article.slug)}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>${imageTag}
+  </url>`;
+      })
+      .join('');
+
+    const articleUrls = newsArticleUrls + legacyArticleUrls;
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -177,9 +202,9 @@ export async function generateNewsSitemap(): Promise<string> {
 </urlset>`;
     }
 
-    const twoDaysAgo = new Date();
-    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-    const twoDaysAgoISO = twoDaysAgo.toISOString().split('T')[0];
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const twoDaysAgoISO = thirtyDaysAgo.toISOString().split('T')[0];
 
     const newsData = await db
       .select({
@@ -189,6 +214,7 @@ export async function generateNewsSitemap(): Promise<string> {
         heroImage: newsArticles.heroImage,
         category: newsArticles.category,
         date: newsArticles.date,
+        createdAt: newsArticles.createdAt,
       })
       .from(newsArticles)
       .orderBy(desc(newsArticles.createdAt));
@@ -202,28 +228,46 @@ export async function generateNewsSitemap(): Promise<string> {
         heroImage: articles.heroImage,
         category: articles.categoryEs,
         date: articles.dateISO,
+        createdAt: articles.createdAt,
       })
       .from(articles)
       .orderBy(desc(articles.createdAt));
 
-    const allNewsData = [
-      ...mainArticlesData,
-      ...newsData,
-    ];
+    // Filtrar por createdAt (últimos 30 días) - más confiable que el campo date
+    const thirtyDaysAgoMs = thirtyDaysAgo.getTime();
 
-    const recentNews = allNewsData
-      .filter(a => a.date && /^\d{4}-\d{2}-\d{2}$/.test(a.date) && a.date >= twoDaysAgoISO)
-      .slice(0, 1000);;
+    const recentNewsArticles = newsData
+      .filter(a => a.createdAt && new Date(a.createdAt).getTime() >= thirtyDaysAgoMs)
+      .slice(0, 500);
 
-    const newsUrls = recentNews
+    const recentMainArticles = mainArticlesData
+      .filter(a => a.createdAt && new Date(a.createdAt).getTime() >= thirtyDaysAgoMs)
+      .slice(0, 500);
+
+    const newsArticleUrls = recentNewsArticles
       .filter(a => a.slug && a.title)
       .map(article => {
-        let pubDate = new Date().toISOString();
-        try {
-          if (article.date && /^\d{4}-\d{2}-\d{2}$/.test(article.date)) {
-            pubDate = new Date(article.date + 'T12:00:00Z').toISOString();
-          }
-        } catch { /* use default */ }
+        const pubDate = article.createdAt ? new Date(article.createdAt).toISOString() : new Date().toISOString();
+        return `
+  <url>
+    <loc>${BASE_URL}/noticias/${encodeURIComponent(article.slug)}</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Diario Coyoacán</news:name>
+        <news:language>es</news:language>
+      </news:publication>
+      <news:publication_date>${pubDate}</news:publication_date>
+      <news:title>${escapeXml(article.title)}</news:title>
+      <news:keywords>Coyoacán, CDMX, ${escapeXml(article.category || 'noticias')}, hospedaje, México</news:keywords>
+    </news:news>
+  </url>`;
+      })
+      .join('');
+
+    const legacyArticleUrls = recentMainArticles
+      .filter(a => a.slug && a.title)
+      .map(article => {
+        const pubDate = article.createdAt ? new Date(article.createdAt).toISOString() : new Date().toISOString();
         return `
   <url>
     <loc>${BASE_URL}/diario?slug=${encodeURIComponent(article.slug)}</loc>
@@ -239,6 +283,8 @@ export async function generateNewsSitemap(): Promise<string> {
   </url>`;
       })
       .join('');
+
+    const newsUrls = newsArticleUrls + legacyArticleUrls;
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

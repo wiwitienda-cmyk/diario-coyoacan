@@ -697,3 +697,10 @@
 - [ ] SEO completo: schema.org NewsArticle, meta description, keywords long-tail, H1/H2/H3 semántico
 - [ ] CTAs de conversión a reservas integrados naturalmente en el contenido
 - [ ] Script de inserción directa en base de datos
+
+## SEO: Sitemap.xml dinámico mejorado
+- [x] Corregir URLs de newsArticles en sitemap.xml de /diario?slug= a /noticias/{slug}
+- [x] Corregir sitemap-news.xml para usar createdAt en lugar de date (campo date en formato español)
+- [x] Ampliar ventana de sitemap-news.xml de 2 a 30 días para incluir más noticias recientes
+- [x] Verificar: sitemap.xml con 77 URLs, sitemap-news.xml con 5 noticias recientes en /noticias/{slug}
+- [x] 59 tests pasando correctamente
