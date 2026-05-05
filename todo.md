@@ -758,3 +758,10 @@
 - [x] Agregar links de salida en el banner de alerta: Protección Civil CDMX, aviso completo SúperAnfitrión, 911
 - [x] Agregar mini-nav (Portada, Noticias, Hemeroteca, Mundial 2026) dentro del banner de alerta CDMX
 - [x] Verificar renderizado y guardar checkpoint
+
+## Logo Ajolote en Header (5 mayo 2026)
+
+- [x] Generar logo del ajolote estilo periodístico/grabado para el Diario Coyoacán
+- [x] Subir a CDN (manus-upload-file --webdev)
+- [x] Integrar en SiteHeader.tsx junto al nombre "Diario Coyoacán"
+- [x] Verificar en desktop y móvil, guardar checkpoint

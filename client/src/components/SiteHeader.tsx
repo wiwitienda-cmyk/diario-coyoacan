@@ -66,7 +66,12 @@ export default function SiteHeader({ active }: SiteHeaderProps) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/">
-            <div className="flex items-center cursor-pointer group">
+            <div className="flex items-center gap-3 cursor-pointer group">
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663072521459/Q8BeTaWP8ahBzzm2xVz4Wa/ajolote-logo-diario-EsVJhEWQzfVopJF6YnvBQb.webp"
+                alt="Ajolote — Diario Coyoacán"
+                className="w-10 h-10 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+              />
               <h1
                 className="text-2xl font-bold text-gray-900 group-hover:text-amber-800 transition-colors"
                 style={{ fontFamily: "'Playfair Display', serif" }}
