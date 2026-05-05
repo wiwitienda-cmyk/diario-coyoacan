@@ -734,3 +734,10 @@
 - [ ] CTAs de conversión a reservas en Coyoacán para visitantes del Mundial
 - [ ] SEO completo: schema.org SportsEvent, meta tags, keywords long-tail
 - [ ] Verificar renderizado y guardar checkpoint
+
+## Sección: Atractivos turísticos y culturales cerca del Estadio Azteca
+- [ ] Investigar atractivos reales con datos verificados (distancia, horarios, precios)
+- [ ] Implementar sección visual en HospedajeMundial2026.tsx con tarjetas tipo guía
+- [ ] Incluir sitios poco conocidos/locales además de los obvios
+- [ ] CTAs de conversión integrados naturalmente
+- [ ] Guardar checkpoint

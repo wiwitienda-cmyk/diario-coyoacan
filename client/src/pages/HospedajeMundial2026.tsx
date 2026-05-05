@@ -548,6 +548,160 @@ export default function HospedajeMundial2026() {
             )}
           </section>
 
+          {/* ── Atractivos Turísticos cerca del Azteca ── */}
+          <section id="atractivos">
+            <div className="flex items-center justify-between mb-6 border-b-2 border-[#1A1A1A] pb-3">
+              <div className="flex items-center gap-3">
+                <MapPin className="w-5 h-5 text-amber-600" />
+                <h2 className="font-subhead text-lg uppercase tracking-widest text-[#1A1A1A]">Guía Secreta: Qué Hacer cerca del Estadio</h2>
+              </div>
+              <span className="text-xs font-mono text-[#1A1A1A]/50 hidden md:block">Zona Azteca · Coyoacán · Tlalpan</span>
+            </div>
+
+            {/* Intro editorial */}
+            <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+              <p className="text-sm text-[#1A1A1A]/80 leading-relaxed">
+                El Estadio Ciudad de México (Banorte/Azteca) está rodeado de una zona que la mayoría de los turistas no conoce. Aquí no encontrarás los lugares de siempre: esta es la guía que los locales del sur de la CDMX guardan para ellos mismos.
+              </p>
+            </div>
+
+            {/* Grid de atractivos */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              {[
+                {
+                  emoji: '🟺',
+                  categoria: 'Arqueología',
+                  nombre: 'Zona Arqueológica Cuicuilco',
+                  descripcion: 'El sitio arqueológico más antiguo de la CDMX (800 a.C.), con una pirámide circular única en Mesoamérica. Rodeada de lava del volcán Xitle. La mayoría de los aficionados del mundo nunca la verán en ningún otro Mundial.',
+                  distancia: '15 min en Tren Ligero',
+                  horario: 'Mar-Dom 9:00-17:00',
+                  precio: 'Entrada libre',
+                  fuente: 'INAH',
+                  color: 'border-amber-400',
+                  tagColor: 'bg-amber-100 text-amber-800',
+                },
+                {
+                  emoji: '⏰',
+                  categoria: 'Cultura Local',
+                  nombre: 'Museo del Tiempo Tlalpan',
+                  descripcion: 'Instalado en un convento del siglo XVI en el centro histórico de Tlalpan. Relojes y mecanismos de medición del tiempo de todas las épocas. Un lugar que los propios capitalinos desconocen, a 10 minutos del estadio.',
+                  distancia: '10 min en taxi',
+                  horario: 'Mar-Dom 10:00-18:00',
+                  precio: 'Entrada libre',
+                  fuente: 'TripAdvisor (492 reseñas)',
+                  color: 'border-blue-400',
+                  tagColor: 'bg-blue-100 text-blue-800',
+                },
+                {
+                  emoji: '🌮',
+                  categoria: 'Gastronomía Local',
+                  nombre: 'Tortas El Monje Loco',
+                  descripcion: 'Casi 90 años de historia. Las tortas más famosas del sur de la CDMX. Jamón, carnitas, lomo adobado, pollo y queso. El lugar donde va el vecino, no el guía turístico. Imperdible antes o después del partido.',
+                  distancia: '5 min a pie del estadio',
+                  horario: 'Lun-Sáb 9:00-20:30 · Dom 10:00-19:00',
+                  precio: 'Desde $50 MXN',
+                  fuente: 'CDMX Secreta',
+                  color: 'border-orange-400',
+                  tagColor: 'bg-orange-100 text-orange-800',
+                },
+                {
+                  emoji: '🍺',
+                  categoria: 'Ocio Nocturno',
+                  nombre: 'Terraza Victoria',
+                  descripcion: 'Cocteles de autor, aguachile de rib eye y costilla BBQ con vista a la zona. El lugar donde los locales celebran (o lloran) los resultados. Abre hasta la 1 AM los jueves-sábado. Perfecto para la noche del partido.',
+                  distancia: '8 min en taxi',
+                  horario: 'Dom-Mar 9:00-23:00 · Jue-Sáb hasta 1:00 AM',
+                  precio: 'Cocteles desde $120 MXN',
+                  fuente: 'CDMX Secreta',
+                  color: 'border-purple-400',
+                  tagColor: 'bg-purple-100 text-purple-800',
+                },
+                {
+                  emoji: '🌿',
+                  categoria: 'Naturaleza Urbana',
+                  nombre: 'Parque Ecológico Huayamilpas',
+                  descripcion: 'El pulmón verde de Coyoacán. Lagos artificiales, zona de meditación, huertos comunitarios y senderos entre árboles centenarios. Desconocido para el turismo masivo. Ideal para recuperarse entre partido y partido.',
+                  distancia: '20 min en metro desde el Azteca',
+                  horario: 'Todos los días 6:00-18:00',
+                  precio: 'Entrada libre',
+                  fuente: 'Alcaldía Coyoacán',
+                  color: 'border-green-400',
+                  tagColor: 'bg-green-100 text-green-800',
+                },
+                {
+                  emoji: '🎳',
+                  categoria: 'Diversión',
+                  nombre: 'Bol Tlalpan',
+                  descripcion: 'Boliche con mesa de billar a 5 minutos del estadio. Abre hasta las 23:45 todos los días. El plan perfecto para grupos que quieren seguir la fiesta después del partido sin gastar una fortuna.',
+                  distancia: '5 min en taxi',
+                  horario: 'Lun-Dom 9:00-23:45',
+                  precio: 'Desde $80 MXN por juego',
+                  fuente: 'CDMX Secreta',
+                  color: 'border-red-400',
+                  tagColor: 'bg-red-100 text-red-800',
+                },
+                {
+                  emoji: '🍽️',
+                  categoria: 'Mercado Local',
+                  nombre: 'Mercado de Comidas Huipulco',
+                  descripcion: 'Comida corrida, tacos, birria, gorditas y pozole. El mercado donde come el sur de la CDMX. Sin precios de turista, sin menú en inglés, sin Instagram. Solo comida real y buena.',
+                  distancia: '10 min en taxi',
+                  horario: 'Lun-Sáb 6:00-22:00 · Dom 6:00-20:00',
+                  precio: 'Comida corrida desde $80 MXN',
+                  fuente: 'CDMX Secreta',
+                  color: 'border-yellow-400',
+                  tagColor: 'bg-yellow-100 text-yellow-800',
+                },
+                {
+                  emoji: '🏛️',
+                  categoria: 'Historia',
+                  nombre: 'Centro Histórico de Tlalpan',
+                  descripcion: 'Pueblo Mágico a 10 minutos del estadio. Plaza colonial del siglo XVI, mercado de artesanías, pulquerías centenarias y la Parroquia de San Agustín. El lugar donde la CDMX todavía se parece a lo que era.',
+                  distancia: '10 min en taxi',
+                  horario: 'Siempre abierto (plaza pública)',
+                  precio: 'Entrada libre',
+                  fuente: 'Secretaría de Turismo CDMX',
+                  color: 'border-stone-400',
+                  tagColor: 'bg-stone-100 text-stone-800',
+                },
+              ].map((lugar, i) => (
+                <div key={i} className={`bg-white border border-[#1A1A1A]/15 border-l-4 ${lugar.color} p-5 hover:shadow-md transition-shadow`}>
+                  <div className="flex items-start justify-between mb-2">
+                    <span className="text-2xl">{lugar.emoji}</span>
+                    <span className={`text-[10px] font-subhead uppercase tracking-wider px-2 py-0.5 rounded-sm ${lugar.tagColor}`}>{lugar.categoria}</span>
+                  </div>
+                  <h3 className="font-headline text-lg text-[#1A1A1A] mb-2">{lugar.nombre}</h3>
+                  <p className="text-sm text-[#1A1A1A]/70 leading-relaxed mb-3">{lugar.descripcion}</p>
+                  <div className="space-y-1 text-xs font-mono text-[#1A1A1A]/60 border-t border-[#1A1A1A]/10 pt-3">
+                    <div className="flex items-center gap-1.5"><MapPin className="w-3 h-3 text-amber-600" /> {lugar.distancia}</div>
+                    <div className="flex items-center gap-1.5"><Clock className="w-3 h-3 text-amber-600" /> {lugar.horario}</div>
+                    <div className="flex items-center gap-1.5"><span className="text-amber-600 font-bold">$</span> {lugar.precio}</div>
+                    <div className="text-[#1A1A1A]/40 mt-1">Fuente: {lugar.fuente}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA Coyoacán como base */}
+            <div className="bg-[#1A1A1A] text-white p-6 border-l-4 border-amber-500">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                  <p className="font-subhead uppercase tracking-widest text-amber-400 text-xs mb-1">La base perfecta para explorar todo esto</p>
+                  <h3 className="font-headline text-xl mb-1">Coyoacán: a 40 min del Azteca, a pasos de todo lo demás</h3>
+                  <p className="text-[#F5F0E8]/70 text-sm">Desde Coyoacán llegas al Azteca en Tren Ligero, a Cuicuilco en 15 minutos, a Tlalpan en taxi, y al Centro Histórico en metro. La base logística perfecta para el Mundial 2026.</p>
+                </div>
+                <a
+                  href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-shrink-0 px-6 py-3 bg-amber-600 text-white font-subhead uppercase tracking-wider hover:bg-amber-500 transition-colors text-sm whitespace-nowrap"
+                >
+                  Ver Disponibilidad →
+                </a>
+              </div>
+            </div>
+          </section>
+
           {/* ── Bloque SEO Final ── */}
           <section className="bg-white border border-[#1A1A1A]/15 p-6">
             <h2 className="font-headline text-2xl text-[#1A1A1A] mb-3">Hospédate en Coyoacán para el Mundial 2026</h2>
