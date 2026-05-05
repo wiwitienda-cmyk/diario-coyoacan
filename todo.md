@@ -746,3 +746,9 @@
 
 - [ ] Agregar menú hamburguesa en el header para pantallas pequeñas (todas las páginas)
 - [ ] Corregir ticker de divisas que se solapa con la barra de búsqueda del navegador en móvil
+
+## Fix SEO: Redirects 301 para Google Search Console (5 mayo 2026)
+
+- [x] Agregar redirect 301 de `/diario?slug=X` → `/noticias/X` en el servidor Express
+- [x] Verificar redirect: HTTP 301 confirmado con curl (slug → /noticias/{slug}, sin slug → /)
+- [x] Guardar checkpoint

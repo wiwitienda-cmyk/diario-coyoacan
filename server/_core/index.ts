@@ -54,6 +54,21 @@ async function startServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
+  // ─── Redirect 301: /diario?slug=X → /noticias/X ──────────────────────────
+  // Los artículos legacy usaban query params (?slug=). Google los detectó como
+  // "Página alternativa con etiqueta canónica adecuada" y no los indexa.
+  // Este redirect 301 transfiere el PageRank a las URLs canónicas /noticias/{slug}.
+  app.get('/diario', (req, res, next) => {
+    const slug = req.query.slug as string | undefined;
+    if (slug && slug.trim()) {
+      // Redirect permanente 301 → /noticias/{slug}
+      return res.redirect(301, `/noticias/${encodeURIComponent(slug.trim())}`);
+    }
+    // Si no hay slug, redirigir a la portada
+    return res.redirect(301, '/');
+  });
+  // ─────────────────────────────────────────────────────────────────────────────
+
   // Middleware para inyectar meta tags OG dinámicos para crawlers de redes sociales
   // Facebook, Twitter, LinkedIn, etc. no ejecutan JavaScript, así que necesitan
   // los meta tags directamente en el HTML estático.
