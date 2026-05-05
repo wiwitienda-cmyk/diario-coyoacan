@@ -146,9 +146,17 @@ const GRUPOS = [
 
 const NOTICIAS = [
   {
+    fecha: '14 Mar 2025',
+    titulo: '¿Azteca, Banorte o Ciudad de México? El estadio tiene tres nombres y son el mismo recinto',
+    resumen: 'El histórico estadio se llama hoy oficialmente “Estadio Banorte” por un acuerdo de patrocinio con el banco mexicano. Sin embargo, durante el Mundial 2026 la FIFA lo denominará “Estadio Ciudad de México”, ya que prohíbe nombres comerciales en sus torneos. El apodo popular “Azteca” sigue siendo el más usado. Son el mismo recinto: el único en albergar tres Copas del Mundo (1970, 1986 y 2026).',
+    fuente: 'ESPN / FIFA / Billboard',
+    tag: 'DATO CLAVE',
+    color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+  },
+  {
     fecha: '11 Jun 2026',
-    titulo: 'El Azteca abrirá el Mundial: México vs Sudáfrica en la inauguración',
-    resumen: 'El Estadio Azteca se convierte en el único recinto en albergar tres Copas del Mundo (1970, 1986 y 2026). El partido inaugural México vs Sudáfrica reunirá a más de 83,000 aficionados el 11 de junio.',
+    titulo: 'El “Estadio Ciudad de México” (Banorte/Azteca) abrirá el Mundial con México vs Sudáfrica',
+    resumen: 'El partido inaugural del Mundial 2026 se jugará en el estadio que todos conocen como Azteca, hoy llamado Banorte y que durante el torneo llevará el nombre oficial de “Estadio Ciudad de México” por normas FIFA. El recinto reunirá a más de 83,000 aficionados el 11 de junio.',
     fuente: 'FIFA.com',
     tag: 'INAUGURACIÓN',
     color: 'bg-green-100 text-green-800 border-green-200',
@@ -198,11 +206,12 @@ const NOTICIAS = [
 const SEDES_MEXICO = [
   {
     ciudad: 'Ciudad de México',
-    estadio: 'Estadio Azteca',
+    estadio: 'Estadio Ciudad de México',
+    estadioNota: '(Banorte / Azteca)',
     capacidad: '83,000',
     partidos: 5,
     inauguracion: true,
-    descripcion: 'El único estadio en albergar 3 Copas del Mundo. Sede del partido inaugural México vs Sudáfrica el 11 de junio de 2026.',
+    descripcion: 'El único estadio en albergar 3 Copas del Mundo (1970, 1986 y 2026). Conocido popularmente como “Azteca” y hoy llamado “Banorte”, la FIFA lo renombrará “Estadio Ciudad de México” durante el torneo. Sede del partido inaugural el 11 de junio.',
     emoji: '🏟️',
   },
   {
@@ -384,7 +393,10 @@ export default function HospedajeMundial2026() {
                   )}
                   <div className="text-3xl mb-3">{s.emoji}</div>
                   <h3 className="font-headline text-xl text-[#1A1A1A] mb-1">{s.ciudad}</h3>
-                  <p className="text-xs font-mono text-[#1A1A1A]/60 uppercase mb-3">{s.estadio}</p>
+                  <p className="text-xs font-mono text-[#1A1A1A]/60 uppercase mb-1">{s.estadio}</p>
+                  {'estadioNota' in s && s.estadioNota && (
+                    <p className="text-xs text-[#1A1A1A]/50 italic mb-3">También conocido como: {(s as any).estadioNota}</p>
+                  )}
                   <div className="flex gap-4 text-xs font-mono text-[#1A1A1A]/70 mb-3">
                     <span>👥 {s.capacidad}</span>
                     <span>⚽ {s.partidos} partidos</span>
@@ -398,8 +410,8 @@ export default function HospedajeMundial2026() {
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
                   <p className="font-subhead uppercase tracking-widest text-amber-400 text-xs mb-1">Para aficionados del Mundial</p>
-                  <h3 className="font-headline text-xl mb-1">Coyoacán está a ~40 minutos del Azteca</h3>
-                  <p className="text-[#F5F0E8]/70 text-sm">Metro Línea 2 hasta Tasqueña + Tren Ligero directo al Estadio Azteca. Los DEA enfrente. Sin comisiones de Airbnb. Departamentos completos en el barrio más cultural de la CDMX.</p>
+                  <h3 className="font-headline text-xl mb-1">Coyoacán está a ~40 minutos del Estadio Ciudad de México</h3>
+                  <p className="text-[#F5F0E8]/70 text-sm">El estadio que el mundo conoce como “Azteca” (hoy Banorte, nombre FIFA: Ciudad de México). Metro Línea 2 hasta Tasqueña + Tren Ligero directo. Los DEA enfrente. Sin comisiones de Airbnb.</p>
                 </div>
                 <a
                   href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
