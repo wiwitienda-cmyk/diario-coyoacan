@@ -5,6 +5,7 @@ import {
   Trophy, MapPin, Star, Calendar, Users, ExternalLink,
   ChevronRight, Newspaper, Home, Zap, Shield, Clock
 } from 'lucide-react';
+import SiteHeader from '@/components/SiteHeader';
 import ReservaSidebar, { MobileCTA } from '@/components/ReservaSidebar';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -276,32 +277,7 @@ export default function HospedajeMundial2026() {
           ⚽ MUNDIAL 2026 — 11 JUN: MÉXICO VS SUDÁFRICA EN EL AZTECA (INAUGURACIÓN)  •  48 SELECCIONES · 104 PARTIDOS · 3 PAÍSES SEDE  •  MESSI Y RONALDO EN SU POSIBLE ÚLTIMO MUNDIAL  •  COYOACÁN A ~40 MIN DEL AZTECA: METRO L2 TASQUEÑA + TREN LIGERO  •  RESERVA TU HOSPEDAJE EN SUPERANFITRION.COM.MX  •  ⚽ MUNDIAL 2026 — 11 JUN: MÉXICO VS SUDÁFRICA EN EL AZTECA (INAUGURACIÓN)  • 
         </div>
       </div>
-
-      {/* ── Header ── */}
-      <header className="bg-[#FAFAF8] border-b border-[#1A1A1A]/20 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/">
-            <span className="font-headline text-2xl text-[#1A1A1A] cursor-pointer hover:text-amber-700 transition-colors">
-              Diario Coyoacán
-            </span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-subhead uppercase tracking-wider">
-            <a href="https://superanfitrion.com.mx/" target="_blank" rel="noopener noreferrer"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer flex items-center gap-1"><Home className="w-3.5 h-3.5" /> Home</span></a>
-            <Link href="/"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer">Portada</span></Link>
-            <Link href="/noticias"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer flex items-center gap-1"><Newspaper className="w-3.5 h-3.5" /> Noticias</span></Link>
-            <Link href="/hemeroteca"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer">Hemeroteca</span></Link>
-            <span className="text-amber-700 font-bold border-b-2 border-amber-600 pb-0.5 flex items-center gap-1"><Trophy className="w-3.5 h-3.5" /> Mundial 2026</span>
-          </nav>
-          <a
-            href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-amber-600 text-white text-sm font-subhead uppercase tracking-wider hover:bg-amber-700 transition-colors rounded-sm shadow-sm"
-          >
-            Reservar
-          </a>
-        </div>
-      </header>
+      <SiteHeader active="mundial" />
 
       {/* ── Sub-header ── */}
       <div className="bg-[#1A1A1A] text-[#F5F0E8] py-2 px-4">

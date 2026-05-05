@@ -4,6 +4,7 @@ import { Link, useRoute } from "wouter";
 import { Calendar, ArrowLeft, Clock, Star, ExternalLink, ChevronRight, Home, Copy, Check } from "lucide-react";
 import { useEffect, useMemo, useState } from 'react';
 import ReservaSidebarShared, { LODGIFY_URL, PROPERTIES, MobileCTA } from '@/components/ReservaSidebar';
+import SiteHeader from '@/components/SiteHeader';
 
 // ── Helpers ─────────────────────────────────────────────────────────────
 function estimateReadingTime(text: string): number {
@@ -201,54 +202,7 @@ export default function NewsArticleDetail() {
         </script>
       </Helmet>
 
-      {/* ── Header ──────────────────────────────────────────────────── */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/">
-              <div className="flex items-center gap-3 cursor-pointer group">
-                <h1
-                  className="text-2xl font-bold text-gray-900 group-hover:text-amber-800 transition-colors"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  Diario Coyoacán
-                </h1>
-              </div>
-            </Link>
-            <nav className="flex items-center gap-1 sm:gap-2">
-              <a
-                href="https://superanfitrion.com.mx/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors hidden sm:inline-flex items-center gap-1.5"
-              >
-                <Home className="w-4 h-4" />
-                Home
-              </a>
-              <Link
-                href="/"
-                className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors hidden sm:inline-flex items-center gap-1.5"
-              >
-                Portada
-              </Link>
-              <Link
-                href="/noticias"
-                className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                Noticias
-              </Link>
-              <a
-                href={LODGIFY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 bg-amber-800 text-white text-sm font-medium rounded-lg hover:bg-amber-900 transition-colors shadow-sm"
-              >
-                Reservar
-              </a>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <SiteHeader active="noticias" />
 
       {/* ── Breadcrumbs ─────────────────────────────────────────────── */}
       <div className="bg-gray-50 border-b border-gray-100">

@@ -741,3 +741,8 @@
 - [ ] Incluir sitios poco conocidos/locales además de los obvios
 - [ ] CTAs de conversión integrados naturalmente
 - [ ] Guardar checkpoint
+
+## Bugs móvil reportados (4 mayo 2026)
+
+- [ ] Agregar menú hamburguesa en el header para pantallas pequeñas (todas las páginas)
+- [ ] Corregir ticker de divisas que se solapa con la barra de búsqueda del navegador en móvil
