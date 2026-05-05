@@ -725,3 +725,12 @@
 - [x] Bloque SEO al final del contenido con enlace a reservas
 - [x] Footer de 4 columnas idéntico a DiarioCoyoacan
 - [x] 59 tests pasando, sin errores TypeScript
+
+## Rediseño: Página Mundial 2026 — Álbum Panini Digital
+
+- [ ] Investigar clasificados, grupos, sedes, noticias más relevantes del Mundial 2026 hasta hoy
+- [ ] Rediseñar la página como álbum Panini digital: selecciones con escudos, grupos, estadios, jugadores estrella
+- [ ] Noticias más relevantes del torneo hasta la fecha
+- [ ] CTAs de conversión a reservas en Coyoacán para visitantes del Mundial
+- [ ] SEO completo: schema.org SportsEvent, meta tags, keywords long-tail
+- [ ] Verificar renderizado y guardar checkpoint

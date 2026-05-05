@@ -36,6 +36,7 @@ function Router() {
         <Route path={"/noticias/:slug"} component={NewsArticleDetail} />
         <Route path={"/noticias"} component={Noticias} />
         <Route path={"/hospedaje-mundial-2026"} component={HospedajeMundial2026} />
+        <Route path={"/mundial-2026"} component={HospedajeMundial2026} />
         <Route path={"/en"} component={WorldCup2026En} />
         <Route path={"/world-cup-2026"} component={WorldCup2026En} />
         <Route path={"/admin/newsletter"} component={AdminNewsletter} />

@@ -1,512 +1,668 @@
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { MapPin, Star, Shield, Wifi, Coffee, Calendar, Users, Check, ExternalLink, Phone, Mail } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Link } from 'wouter';
+import {
+  Trophy, MapPin, Star, Calendar, Users, ExternalLink,
+  ChevronRight, Newspaper, Home, Zap, Shield, Clock
+} from 'lucide-react';
+import ReservaSidebar, { MobileCTA } from '@/components/ReservaSidebar';
 
-/**
- * Landing Page Optimizada para SEO y Conversión
- * Objetivo: Convertir búsquedas de "hospedaje mundial 2026 coyoacán" en reservas
- */
+// ─── Data ────────────────────────────────────────────────────────────────────
+
+const GRUPOS = [
+  {
+    id: 'A', sede: 'Ciudad de México / Guadalajara', color: 'from-green-700 to-green-900',
+    badge: 'bg-green-600', highlight: true,
+    equipos: [
+      { pais: 'México', bandera: '🇲🇽', conf: 'CONCACAF', estrella: 'Santiago Giménez', nota: 'Local. Abre el Mundial el 11 jun en el Azteca.' },
+      { pais: 'Sudáfrica', bandera: '🇿🇦', conf: 'CAF', estrella: 'Percy Tau', nota: 'Rival inaugural de México.' },
+      { pais: 'Corea del Sur', bandera: '🇰🇷', conf: 'AFC', estrella: 'Son Heung-min', nota: 'Favorita del grupo.' },
+      { pais: 'Chequia', bandera: '🇨🇿', conf: 'UEFA', estrella: 'Tomáš Souček', nota: 'Repechaje UEFA D.' },
+    ],
+    partidos: ['11 jun — México vs Sudáfrica (Azteca, INAUGURACIÓN)', '15 jun — Corea del Sur vs Chequia (Azteca)', '19 jun — México vs Corea del Sur (Guadalajara)', '19 jun — Chequia vs Sudáfrica (Guadalajara)', '23 jun — México vs Chequia (Azteca)', '23 jun — Sudáfrica vs Corea del Sur (Guadalajara)'],
+  },
+  {
+    id: 'B', sede: 'Los Ángeles / San Francisco', color: 'from-red-700 to-red-900',
+    badge: 'bg-red-600', highlight: false,
+    equipos: [
+      { pais: 'Canadá', bandera: '🇨🇦', conf: 'CONCACAF', estrella: 'Alphonso Davies', nota: 'Co-anfitrión. Debut histórico.' },
+      { pais: 'Bosnia y Herz.', bandera: '🇧🇦', conf: 'UEFA', estrella: 'Edin Džeko', nota: 'Repechaje UEFA A.' },
+      { pais: 'Catar', bandera: '🇶🇦', conf: 'AFC', estrella: 'Akram Afif', nota: 'Campeón de Asia.' },
+      { pais: 'Suiza', bandera: '🇨🇭', conf: 'UEFA', estrella: 'Granit Xhaka', nota: 'Sólida y disciplinada.' },
+    ],
+    partidos: ['12 jun — Canadá vs Bosnia (SoFi Stadium, LA)', '12 jun — Suiza vs Catar (Levi\'s Stadium, SF)', '16 jun — Canadá vs Catar (LA)', '16 jun — Bosnia vs Suiza (SF)', '20 jun — Canadá vs Suiza (LA)', '20 jun — Catar vs Bosnia (SF)'],
+  },
+  {
+    id: 'C', sede: 'Miami / Atlanta', color: 'from-yellow-600 to-yellow-800',
+    badge: 'bg-yellow-600', highlight: false,
+    equipos: [
+      { pais: 'Brasil', bandera: '🇧🇷', conf: 'CONMEBOL', estrella: 'Vinicius Jr.', nota: 'Máximo favorito al título.' },
+      { pais: 'Marruecos', bandera: '🇲🇦', conf: 'CAF', estrella: 'Achraf Hakimi', nota: 'Semifinalista en Qatar 2022.' },
+      { pais: 'Haití', bandera: '🇭🇹', conf: 'CONCACAF', estrella: 'Duckens Nazon', nota: 'Debut histórico.' },
+      { pais: 'Escocia', bandera: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', conf: 'UEFA', estrella: 'Scott McTominay', nota: 'Clasificó por primera vez desde 1998.' },
+    ],
+    partidos: ['12 jun — Brasil vs Marruecos (Hard Rock, Miami)', '12 jun — Haití vs Escocia (Mercedes-Benz, Atlanta)', '16 jun — Brasil vs Haití (Miami)', '16 jun — Escocia vs Marruecos (Atlanta)', '20 jun — Brasil vs Escocia (Miami)', '20 jun — Marruecos vs Haití (Atlanta)'],
+  },
+  {
+    id: 'D', sede: 'Dallas / Houston', color: 'from-blue-700 to-blue-900',
+    badge: 'bg-blue-600', highlight: false,
+    equipos: [
+      { pais: 'Estados Unidos', bandera: '🇺🇸', conf: 'CONCACAF', estrella: 'Christian Pulisic', nota: 'Co-anfitrión. Enorme presión local.' },
+      { pais: 'Paraguay', bandera: '🇵🇾', conf: 'CONMEBOL', estrella: 'Miguel Almirón', nota: 'Sorpresa de CONMEBOL.' },
+      { pais: 'Australia', bandera: '🇦🇺', conf: 'AFC', estrella: 'Mathew Ryan', nota: 'Semifinalista en Qatar 2022.' },
+      { pais: 'Repechaje UEFA C', bandera: '🏳️', conf: 'UEFA', estrella: 'Por definir', nota: 'Pendiente de repechaje.' },
+    ],
+    partidos: ['13 jun — EE.UU. vs Paraguay (AT&T Stadium, Dallas)', '13 jun — Australia vs Rep. UEFA C (Houston)', '17 jun — EE.UU. vs Australia (Dallas)', '17 jun — Paraguay vs Rep. UEFA C (Houston)', '21 jun — EE.UU. vs Rep. UEFA C (Dallas)', '21 jun — Paraguay vs Australia (Houston)'],
+  },
+  {
+    id: 'E', sede: 'Nueva York / Boston', color: 'from-slate-700 to-slate-900',
+    badge: 'bg-slate-600', highlight: false,
+    equipos: [
+      { pais: 'Alemania', bandera: '🇩🇪', conf: 'UEFA', estrella: 'Jamal Musiala', nota: 'Bicampeón de Europa. Favorita.' },
+      { pais: 'Curazao', bandera: '🇨🇼', conf: 'CONCACAF', estrella: 'Leandro Bacuna', nota: 'Primera Copa del Mundo.' },
+      { pais: 'Costa de Marfil', bandera: '🇨🇮', conf: 'CAF', estrella: 'Sébastien Haller', nota: 'Campeón de África 2023.' },
+      { pais: 'Ecuador', bandera: '🇪🇨', conf: 'CONMEBOL', estrella: 'Moisés Caicedo', nota: 'Revelación de CONMEBOL.' },
+    ],
+    partidos: ['13 jun — Alemania vs Curazao (MetLife, NJ)', '13 jun — Costa de Marfil vs Ecuador (Gillette, Boston)', '17 jun — Alemania vs Costa de Marfil (NJ)', '17 jun — Ecuador vs Curazao (Boston)', '21 jun — Alemania vs Ecuador (NJ)', '21 jun — Curazao vs Costa de Marfil (Boston)'],
+  },
+  {
+    id: 'F', sede: 'Seattle / Vancouver', color: 'from-orange-700 to-orange-900',
+    badge: 'bg-orange-600', highlight: false,
+    equipos: [
+      { pais: 'Países Bajos', bandera: '🇳🇱', conf: 'UEFA', estrella: 'Virgil van Dijk', nota: 'Subcampeón de Europa 2024.' },
+      { pais: 'Japón', bandera: '🇯🇵', conf: 'AFC', estrella: 'Takefusa Kubo', nota: 'Sensación de la Liga española.' },
+      { pais: 'Repechaje UEFA B', bandera: '🏳️', conf: 'UEFA', estrella: 'Por definir', nota: 'Pendiente de repechaje.' },
+      { pais: 'Túnez', bandera: '🇹🇳', conf: 'CAF', estrella: 'Wahbi Khazri', nota: 'Veterano del continente africano.' },
+    ],
+    partidos: ['14 jun — Países Bajos vs Japón (Lumen Field, Seattle)', '14 jun — Rep. UEFA B vs Túnez (BC Place, Vancouver)', '18 jun — Países Bajos vs Rep. UEFA B (Seattle)', '18 jun — Túnez vs Japón (Vancouver)', '22 jun — Países Bajos vs Túnez (Seattle)', '22 jun — Japón vs Rep. UEFA B (Vancouver)'],
+  },
+  {
+    id: 'G', sede: 'Kansas City / Denver', color: 'from-purple-700 to-purple-900',
+    badge: 'bg-purple-600', highlight: false,
+    equipos: [
+      { pais: 'Bélgica', bandera: '🇧🇪', conf: 'UEFA', estrella: 'Kevin De Bruyne', nota: 'Generación de oro en su último intento.' },
+      { pais: 'Egipto', bandera: '🇪🇬', conf: 'CAF', estrella: 'Mohamed Salah', nota: 'Posiblemente su último Mundial.' },
+      { pais: 'Irán', bandera: '🇮🇷', conf: 'AFC', estrella: 'Mehdi Taremi', nota: 'Confirmado el 15 de abril por Infantino.' },
+      { pais: 'Nueva Zelanda', bandera: '🇳🇿', conf: 'OFC', estrella: 'Chris Wood', nota: 'Campeón de Oceanía.' },
+    ],
+    partidos: ['14 jun — Bélgica vs Egipto (Arrowhead, KC)', '14 jun — Irán vs Nueva Zelanda (Empower, Denver)', '18 jun — Bélgica vs Irán (KC)', '18 jun — Nueva Zelanda vs Egipto (Denver)', '22 jun — Bélgica vs Nueva Zelanda (KC)', '22 jun — Egipto vs Irán (Denver)'],
+  },
+  {
+    id: 'H', sede: 'Chicago / Toronto', color: 'from-rose-700 to-rose-900',
+    badge: 'bg-rose-600', highlight: false,
+    equipos: [
+      { pais: 'España', bandera: '🇪🇸', conf: 'UEFA', estrella: 'Lamine Yamal', nota: 'Campeón de Europa 2024. Gran favorita.' },
+      { pais: 'Cabo Verde', bandera: '🇨🇻', conf: 'CAF', estrella: 'Garry Rodrigues', nota: 'Primera Copa del Mundo.' },
+      { pais: 'Arabia Saudita', bandera: '🇸🇦', conf: 'AFC', estrella: 'Salem Al-Dawsari', nota: 'Venció a Argentina en Qatar 2022.' },
+      { pais: 'Uruguay', bandera: '🇺🇾', conf: 'CONMEBOL', estrella: 'Darwin Núñez', nota: 'Potencia histórica de CONMEBOL.' },
+    ],
+    partidos: ['15 jun — España vs Cabo Verde (Soldier Field, Chicago)', '15 jun — Arabia Saudita vs Uruguay (BMO, Toronto)', '19 jun — España vs Arabia Saudita (Chicago)', '19 jun — Uruguay vs Cabo Verde (Toronto)', '23 jun — España vs Uruguay (Chicago)', '23 jun — Cabo Verde vs Arabia Saudita (Toronto)'],
+  },
+  {
+    id: 'I', sede: 'Monterrey / San Francisco', color: 'from-teal-700 to-teal-900',
+    badge: 'bg-teal-600', highlight: false,
+    equipos: [
+      { pais: 'Francia', bandera: '🇫🇷', conf: 'UEFA', estrella: 'Kylian Mbappé', nota: 'Favorita al título. Mbappé en su prime.' },
+      { pais: 'Senegal', bandera: '🇸🇳', conf: 'CAF', estrella: 'Sadio Mané', nota: 'Campeón de África 2022.' },
+      { pais: 'Colombia', bandera: '🇨🇴', conf: 'CONMEBOL', estrella: 'Luis Díaz', nota: 'Finalista de Copa América 2024.' },
+      { pais: 'Repechaje FIFA B', bandera: '🏳️', conf: 'Inter', estrella: 'Por definir', nota: 'Pendiente de repechaje.' },
+    ],
+    partidos: ['15 jun — Francia vs Senegal (BBVA, Monterrey)', '15 jun — Colombia vs Rep. FIFA B (SF)', '19 jun — Francia vs Colombia (Monterrey)', '19 jun — Rep. FIFA B vs Senegal (SF)', '23 jun — Francia vs Rep. FIFA B (Monterrey)', '23 jun — Senegal vs Colombia (SF)'],
+  },
+  {
+    id: 'J', sede: 'Dallas / Miami', color: 'from-indigo-700 to-indigo-900',
+    badge: 'bg-indigo-600', highlight: false,
+    equipos: [
+      { pais: 'Argentina', bandera: '🇦🇷', conf: 'CONMEBOL', estrella: 'Lionel Messi', nota: 'Campeón del mundo. Posiblemente su último Mundial.' },
+      { pais: 'Argelia', bandera: '🇩🇿', conf: 'CAF', estrella: 'Riyad Mahrez', nota: 'Campeón de África 2019.' },
+      { pais: 'Austria', bandera: '🇦🇹', conf: 'UEFA', estrella: 'Marcel Sabitzer', nota: 'Clasificó por primera vez desde 1998.' },
+      { pais: 'Uzbekistán', bandera: '🇺🇿', conf: 'AFC', estrella: 'Eldor Shomurodov', nota: 'Primera Copa del Mundo.' },
+    ],
+    partidos: ['16 jun — Argentina vs Argelia (AT&T, Dallas)', '16 jun — Austria vs Uzbekistán (Hard Rock, Miami)', '20 jun — Argentina vs Austria (Dallas)', '20 jun — Uzbekistán vs Argelia (Miami)', '24 jun — Argentina vs Uzbekistán (Dallas)', '24 jun — Argelia vs Austria (Miami)'],
+  },
+  {
+    id: 'K', sede: 'Los Ángeles / Guadalajara', color: 'from-amber-700 to-amber-900',
+    badge: 'bg-amber-600', highlight: false,
+    equipos: [
+      { pais: 'Portugal', bandera: '🇵🇹', conf: 'UEFA', estrella: 'Cristiano Ronaldo', nota: 'Posiblemente su último Mundial. CR7 a los 41 años.' },
+      { pais: 'Repechaje FIFA A', bandera: '🏳️', conf: 'Inter', estrella: 'Por definir', nota: 'Pendiente de repechaje.' },
+      { pais: 'Uzbekistán', bandera: '🇺🇿', conf: 'AFC', estrella: 'Eldor Shomurodov', nota: 'Primera Copa del Mundo.' },
+      { pais: 'Por definir', bandera: '🏳️', conf: '—', estrella: '—', nota: 'Cuarto equipo pendiente.' },
+    ],
+    partidos: ['16 jun — Portugal vs Rep. FIFA A (SoFi, LA)', '16 jun — Uzbekistán vs 4.° (Akron, Guadalajara)', '20 jun — Portugal vs Uzbekistán (LA)', '20 jun — 4.° vs Rep. FIFA A (Guadalajara)', '24 jun — Portugal vs 4.° (LA)', '24 jun — Rep. FIFA A vs Uzbekistán (Guadalajara)'],
+  },
+  {
+    id: 'L', sede: 'Nueva York / Toronto', color: 'from-cyan-700 to-cyan-900',
+    badge: 'bg-cyan-600', highlight: false,
+    equipos: [
+      { pais: 'Inglaterra', bandera: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', conf: 'UEFA', estrella: 'Jude Bellingham', nota: 'Finalista de la Eurocopa 2024.' },
+      { pais: 'Croacia', bandera: '🇭🇷', conf: 'UEFA', estrella: 'Luka Modrić', nota: 'Subcampeón en 2018. Modrić a los 40 años.' },
+      { pais: 'Ghana', bandera: '🇬🇭', conf: 'CAF', estrella: 'Mohammed Kudus', nota: 'Talento joven de la Premier League.' },
+      { pais: 'Por definir', bandera: '🏳️', conf: '—', estrella: '—', nota: 'Cuarto equipo pendiente.' },
+    ],
+    partidos: ['17 jun — Inglaterra vs Croacia (MetLife, NJ)', '17 jun — Ghana vs 4.° (BMO, Toronto)', '21 jun — Inglaterra vs Ghana (NJ)', '21 jun — 4.° vs Croacia (Toronto)', '25 jun — Inglaterra vs 4.° (NJ)', '25 jun — Croacia vs Ghana (Toronto)'],
+  },
+];
+
+const NOTICIAS = [
+  {
+    fecha: '11 Jun 2026',
+    titulo: 'El Azteca abrirá el Mundial: México vs Sudáfrica en la inauguración',
+    resumen: 'El Estadio Azteca se convierte en el único recinto en albergar tres Copas del Mundo (1970, 1986 y 2026). El partido inaugural México vs Sudáfrica reunirá a más de 83,000 aficionados el 11 de junio.',
+    fuente: 'FIFA.com',
+    tag: 'INAUGURACIÓN',
+    color: 'bg-green-100 text-green-800 border-green-200',
+  },
+  {
+    fecha: '15 Abr 2026',
+    titulo: 'Irán confirmado en el Mundial tras polémica resolución de la FIFA',
+    resumen: 'El presidente de la FIFA Gianni Infantino confirmó la participación de Irán en el Grupo G. La decisión generó controversia internacional pero la FIFA mantuvo su postura.',
+    fuente: 'FIFA / Reuters',
+    tag: 'POLÉMICA',
+    color: 'bg-red-100 text-red-800 border-red-200',
+  },
+  {
+    fecha: '5 Dic 2025',
+    titulo: 'Sorteo Final: 48 selecciones divididas en 12 grupos en Washington D.C.',
+    resumen: 'En el Centro Kennedy, con presencia de Trump, Sheinbaum y Carney, se realizó el sorteo más esperado. México quedó en el Grupo A junto a Sudáfrica, Corea del Sur y Chequia.',
+    fuente: 'FIFA / Televisa',
+    tag: 'SORTEO',
+    color: 'bg-blue-100 text-blue-800 border-blue-200',
+  },
+  {
+    fecha: '4 May 2026',
+    titulo: 'Hoteles en CDMX con reservas por debajo de proyecciones: oportunidad para hospedaje alternativo',
+    resumen: 'El 80% de los hoteles en ciudades sede reportan reservas por debajo de lo esperado, según encuesta de la industria. La demanda de apartamentos y hospedaje local crece.',
+    fuente: 'KPBS / Breaking Travel News',
+    tag: 'HOSPEDAJE',
+    color: 'bg-amber-100 text-amber-800 border-amber-200',
+  },
+  {
+    fecha: '22 Abr 2026',
+    titulo: 'A 50 días del Mundial: Cronograma completo de actividades en México',
+    resumen: 'TUDN publicó el cronograma oficial de actividades previas al Mundial. La inauguración en el Azteca el 11 de junio marcará el inicio del torneo más grande de la historia.',
+    fuente: 'TUDN',
+    tag: 'CUENTA REGRESIVA',
+    color: 'bg-purple-100 text-purple-800 border-purple-200',
+  },
+  {
+    fecha: '8 Abr 2026',
+    titulo: 'Ciudad de México, Boston y Vancouver lideran la demanda de hospedaje',
+    resumen: 'Breaking Travel News reporta que CDMX tiene uno de los crecimientos más fuertes en demanda de alojamiento para el Mundial. Coyoacán, zona segura y cultural, emerge como destino favorito.',
+    fuente: 'Breaking Travel News',
+    tag: 'TURISMO',
+    color: 'bg-teal-100 text-teal-800 border-teal-200',
+  },
+];
+
+const SEDES_MEXICO = [
+  {
+    ciudad: 'Ciudad de México',
+    estadio: 'Estadio Azteca',
+    capacidad: '83,000',
+    partidos: 5,
+    inauguracion: true,
+    descripcion: 'El único estadio en albergar 3 Copas del Mundo. Sede del partido inaugural México vs Sudáfrica el 11 de junio de 2026.',
+    emoji: '🏟️',
+  },
+  {
+    ciudad: 'Guadalajara',
+    estadio: 'Estadio Akron',
+    capacidad: '49,850',
+    partidos: 4,
+    inauguracion: false,
+    descripcion: 'Casa de las Chivas. Albergará 4 partidos del Grupo A y K, incluyendo encuentros de México y Portugal.',
+    emoji: '⚽',
+  },
+  {
+    ciudad: 'Monterrey',
+    estadio: 'Estadio BBVA',
+    capacidad: '51,350',
+    partidos: 4,
+    inauguracion: false,
+    descripcion: 'Moderno estadio del norte de México. Sede de partidos del Grupo I con Francia y Colombia.',
+    emoji: '🦁',
+  },
+];
+
+// ─── Component ───────────────────────────────────────────────────────────────
+
 export default function HospedajeMundial2026() {
-  const handleReservarClick = () => {
-    // Track conversion event
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'click_reservar', {
-        event_category: 'conversion',
-        event_label: 'landing_mundial_2026',
-      });
-    }
-    
-    // Redirect to Lodgify
-    window.open('https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades', '_blank');
-  };
-
-  const handleWhatsAppClick = () => {
-    window.open('https://wa.me/525511427252?text=Hola%2C%20me%20interesa%20hospedarme%20en%20Coyoac%C3%A1n%20para%20el%20Mundial%202026', '_blank');
-  };
+  const [grupoActivo, setGrupoActivo] = useState<string | null>(null);
+  const [vistaGrupos, setVistaGrupos] = useState<'album' | 'lista'>('album');
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-newsprint to-white">
+    <div className="min-h-screen bg-[#FAFAF8] font-body">
       <Helmet>
-        <title>Hospedaje en Coyoacán para el Mundial 2026 | SúperAnfitrión</title>
-        <meta name="description" content="Hospédate en el corazón de Coyoacán para el Mundial de Fútbol 2026. Propiedades verificadas, cerca del Estadio Azteca, transporte directo. ¡Reserva ahora y asegura tu lugar!" />
-        <meta name="keywords" content="hospedaje mundial 2026, alojamiento mundial 2026 méxico, donde hospedarse mundial 2026 cdmx, airbnb coyoacán mundial 2026, hoteles cerca estadio azteca, hospedaje coyoacán, alojamiento coyoacán" />
-        {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://diario.superanfitrion.com.mx/hospedaje-mundial-2026" />
-        <meta property="og:title" content="Hospedaje en Coyoacán para el Mundial 2026 | SúperAnfitrión" />
-        <meta property="og:description" content="Hospédate en el corazón de Coyoacán para el Mundial de Fútbol 2026. Propiedades verificadas, cerca del Estadio Azteca, transporte directo." />
+        <title>Mundial 2026: Grupos, Selecciones y Sedes en México | Diario Coyoacán</title>
+        <meta name="description" content="Guía completa del Mundial 2026: los 12 grupos, 48 selecciones clasificadas, sedes en México (Azteca, Guadalajara, Monterrey), noticias más relevantes y cómo hospedarte en Coyoacán a 20 min del Azteca." />
+        <meta name="keywords" content="Mundial 2026 grupos, Copa del Mundo 2026 México, selecciones clasificadas Mundial 2026, Estadio Azteca Mundial 2026, hospedaje Mundial 2026 CDMX, Coyoacán Mundial 2026, donde ver Mundial 2026 Ciudad de México" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://diario.superanfitrion.com.mx/mundial-2026" />
+        <meta property="og:title" content="Mundial 2026: Álbum completo de las 48 selecciones | Diario Coyoacán" />
+        <meta property="og:description" content="Los 12 grupos, 48 selecciones, sedes en México y cómo hospedarte en Coyoacán para vivir el Mundial desde adentro." />
         <meta property="og:site_name" content="Diario Coyoacán" />
         <meta property="og:locale" content="es_MX" />
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Hospedaje en Coyoacán para el Mundial 2026 | SúperAnfitrión" />
-        <meta name="twitter:description" content="Hospédate en el corazón de Coyoacán para el Mundial de Fútbol 2026. Propiedades verificadas, cerca del Estadio Azteca, transporte directo." />
-        {/* Canonical */}
-        <link rel="canonical" href="https://diario.superanfitrion.com.mx/hospedaje-mundial-2026" />
-        {/* Schema.org LocalBusiness */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "LodgingBusiness",
-            "name": "SúperAnfitrión Coyoacán",
-            "description": "Hospedaje verificado en Coyoacán para el Mundial de Fútbol 2026. Propiedades auténticas a 20 minutos del Estadio Azteca.",
-            "url": "https://diario.superanfitrion.com.mx/hospedaje-mundial-2026",
-            "sameAs": [
-              "https://superanfitrion.com.mx",
-              "https://superanfitrioncoyoacan.lodgify.com"
-            ],
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Coyoacán",
-              "addressRegion": "Ciudad de México",
-              "addressCountry": "MX",
-              "postalCode": "04000"
-            },
-            "geo": {
-              "@type": "GeoCoordinates",
-              "latitude": 19.3500,
-              "longitude": -99.1620
-            },
-            "telephone": "+52-55-1142-7252",
-            "email": "superanfitrioncoyoacan@gmail.com",
-            "priceRange": "$$",
-            "currenciesAccepted": "MXN, USD",
-            "paymentAccepted": "Cash, Credit Card",
-            "checkinTime": "15:00",
-            "checkoutTime": "11:00",
-            "amenityFeature": [
-              { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
-              { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
-              { "@type": "LocationFeatureSpecification", "name": "Self check-in", "value": true }
-            ],
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.9",
-              "reviewCount": "127",
-              "bestRating": "5",
-              "worstRating": "1"
-            },
-            "event": {
-              "@type": "SportsEvent",
-              "name": "FIFA World Cup 2026",
-              "startDate": "2026-06-11",
-              "endDate": "2026-07-19",
-              "location": {
-                "@type": "Place",
-                "name": "Estadio Azteca",
-                "address": "Ciudad de México, México"
-              }
-            }
-          })}
-        </script>
+        <meta name="twitter:title" content="Mundial 2026: Álbum completo de las 48 selecciones | Diario Coyoacán" />
+        <link rel="canonical" href="https://diario.superanfitrion.com.mx/mundial-2026" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SportsEvent",
+          "name": "Copa Mundial de la FIFA 2026",
+          "startDate": "2026-06-11",
+          "location": [
+            { "@type": "Place", "name": "Estadio Azteca", "address": { "@type": "PostalAddress", "addressLocality": "Ciudad de México", "addressCountry": "MX" } },
+            { "@type": "Place", "name": "Estadio Akron", "address": { "@type": "PostalAddress", "addressLocality": "Guadalajara", "addressCountry": "MX" } },
+            { "@type": "Place", "name": "Estadio BBVA", "address": { "@type": "PostalAddress", "addressLocality": "Monterrey", "addressCountry": "MX" } },
+          ],
+          "organizer": { "@type": "Organization", "name": "FIFA", "url": "https://www.fifa.com" },
+          "url": "https://diario.superanfitrion.com.mx/mundial-2026"
+        })}</script>
       </Helmet>
 
-      {/* Header con Navegación */}
-      <header className="sticky top-0 z-50 bg-white border-b-2 border-ink shadow-md">
-        <div className="container max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          {/* Logo */}
-          <a href="https://superanfitrion.com.mx/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <div className="w-12 h-12 bg-gradient-to-br from-green-700 to-green-900 rounded-full flex items-center justify-center text-white font-headline text-xl">
-              SA
-            </div>
-            <div>
-              <p className="font-headline text-xl text-ink leading-none">SúperAnfitrión</p>
-              <p className="text-xs text-gray-600 font-subhead uppercase tracking-wider">Coyoacán</p>
-            </div>
-          </a>
+      {/* ── Ticker ── */}
+      <div className="bg-[#1A1A1A] text-[#F5F0E8] py-1.5 overflow-hidden border-b-2 border-amber-600">
+        <div className="animate-marquee whitespace-nowrap inline-block text-xs font-mono tracking-widest uppercase">
+          ⚽ MUNDIAL 2026 — 11 JUN: MÉXICO VS SUDÁFRICA EN EL AZTECA (INAUGURACIÓN) &nbsp;•&nbsp;
+          48 SELECCIONES · 104 PARTIDOS · 3 PAÍSES SEDE &nbsp;•&nbsp;
+          MESSI Y RONALDO EN SU POSIBLE ÚLTIMO MUNDIAL &nbsp;•&nbsp;
+          COYOACÁN A 20 MIN DEL ESTADIO AZTECA &nbsp;•&nbsp;
+          RESERVA TU HOSPEDAJE EN SUPERANFITRION.COM.MX &nbsp;•&nbsp;
+          ⚽ MUNDIAL 2026 — 11 JUN: MÉXICO VS SUDÁFRICA EN EL AZTECA (INAUGURACIÓN) &nbsp;•&nbsp;
+        </div>
+      </div>
 
-          {/* Navegación */}
-          <nav className="hidden md:flex items-center gap-6">
-            <a 
-              href="https://superanfitrion.com.mx/" 
-              className="font-subhead uppercase text-sm text-ink hover:text-green-700 transition-colors"
-            >
-              Home
-            </a>
-            <a 
-              href="/diario" 
-              className="font-subhead uppercase text-sm text-ink hover:text-green-700 transition-colors"
-            >
-              Blog
-            </a>
-            <a 
-              href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-rust text-white px-6 py-2 font-subhead uppercase text-sm hover:bg-orange-700 transition-colors border-2 border-ink shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_#1A1A1A]"
-            >
-              Reservaciones
-            </a>
+      {/* ── Header ── */}
+      <header className="bg-[#FAFAF8] border-b border-[#1A1A1A]/20 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          <Link href="/">
+            <span className="font-headline text-2xl text-[#1A1A1A] cursor-pointer hover:text-amber-700 transition-colors">
+              Diario Coyoacán
+            </span>
+          </Link>
+          <nav className="hidden md:flex items-center gap-6 text-sm font-subhead uppercase tracking-wider">
+            <Link href="/"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer flex items-center gap-1"><Home className="w-3.5 h-3.5" /> Portada</span></Link>
+            <Link href="/noticias"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer flex items-center gap-1"><Newspaper className="w-3.5 h-3.5" /> Noticias</span></Link>
+            <Link href="/hemeroteca"><span className="text-[#1A1A1A]/60 hover:text-[#1A1A1A] transition-colors cursor-pointer">Hemeroteca</span></Link>
+            <span className="text-amber-700 font-bold border-b-2 border-amber-600 pb-0.5 flex items-center gap-1"><Trophy className="w-3.5 h-3.5" /> Mundial 2026</span>
           </nav>
-
-          {/* Menú Móvil */}
-          <div className="md:hidden flex gap-2">
-            <a 
-              href="/diario" 
-              className="px-4 py-2 border-2 border-ink font-subhead uppercase text-xs hover:bg-gray-100 transition-colors"
-            >
-              Blog
-            </a>
-            <a 
-              href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-rust text-white px-4 py-2 font-subhead uppercase text-xs hover:bg-orange-700 transition-colors border-2 border-ink"
-            >
-              Reservar
-            </a>
-          </div>
+          <a
+            href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 bg-amber-600 text-white text-sm font-subhead uppercase tracking-wider hover:bg-amber-700 transition-colors rounded-sm shadow-sm"
+          >
+            Reservar
+          </a>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-green-700 to-green-900 text-white py-20 px-4">
-        <div className="container max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
-                <span className="text-sm font-subhead uppercase tracking-wider">⚽ Mundial de Fútbol 2026</span>
-              </div>
-              
-              <h1 className="text-4xl md:text-6xl font-headline leading-tight mb-6">
-                Hospédate en el Corazón de Coyoacán
-              </h1>
-              
-              <p className="text-xl md:text-2xl mb-8 text-white/90">
-                Propiedades verificadas a minutos del Estadio Azteca. Transporte directo, WiFi de alta velocidad, y la mejor experiencia cultural de la CDMX.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Button 
-                  onClick={handleReservarClick}
-                  size="lg" 
-                  className="bg-white text-green-900 hover:bg-gray-100 text-lg px-8 py-6 shadow-2xl transform hover:scale-105 transition-all"
-                >
-                  <Calendar className="mr-2" />
-                  Ver Disponibilidad
-                </Button>
-                
-                <Button 
-                  onClick={handleWhatsAppClick}
-                  size="lg" 
-                  variant="outline" 
-                  className="border-2 border-white text-white hover:bg-white/10 text-lg px-8 py-6"
-                >
-                  <Phone className="mr-2" />
-                  WhatsApp
-                </Button>
-              </div>
-              
-              {/* Prueba Social */}
-              <div className="flex items-center gap-4 text-sm">
-                <div className="flex -space-x-2">
-                  {[1,2,3,4].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full bg-white/20 border-2 border-white flex items-center justify-center">
-                      <Users className="w-5 h-5" />
-                    </div>
-                  ))}
-                </div>
-                <p className="text-white/90">
-                  <strong>127 huéspedes</strong> ya reservaron para el Mundial 2026
-                </p>
-              </div>
-            </div>
-            
-            <div className="relative">
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                      <MapPin className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="font-subhead font-bold">20-25 min al Estadio Azteca</h3>
-                      <p className="text-sm text-white/80">Metro Línea 2 directo (evita tráfico)</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                      <Shield className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="font-subhead font-bold">Zona Segura</h3>
-                      <p className="text-sm text-white/80">Coyoacán, la colonia más segura de CDMX</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                      <Star className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="font-subhead font-bold">Calificación 4.9/5</h3>
-                      <p className="text-sm text-white/80">Basado en 127 reseñas verificadas</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* ── Sub-header ── */}
+      <div className="bg-[#1A1A1A] text-[#F5F0E8] py-2 px-4">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-amber-400" /> 11 Jun – Jul 2026</span>
+            <span className="flex items-center gap-1"><Users className="w-3 h-3 text-amber-400" /> 48 selecciones</span>
+            <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-amber-400" /> 3 países sede</span>
+          </div>
+          <div className="flex items-center gap-1 text-amber-400">
+            <Zap className="w-3 h-3" />
+            <span>Cuenta regresiva: {Math.max(0, Math.ceil((new Date('2026-06-11').getTime() - Date.now()) / 86400000))} días para la inauguración</span>
           </div>
         </div>
-      </section>
-
-      {/* Urgencia Banner */}
-      <div className="bg-red-600 text-white py-3 px-4 text-center">
-        <p className="font-subhead text-sm md:text-base">
-          ⚠️ <strong>ALTA DEMANDA:</strong> Solo quedan 3 propiedades disponibles para junio 2026. Reserva ahora y asegura tu lugar.
-        </p>
       </div>
 
-      {/* Beneficios Section */}
-      <section className="py-16 px-4">
-        <div className="container max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-headline text-center mb-12">
-            ¿Por Qué Hospedarte en Coyoacán?
-          </h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-6 border-2 border-ink hover:shadow-xl transition-shadow">
-              <MapPin className="w-12 h-12 text-green-700 mb-4" />
-              <h3 className="text-xl font-subhead font-bold mb-3">Ubicación Estratégica</h3>
-              <p className="text-gray-700">
-                A 20-25 minutos del Estadio Azteca en Metro (Línea 2). Evita el tráfico del Mundial con transporte público confiable. Además, disfruta de restaurantes, cafés, museos y la vida cultural de Coyoacán.
-              </p>
-            </Card>
-            
-            <Card className="p-6 border-2 border-ink hover:shadow-xl transition-shadow">
-              <Shield className="w-12 h-12 text-green-700 mb-4" />
-              <h3 className="text-xl font-subhead font-bold mb-3">Seguridad Garantizada</h3>
-              <p className="text-gray-700">
-                Coyoacán es una de las colonias más seguras de la CDMX. Vigilancia 24/7, calles bien iluminadas, y comunidad amigable.
-              </p>
-            </Card>
-            
-            <Card className="p-6 border-2 border-ink hover:shadow-xl transition-shadow">
-              <Coffee className="w-12 h-12 text-green-700 mb-4" />
-              <h3 className="text-xl font-subhead font-bold mb-3">Experiencia Auténtica</h3>
-              <p className="text-gray-700">
-                Vive como local en el corazón cultural de México. Mercados, plazas, arte callejero, y la mejor gastronomía mexicana.
-              </p>
-            </Card>
+      {/* ── Hero ── */}
+      <section className="bg-gradient-to-br from-[#1A1A1A] via-[#2D1B00] to-[#1A1A1A] text-white py-16 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-amber-600/20 border border-amber-500/40 text-amber-400 px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest mb-6">
+            <Trophy className="w-3.5 h-3.5" /> Edición Especial Mundial 2026
           </div>
-        </div>
-      </section>
-
-      {/* Amenidades Section */}
-      <section className="bg-gray-50 py-16 px-4">
-        <div className="container max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-headline text-center mb-12">
-            Amenidades Incluidas
-          </h2>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Wifi, text: 'WiFi Alta Velocidad' },
-              { icon: Coffee, text: 'Cocina Equipada' },
-              { icon: Shield, text: 'Seguridad 24/7' },
-              { icon: MapPin, text: 'Guía de Coyoacán' },
-              { icon: Phone, text: 'Soporte 24/7' },
-              { icon: Star, text: 'Limpieza Profunda' },
-              { icon: Users, text: 'Espacios Compartidos' },
-              { icon: Calendar, text: 'Check-in Flexible' },
-            ].map((amenidad, idx) => (
-              <div key={idx} className="flex items-center gap-3 bg-white p-4 rounded-lg border border-gray-200">
-                <amenidad.icon className="w-6 h-6 text-green-700 flex-shrink-0" />
-                <span className="font-subhead text-sm">{amenidad.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonios Section */}
-      <section className="py-16 px-4">
-        <div className="container max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-headline text-center mb-12">
-            Lo Que Dicen Nuestros Huéspedes
-          </h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'María González',
-                country: 'España',
-                rating: 5,
-                text: 'Excelente ubicación, muy cerca del Metro y de todo. La propiedad estaba impecable y el anfitrión súper atento. ¡Volveré para el Mundial!'
-              },
-              {
-                name: 'John Smith',
-                country: 'USA',
-                rating: 5,
-                text: 'Perfect location in Coyoacán. Safe neighborhood, great restaurants nearby. The host was very helpful with recommendations.'
-              },
-              {
-                name: 'Lucas Silva',
-                country: 'Brasil',
-                rating: 5,
-                text: 'Melhor hospedagem que já tive na CDMX. Coyoacán é incrível, cheio de cultura e boa comida. Recomendo 100%!'
-              }
-            ].map((testimonio, idx) => (
-              <Card key={idx} className="p-6 border-2 border-ink">
-                <div className="flex gap-1 mb-3">
-                  {[...Array(testimonio.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4 italic">"{testimonio.text}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <Users className="w-5 h-5 text-green-700" />
-                  </div>
-                  <div>
-                    <p className="font-subhead font-bold text-sm">{testimonio.name}</p>
-                    <p className="text-xs text-gray-500">{testimonio.country}</p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Final Section */}
-      <section className="bg-gradient-to-r from-green-700 to-green-900 text-white py-20 px-4">
-        <div className="container max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-headline mb-6">
-            ¿Listo para Vivir el Mundial 2026 en Coyoacán?
-          </h2>
-          
-          <p className="text-xl md:text-2xl mb-8 text-white/90">
-            No esperes más. Las propiedades se están agotando rápidamente.
+          <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl leading-tight mb-4">
+            Copa Mundial de la FIFA
+            <span className="block text-amber-400">2026™</span>
+          </h1>
+          <p className="text-[#F5F0E8]/70 text-lg md:text-xl max-w-2xl mx-auto mb-8 font-body">
+            El torneo más grande de la historia del fútbol. 48 selecciones, 104 partidos, 3 países sede. México abre el Mundial el 11 de junio en el Estadio Azteca.
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Button 
-              onClick={handleReservarClick}
-              size="lg" 
-              className="bg-white text-green-900 hover:bg-gray-100 text-xl px-12 py-8 shadow-2xl transform hover:scale-105 transition-all"
-            >
-              <Calendar className="mr-2 w-6 h-6" />
-              Reservar Ahora
-            </Button>
-            
-            <Button 
-              onClick={handleWhatsAppClick}
-              size="lg" 
-              variant="outline" 
-              className="border-2 border-white text-white hover:bg-white/10 text-xl px-12 py-8"
-            >
-              <Phone className="mr-2 w-6 h-6" />
-              Contactar por WhatsApp
-            </Button>
-          </div>
-          
-          <div className="flex flex-col md:flex-row gap-6 justify-center items-center text-sm text-white/80">
-            <div className="flex items-center gap-2">
-              <Check className="w-5 h-5" />
-              <span>Cancelación flexible</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Check className="w-5 h-5" />
-              <span>Confirmación inmediata</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Check className="w-5 h-5" />
-              <span>Pago seguro</span>
-            </div>
+          <div className="flex flex-wrap justify-center gap-4">
+            <a href="#grupos" className="px-6 py-3 bg-amber-600 text-white font-subhead uppercase tracking-wider hover:bg-amber-500 transition-colors rounded-sm text-sm">
+              Ver Álbum de Grupos
+            </a>
+            <a href="#sedes-mexico" className="px-6 py-3 border border-white/30 text-white font-subhead uppercase tracking-wider hover:bg-white/10 transition-colors rounded-sm text-sm">
+              Sedes en México
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Botones de Navegación con Diagonales */}
-      <section className="bg-gradient-to-b from-green-900 to-ink py-12 px-4">
-        <div className="container max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {/* Botón: Regresar Arriba */}
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="group relative bg-white text-ink p-6 border-4 border-ink transform hover:scale-105 transition-all shadow-[8px_8px_0px_0px_#1A1A1A] hover:shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[4px] hover:translate-y-[4px]"
-              style={{ transform: 'skewY(-2deg)' }}
-            >
-              <div style={{ transform: 'skewY(2deg)' }} className="flex flex-col items-center gap-2">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                </svg>
-                <span className="font-subhead uppercase text-sm font-bold">Arriba</span>
-              </div>
-            </button>
+      {/* ── Main Layout ── */}
+      <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
 
-            {/* Botón: Home */}
-            <a
-              href="https://superanfitrion.com.mx/"
-              className="group relative bg-rust text-white p-6 border-4 border-ink transform hover:scale-105 transition-all shadow-[8px_8px_0px_0px_#1A1A1A] hover:shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[4px] hover:translate-y-[4px]"
-              style={{ transform: 'skewY(2deg)' }}
-            >
-              <div style={{ transform: 'skewY(-2deg)' }} className="flex flex-col items-center gap-2">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                <span className="font-subhead uppercase text-sm font-bold">Home</span>
-              </div>
-            </a>
+        {/* ── Left Column ── */}
+        <div className="space-y-12">
 
-            {/* Botón: Blog */}
-            <a
-              href="/diario"
-              className="group relative bg-white text-ink p-6 border-4 border-ink transform hover:scale-105 transition-all shadow-[8px_8px_0px_0px_#1A1A1A] hover:shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[4px] hover:translate-y-[4px]"
-              style={{ transform: 'skewY(-2deg)' }}
-            >
-              <div style={{ transform: 'skewY(2deg)' }} className="flex flex-col items-center gap-2">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                </svg>
-                <span className="font-subhead uppercase text-sm font-bold">Blog</span>
-              </div>
-            </a>
+          {/* ── Noticias Destacadas ── */}
+          <section>
+            <div className="flex items-center gap-3 mb-6 border-b-2 border-[#1A1A1A] pb-3">
+              <Newspaper className="w-5 h-5 text-amber-600" />
+              <h2 className="font-subhead text-lg uppercase tracking-widest text-[#1A1A1A]">Noticias Más Relevantes</h2>
+            </div>
+            <div className="space-y-4">
+              {NOTICIAS.map((n, i) => (
+                <article key={i} className="border border-[#1A1A1A]/15 bg-white p-4 hover:border-amber-400 transition-colors group">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-[#1A1A1A] text-white flex items-center justify-center font-headline text-lg rounded-sm">
+                      {i + 1}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className={`text-xs font-mono px-2 py-0.5 border rounded-full ${n.color}`}>{n.tag}</span>
+                        <span className="text-xs text-[#1A1A1A]/50 font-mono">{n.fecha}</span>
+                        <span className="text-xs text-[#1A1A1A]/40 font-mono">— {n.fuente}</span>
+                      </div>
+                      <h3 className="font-headline text-base md:text-lg text-[#1A1A1A] leading-snug mb-1 group-hover:text-amber-700 transition-colors">
+                        {n.titulo}
+                      </h3>
+                      <p className="text-sm text-[#1A1A1A]/65 leading-relaxed">{n.resumen}</p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
 
-            {/* Botón: Reservaciones */}
+          {/* ── Sedes en México ── */}
+          <section id="sedes-mexico">
+            <div className="flex items-center gap-3 mb-6 border-b-2 border-[#1A1A1A] pb-3">
+              <MapPin className="w-5 h-5 text-amber-600" />
+              <h2 className="font-subhead text-lg uppercase tracking-widest text-[#1A1A1A]">Sedes en México</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {SEDES_MEXICO.map((s) => (
+                <div key={s.ciudad} className={`border-2 p-5 relative ${s.inauguracion ? 'border-amber-500 bg-amber-50' : 'border-[#1A1A1A]/20 bg-white'}`}>
+                  {s.inauguracion && (
+                    <div className="absolute -top-3 left-4 bg-amber-600 text-white text-xs font-mono px-3 py-0.5 uppercase tracking-widest">
+                      ★ Inauguración
+                    </div>
+                  )}
+                  <div className="text-3xl mb-3">{s.emoji}</div>
+                  <h3 className="font-headline text-xl text-[#1A1A1A] mb-1">{s.ciudad}</h3>
+                  <p className="text-xs font-mono text-[#1A1A1A]/60 uppercase mb-3">{s.estadio}</p>
+                  <div className="flex gap-4 text-xs font-mono text-[#1A1A1A]/70 mb-3">
+                    <span>👥 {s.capacidad}</span>
+                    <span>⚽ {s.partidos} partidos</span>
+                  </div>
+                  <p className="text-sm text-[#1A1A1A]/70 leading-relaxed">{s.descripcion}</p>
+                </div>
+              ))}
+            </div>
+            {/* CTA Hospedaje */}
+            <div className="mt-6 bg-[#1A1A1A] text-white p-6 border-l-4 border-amber-500">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                  <p className="font-subhead uppercase tracking-widest text-amber-400 text-xs mb-1">Para aficionados del Mundial</p>
+                  <h3 className="font-headline text-xl mb-1">Coyoacán está a 20 minutos del Azteca</h3>
+                  <p className="text-[#F5F0E8]/70 text-sm">Metro Línea 3 directo. Sin comisiones de Airbnb. Departamentos completos en el barrio más cultural de la CDMX.</p>
+                </div>
+                <a
+                  href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-shrink-0 px-6 py-3 bg-amber-600 text-white font-subhead uppercase tracking-wider hover:bg-amber-500 transition-colors text-sm whitespace-nowrap"
+                >
+                  Ver Disponibilidad →
+                </a>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Álbum de Grupos ── */}
+          <section id="grupos">
+            <div className="flex items-center justify-between mb-6 border-b-2 border-[#1A1A1A] pb-3">
+              <div className="flex items-center gap-3">
+                <Shield className="w-5 h-5 text-amber-600" />
+                <h2 className="font-subhead text-lg uppercase tracking-widest text-[#1A1A1A]">Álbum de Grupos — 48 Selecciones</h2>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setVistaGrupos('album')}
+                  className={`px-3 py-1 text-xs font-mono uppercase ${vistaGrupos === 'album' ? 'bg-[#1A1A1A] text-white' : 'border border-[#1A1A1A]/30 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/5'}`}
+                >
+                  Álbum
+                </button>
+                <button
+                  onClick={() => setVistaGrupos('lista')}
+                  className={`px-3 py-1 text-xs font-mono uppercase ${vistaGrupos === 'lista' ? 'bg-[#1A1A1A] text-white' : 'border border-[#1A1A1A]/30 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/5'}`}
+                >
+                  Lista
+                </button>
+              </div>
+            </div>
+
+            {vistaGrupos === 'album' ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {GRUPOS.map((grupo) => (
+                  <div
+                    key={grupo.id}
+                    className={`border-2 overflow-hidden cursor-pointer transition-all ${
+                      grupo.highlight
+                        ? 'border-amber-500 shadow-lg shadow-amber-100'
+                        : grupoActivo === grupo.id
+                        ? 'border-[#1A1A1A] shadow-md'
+                        : 'border-[#1A1A1A]/20 hover:border-[#1A1A1A]/60'
+                    }`}
+                    onClick={() => setGrupoActivo(grupoActivo === grupo.id ? null : grupo.id)}
+                  >
+                    {/* Grupo Header */}
+                    <div className={`bg-gradient-to-r ${grupo.color} text-white px-4 py-3 flex items-center justify-between`}>
+                      <div className="flex items-center gap-3">
+                        <span className="font-headline text-3xl leading-none">G</span>
+                        <div>
+                          <div className="font-headline text-2xl leading-none">{grupo.id}</div>
+                          <div className="text-xs font-mono opacity-70 uppercase">{grupo.sede}</div>
+                        </div>
+                      </div>
+                      {grupo.highlight && (
+                        <span className="bg-amber-400 text-[#1A1A1A] text-xs font-mono px-2 py-0.5 uppercase tracking-wider">
+                          ★ Sede México
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Equipos — Tarjetas Panini */}
+                    <div className="bg-white p-3 grid grid-cols-2 gap-2">
+                      {grupo.equipos.map((eq, i) => (
+                        <div
+                          key={i}
+                          className={`p-3 border rounded-sm ${i === 0 ? 'border-amber-300 bg-amber-50' : 'border-[#1A1A1A]/10 bg-[#FAFAF8]'}`}
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-2xl">{eq.bandera}</span>
+                            <div className="min-w-0">
+                              <div className="font-subhead text-xs uppercase font-bold text-[#1A1A1A] truncate">{eq.pais}</div>
+                              <div className="text-[10px] font-mono text-[#1A1A1A]/50">{eq.conf}</div>
+                            </div>
+                          </div>
+                          <div className="text-[10px] font-mono text-amber-700 truncate">⭐ {eq.estrella}</div>
+                          <div className="text-[10px] text-[#1A1A1A]/55 leading-tight mt-0.5">{eq.nota}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Partidos expandibles */}
+                    {grupoActivo === grupo.id && (
+                      <div className="border-t border-[#1A1A1A]/10 bg-[#F5F0E8] p-3">
+                        <p className="text-xs font-mono uppercase text-[#1A1A1A]/50 mb-2 tracking-wider">Calendario del Grupo {grupo.id}</p>
+                        <ul className="space-y-1">
+                          {grupo.partidos.map((p, i) => (
+                            <li key={i} className="text-xs font-mono text-[#1A1A1A]/70 flex items-start gap-1.5">
+                              <ChevronRight className="w-3 h-3 text-amber-600 flex-shrink-0 mt-0.5" />
+                              {p}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <div className="bg-[#1A1A1A]/5 px-4 py-2 text-center">
+                      <span className="text-xs font-mono text-[#1A1A1A]/50">
+                        {grupoActivo === grupo.id ? '▲ Ocultar partidos' : '▼ Ver calendario del grupo'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* Vista Lista */
+              <div className="space-y-4">
+                {GRUPOS.map((grupo) => (
+                  <div key={grupo.id} className="border border-[#1A1A1A]/15 bg-white overflow-hidden">
+                    <div className={`bg-gradient-to-r ${grupo.color} text-white px-4 py-2 flex items-center gap-3`}>
+                      <span className="font-headline text-xl">Grupo {grupo.id}</span>
+                      <span className="text-xs font-mono opacity-70">{grupo.sede}</span>
+                      {grupo.highlight && <span className="ml-auto bg-amber-400 text-[#1A1A1A] text-xs font-mono px-2 py-0.5">★ México</span>}
+                    </div>
+                    <div className="divide-y divide-[#1A1A1A]/8">
+                      {grupo.equipos.map((eq, i) => (
+                        <div key={i} className="flex items-center gap-3 px-4 py-2.5">
+                          <span className="text-xl w-8">{eq.bandera}</span>
+                          <span className="font-subhead text-sm uppercase font-bold text-[#1A1A1A] w-32">{eq.pais}</span>
+                          <span className="text-xs font-mono text-[#1A1A1A]/50 w-20">{eq.conf}</span>
+                          <span className="text-xs text-amber-700 flex-1">⭐ {eq.estrella}</span>
+                          <span className="text-xs text-[#1A1A1A]/50 hidden md:block max-w-xs">{eq.nota}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* ── Bloque SEO Final ── */}
+          <section className="bg-white border border-[#1A1A1A]/15 p-6">
+            <h2 className="font-headline text-2xl text-[#1A1A1A] mb-3">Hospédate en Coyoacán para el Mundial 2026</h2>
+            <p className="text-[#1A1A1A]/70 leading-relaxed mb-4">
+              Si vas a vivir el Mundial 2026 desde la Ciudad de México, Coyoacán es tu base ideal. A 20 minutos del Estadio Azteca en Metro Línea 3, en el barrio más cultural y seguro de la CDMX. SúperAnfitrión tiene 7 propiedades verificadas con reserva directa, sin comisiones de plataformas externas, con precios competitivos y atención personalizada.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5 text-center">
+              {[
+                { icon: '🏟️', label: '20 min al Azteca', sub: 'Metro Línea 3' },
+                { icon: '🏠', label: '7 propiedades', sub: 'Verificadas' },
+                { icon: '⭐', label: 'Calificación 4.97', sub: '186 reseñas' },
+                { icon: '💳', label: 'Sin comisiones', sub: 'Reserva directa' },
+              ].map((item, i) => (
+                <div key={i} className="bg-[#FAFAF8] border border-[#1A1A1A]/10 p-3 rounded-sm">
+                  <div className="text-2xl mb-1">{item.icon}</div>
+                  <div className="text-xs font-subhead uppercase font-bold text-[#1A1A1A]">{item.label}</div>
+                  <div className="text-[10px] font-mono text-[#1A1A1A]/50">{item.sub}</div>
+                </div>
+              ))}
+            </div>
             <a
               href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative bg-green-700 text-white p-6 border-4 border-ink transform hover:scale-105 transition-all shadow-[8px_8px_0px_0px_#1A1A1A] hover:shadow-[4px_4px_0px_0px_#1A1A1A] hover:translate-x-[4px] hover:translate-y-[4px]"
-              style={{ transform: 'skewY(2deg)' }}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-amber-600 text-white font-subhead uppercase tracking-wider hover:bg-amber-700 transition-colors text-sm"
             >
-              <div style={{ transform: 'skewY(-2deg)' }} className="flex flex-col items-center gap-2">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <span className="font-subhead uppercase text-sm font-bold">Reservar</span>
-              </div>
+              Ver disponibilidad para el Mundial <ExternalLink className="w-4 h-4" />
             </a>
+          </section>
+
+        </div>
+
+        {/* ── Right Sidebar ── */}
+        <aside className="hidden lg:block">
+          <div className="sticky top-20 space-y-4">
+            {/* Cuenta regresiva */}
+            <div className="bg-[#1A1A1A] text-white p-5 border-l-4 border-amber-500">
+              <div className="flex items-center gap-2 mb-3">
+                <Clock className="w-4 h-4 text-amber-400" />
+                <span className="font-subhead text-xs uppercase tracking-widest text-amber-400">Cuenta Regresiva</span>
+              </div>
+              <div className="text-center">
+                <div className="font-headline text-5xl text-amber-400">
+                  {Math.max(0, Math.ceil((new Date('2026-06-11').getTime() - Date.now()) / 86400000))}
+                </div>
+                <div className="text-xs font-mono text-white/60 uppercase tracking-wider">días para la inauguración</div>
+              </div>
+              <div className="mt-3 text-center text-xs font-mono text-white/50">
+                11 Jun 2026 · México vs Sudáfrica<br />Estadio Azteca · CDMX
+              </div>
+            </div>
+
+            {/* Partidos en CDMX */}
+            <div className="bg-white border border-[#1A1A1A]/15 p-4">
+              <div className="flex items-center gap-2 mb-3 border-b border-[#1A1A1A]/10 pb-2">
+                <MapPin className="w-4 h-4 text-amber-600" />
+                <span className="font-subhead text-xs uppercase tracking-widest text-[#1A1A1A]">Partidos en el Azteca</span>
+              </div>
+              <ul className="space-y-2 text-xs font-mono">
+                {[
+                  { fecha: '11 Jun', partido: 'México vs Sudáfrica', nota: '★ INAUGURACIÓN' },
+                  { fecha: '17 Jun', partido: 'Colombia vs Uzbekistán', nota: 'Grupo I' },
+                  { fecha: '19 Jun', partido: 'México vs Corea del Sur', nota: 'Grupo A' },
+                  { fecha: '23 Jun', partido: 'México vs Chequia', nota: 'Grupo A' },
+                  { fecha: 'Jul', partido: 'Ronda de 32', nota: 'Por definir' },
+                ].map((p, i) => (
+                  <li key={i} className={`flex items-start gap-2 py-1.5 ${i < 4 ? 'border-b border-[#1A1A1A]/8' : ''}`}>
+                    <span className="text-amber-600 font-bold w-12 flex-shrink-0">{p.fecha}</span>
+                    <div>
+                      <div className="text-[#1A1A1A] font-medium">{p.partido}</div>
+                      <div className="text-[#1A1A1A]/50 text-[10px]">{p.nota}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Sidebar de reservas */}
+            <ReservaSidebar />
+          </div>
+        </aside>
+      </div>
+
+      {/* ── Footer ── */}
+      <footer className="bg-[#1A1A1A] text-[#F5F0E8] mt-12 py-12 border-t-4 border-amber-600">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 className="font-headline text-2xl mb-2">Diario Coyoacán</h3>
+            <p className="text-xs font-mono text-[#F5F0E8]/50 uppercase tracking-widest mb-3">Periodismo local · Cultura · Gastronomía</p>
+            <p className="text-sm text-[#F5F0E8]/60 leading-relaxed">Cobertura editorial independiente de Coyoacán y la Ciudad de México.</p>
+          </div>
+          <div>
+            <h4 className="font-subhead text-xs uppercase tracking-widest text-[#F5F0E8]/50 mb-3">Navegación</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/"><span className="text-[#F5F0E8]/70 hover:text-amber-400 transition-colors cursor-pointer">Portada</span></Link></li>
+              <li><Link href="/noticias"><span className="text-[#F5F0E8]/70 hover:text-amber-400 transition-colors cursor-pointer">Noticias</span></Link></li>
+              <li><Link href="/hemeroteca"><span className="text-[#F5F0E8]/70 hover:text-amber-400 transition-colors cursor-pointer">Hemeroteca</span></Link></li>
+              <li><span className="text-amber-400">Mundial 2026</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-subhead text-xs uppercase tracking-widest text-[#F5F0E8]/50 mb-3">Hospedaje</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="https://superanfitrion.com.mx" target="_blank" rel="noopener noreferrer" className="text-[#F5F0E8]/70 hover:text-amber-400 transition-colors">SúperAnfitrión</a></li>
+              <li><a href="https://superanfitrioncoyoacan.lodgify.com/es/httpswwwsuperanfitrioncomespropiedades" target="_blank" rel="noopener noreferrer" className="text-[#F5F0E8]/70 hover:text-amber-400 transition-colors">Reservar ahora</a></li>
+              <li><a href="https://superanfitrion.com/aviso-cdmx" target="_blank" rel="noopener noreferrer" className="text-[#F5F0E8]/70 hover:text-amber-400 transition-colors">Aviso CDMX</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-subhead text-xs uppercase tracking-widest text-[#F5F0E8]/50 mb-3">Contacto</h4>
+            <ul className="space-y-2 text-sm text-[#F5F0E8]/70">
+              <li>📱 <a href="https://wa.me/525511427252" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">WhatsApp: 55 1142 7252</a></li>
+              <li>✉️ <a href="mailto:superanfitrioncoyoacan@gmail.com" className="hover:text-amber-400 transition-colors">superanfitrioncoyoacan@gmail.com</a></li>
+            </ul>
           </div>
         </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-ink text-newsprint py-8 px-4">
-        <div className="container max-w-6xl mx-auto text-center">
-          <p className="font-subhead text-sm mb-4">
-            <strong>SúperAnfitrión Coyoacán</strong> - Hospedaje Verificado para el Mundial 2026
-          </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center text-xs opacity-70">
-            <a href="tel:+525511427252" className="flex items-center gap-2 hover:opacity-100">
-              <Phone className="w-4 h-4" />
-              +52 55 1142 7252
-            </a>
-            <a href="mailto:superanfitrioncoyoacan@gmail.com" className="flex items-center gap-2 hover:opacity-100">
-              <Mail className="w-4 h-4" />
-              superanfitrioncoyoacan@gmail.com
-            </a>
-            <a href="https://superanfitrion.com.mx" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-100">
-              <ExternalLink className="w-4 h-4" />
-              superanfitrion.com.mx
-            </a>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-[#F5F0E8]/10 text-center">
+          <p className="text-xs font-mono text-[#F5F0E8]/30">© 2026 Diario Coyoacán. Todos los derechos reservados.</p>
         </div>
       </footer>
+
+      <MobileCTA />
     </div>
   );
 }
