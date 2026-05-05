@@ -704,3 +704,24 @@
 - [x] Ampliar ventana de sitemap-news.xml de 2 a 30 días para incluir más noticias recientes
 - [x] Verificar: sitemap.xml con 77 URLs, sitemap-news.xml con 5 noticias recientes en /noticias/{slug}
 - [x] 59 tests pasando correctamente
+
+## Rediseño profesional de la Hemeroteca
+- [ ] Reescribir Hemeroteca.tsx con header/footer/sidebar idénticos a DiarioCoyoacan y NewsArticleDetail
+- [ ] Importar ReservaSidebar compartido (con alerta CDMX y propiedades)
+- [ ] Grid de artículos moderno: tarjetas con imagen, categoría, fecha, extracto y CTA
+- [ ] Filtros por categoría y búsqueda con el mismo estilo visual
+- [ ] Verificar renderizado y ejecutar tests
+
+## Rediseño profesional de la Hemeroteca
+
+- [x] Leer Hemeroteca.tsx actual y componentes compartidos (ReservaSidebar)
+- [x] Reescribir Hemeroteca.tsx con header idéntico a DiarioCoyoacan (Playfair Display, nav: Portada/Noticias/Hemeroteca resaltada/Mundial 2026/Reservar)
+- [x] Sub-header con fecha y contador de artículos en el archivo
+- [x] Breadcrumbs (Inicio > Hemeroteca)
+- [x] Barra de búsqueda + filtros por categoría (9 categorías)
+- [x] Grid 2 columnas con tarjetas: imagen, categoría, badge Noticia, fecha, tiempo de lectura, título Playfair, resumen, CTA
+- [x] Paginación "Cargar más" (12 artículos por página, 38 artículos totales)
+- [x] Sidebar sticky con alerta CDMX + propiedades (ReservaSidebar compartido)
+- [x] Bloque SEO al final del contenido con enlace a reservas
+- [x] Footer de 4 columnas idéntico a DiarioCoyoacan
+- [x] 59 tests pasando, sin errores TypeScript
