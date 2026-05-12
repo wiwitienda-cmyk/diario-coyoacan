@@ -27,8 +27,8 @@ export async function getLatestArticle() {
   const db = await getDb();
   if (!db) return null;
   
-  // Order by createdAt DESC to get the most recently published article
-  const result = await db.select().from(articles).orderBy(desc(articles.createdAt)).limit(1);
+  // Order by dateISO DESC then createdAt DESC — always show the most recently dated article
+  const result = await db.select().from(articles).orderBy(desc(articles.dateISO), desc(articles.createdAt)).limit(1);
   return result.length > 0 ? result[0] : null;
 }
 

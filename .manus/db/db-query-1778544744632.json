@@ -1,0 +1,58 @@
+{
+  "query": "SELECT slug, date, title, createdAt FROM newsArticles ORDER BY createdAt DESC LIMIT 8;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, date, title, createdAt FROM newsArticles ORDER BY createdAt DESC LIMIT 8;",
+  "rows": [
+    {
+      "slug": "coyoacan-cdmx-semana-telescopios-ccxp-leonora-carrington-fiesta-libro-31-minutos-abril-2026",
+      "date": "1 de mayo de 2026",
+      "title": "Coyoacán y la CDMX se desbordaron: telescopios, CCXP, Leonora Carrington, Fiesta del Libro y 230 mil personas con 31 Minutos en el Zócalo",
+      "createdAt": "2026-05-05 00:36:49"
+    },
+    {
+      "slug": "que-hacer-coyoacan-cdmx-esta-semana-abril-2026-telescopios-cerveza-terror-ccxp-leonora-carrington-libro-rosa-unam-hospedaje",
+      "date": "Martes, 22 de abril de 2026",
+      "title": "Coyoacán explota esta semana: telescopios con cerveza y terror, CCXP MX con Aaron Paul, Leonora Carrington inmersiva y la Fiesta del Libro en la UNAM",
+      "createdAt": "2026-04-22 19:18:39"
+    },
+    {
+      "slug": "gimnasio-olimpico-juan-barrera-coyoacan-historia-lucha-libre-aaa-como-llegar-eventos-2026",
+      "date": "Sábado, 12 de abril de 2026",
+      "title": "Gimnasio Juan de la Barrera: la catedral olímpica de Coyoacán donde AAA hace temblar la CDMX",
+      "createdAt": "2026-04-12 16:18:01"
+    },
+    {
+      "slug": "que-hacer-cdmx-fin-semana-12-13-abril-2026-slow-art-day-exposiciones-musica-coyoacan",
+      "date": "Sábado, 12 de abril de 2026",
+      "title": "Qué hacer en CDMX este fin de semana: Slow Art Day, Kati Horna y listening party de Sabina",
+      "createdAt": "2026-04-12 16:18:01"
+    },
+    {
+      "slug": "penta-retiene-intercontinental-wwe-aaa-juan-barrera-catalina-debuta-lucha-libre-cdmx-2026",
+      "date": "Sábado, 12 de abril de 2026",
+      "title": "Penta retiene el Intercontinental WWE en el Juan de la Barrera y La Catalina sacude AAA con debut explosivo",
+      "createdAt": "2026-04-12 16:18:01"
+    },
+    {
+      "slug": "coyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24",
+      "date": "Lunes, 24 de febrero de 2026",
+      "title": "Coyoacán impulsa seguridad y sustentabilidad en transformación urbana rumbo a Mundial 2026",
+      "createdAt": "2026-02-24 18:25:34"
+    },
+    {
+      "slug": "gentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18",
+      "date": "2026-02-18",
+      "title": "Gentrificación en Coyoacán: entre el progreso inmobiliario y el desplazamiento de vecinos históricos",
+      "createdAt": "2026-02-18 18:45:37"
+    },
+    {
+      "slug": "coyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026",
+      "date": "Domingo, 15 de febrero de 2026",
+      "title": "Coyoacán une cultura y solidaridad en festival por Cuba y Venezuela en marco del Mundial 2026",
+      "createdAt": "2026-02-15 17:45:34"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\tdate\ttitle\tcreatedAt\ncoyoacan-cdmx-semana-telescopios-ccxp-leonora-carrington-fiesta-libro-31-minutos-abril-2026\t1 de mayo de 2026\tCoyoacán y la CDMX se desbordaron: telescopios, CCXP, Leonora Carrington, Fiesta del Libro y 230 mil personas con 31 Minutos en el Zócalo\t2026-05-05 00:36:49\nque-hacer-coyoacan-cdmx-esta-semana-abril-2026-telescopios-cerveza-terror-ccxp-leonora-carrington-libro-rosa-unam-hospedaje\tMartes, 22 de abril de 2026\tCoyoacán explota esta semana: telescopios con cerveza y terror, CCXP MX con Aaron Paul, Leonora Carrington inmersiva y la Fiesta del Libro en la UNAM\t2026-04-22 19:18:39\ngimnasio-olimpico-juan-barrera-coyoacan-historia-lucha-libre-aaa-como-llegar-eventos-2026\tSábado, 12 de abril de 2026\tGimnasio Juan de la Barrera: la catedral olímpica de Coyoacán donde AAA hace temblar la CDMX\t2026-04-12 16:18:01\nque-hacer-cdmx-fin-semana-12-13-abril-2026-slow-art-day-exposiciones-musica-coyoacan\tSábado, 12 de abril de 2026\tQué hacer en CDMX este fin de semana: Slow Art Day, Kati Horna y listening party de Sabina\t2026-04-12 16:18:01\npenta-retiene-intercontinental-wwe-aaa-juan-barrera-catalina-debuta-lucha-libre-cdmx-2026\tSábado, 12 de abril de 2026\tPenta retiene el Intercontinental WWE en el Juan de la Barrera y La Catalina sacude AAA con debut explosivo\t2026-04-12 16:18:01\ncoyoacan-impulsa-seguridad-y-sustentabilidad-en-transformacion-urbana-2026-02-24\tLunes, 24 de febrero de 2026\tCoyoacán impulsa seguridad y sustentabilidad en transformación urbana rumbo a Mundial 2026\t2026-02-24 18:25:34\ngentrificacion-en-coyoacan-entre-el-progreso-inmobiliario-y-el-desplazamiento-de-vecinos-historicos-2026-02-18\t2026-02-18\tGentrificación en Coyoacán: entre el progreso inmobiliario y el desplazamiento de vecinos históricos\t2026-02-18 18:45:37\ncoyoacan-une-cultura-y-solidaridad-en-festival-por-cuba-y-venezuela-en-marco-del-mundial-2026\tDomingo, 15 de febrero de 2026\tCoyoacán une cultura y solidaridad en festival por Cuba y Venezuela en marco del Mundial 2026\t2026-02-15 17:45:34\n",
+  "stderr": "",
+  "execution_time_ms": 260
+}

@@ -1,0 +1,50 @@
+{
+  "query": "SELECT slug, dateISO, headlineEs FROM articles ORDER BY dateISO DESC, createdAt DESC LIMIT 8;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, dateISO, headlineEs FROM articles ORDER BY dateISO DESC, createdAt DESC LIMIT 8;",
+  "rows": [
+    {
+      "slug": "dia-de-las-madres-cdmx-2026",
+      "dateISO": "2026-05-10",
+      "headlineEs": "Día de las Madres: Coyoacán y la CDMX se llenan de flores y música"
+    },
+    {
+      "slug": "alerta-amarilla-calor-cdmx-mayo-2026",
+      "dateISO": "2026-05-07",
+      "headlineEs": "CDMX bajo Alerta Amarilla por ola de calor récord en mayo"
+    },
+    {
+      "slug": "bts-zocalo-sheinbaum-mayo-2026",
+      "dateISO": "2026-05-06",
+      "headlineEs": "BTS enciende el Zócalo: Encuentro con Sheinbaum desata euforia ARMY"
+    },
+    {
+      "slug": "azteca-mundial-2026-preparativos",
+      "dateISO": "2026-05-06",
+      "headlineEs": "Estadio Azteca se alista: México será el primer país en tres Mundiales"
+    },
+    {
+      "slug": "semana-santa-cdmx-2026-guia-completa-eventos-procesiones-hospedaje-coyoacan-turismo",
+      "dateISO": "2026-03-25",
+      "headlineEs": "Guía completa de Semana Santa 2026 en CDMX: procesiones, museos, gastronomía y dónde hospedarte cerca de todo"
+    },
+    {
+      "slug": "que-hacer-coyoacan-semana-santa-2026-museos-frida-kahlo-mercados-actividades-cdmx",
+      "dateISO": "2026-03-25",
+      "headlineEs": "Semana Santa en Coyoacán sin iglesia: museos, mercados, helados y todo lo que puedes hacer del 29 de marzo al 5 de abril"
+    },
+    {
+      "slug": "viacrucis-coyoacan-2026-semana-santa-parroquia-san-juan-bautista-procesion-viernes-santo",
+      "dateISO": "2026-03-25",
+      "headlineEs": "Semana Santa en Coyoacán 2026: el Viacrucis por las calles del centro y el programa completo de la Parroquia San Juan Bautista"
+    },
+    {
+      "slug": "pasion-cristo-iztapalapa-2026-viacrucis-semana-santa-cdmx-hospedaje-coyoacan",
+      "dateISO": "2026-03-25",
+      "headlineEs": "Pasión de Cristo en Iztapalapa 2026: la representación número 183 espera más de 2 millones de asistentes"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\tdateISO\theadlineEs\ndia-de-las-madres-cdmx-2026\t2026-05-10\tDía de las Madres: Coyoacán y la CDMX se llenan de flores y música\nalerta-amarilla-calor-cdmx-mayo-2026\t2026-05-07\tCDMX bajo Alerta Amarilla por ola de calor récord en mayo\nbts-zocalo-sheinbaum-mayo-2026\t2026-05-06\tBTS enciende el Zócalo: Encuentro con Sheinbaum desata euforia ARMY\nazteca-mundial-2026-preparativos\t2026-05-06\tEstadio Azteca se alista: México será el primer país en tres Mundiales\nsemana-santa-cdmx-2026-guia-completa-eventos-procesiones-hospedaje-coyoacan-turismo\t2026-03-25\tGuía completa de Semana Santa 2026 en CDMX: procesiones, museos, gastronomía y dónde hospedarte cerca de todo\nque-hacer-coyoacan-semana-santa-2026-museos-frida-kahlo-mercados-actividades-cdmx\t2026-03-25\tSemana Santa en Coyoacán sin iglesia: museos, mercados, helados y todo lo que puedes hacer del 29 de marzo al 5 de abril\nviacrucis-coyoacan-2026-semana-santa-parroquia-san-juan-bautista-procesion-viernes-santo\t2026-03-25\tSemana Santa en Coyoacán 2026: el Viacrucis por las calles del centro y el programa completo de la Parroquia San Juan Bautista\npasion-cristo-iztapalapa-2026-viacrucis-semana-santa-cdmx-hospedaje-coyoacan\t2026-03-25\tPasión de Cristo en Iztapalapa 2026: la representación número 183 espera más de 2 millones de asistentes\n",
+  "stderr": "",
+  "execution_time_ms": 260
+}

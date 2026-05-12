@@ -1,0 +1,35 @@
+{
+  "query": "SELECT slug, dateISO, createdAt FROM articles ORDER BY dateISO DESC, createdAt DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 23FGzVLYwEZGWDn.5a8790ea1f5e --database Q8BeTaWP8ahBzzm2xVz4Wa --execute SELECT slug, dateISO, createdAt FROM articles ORDER BY dateISO DESC, createdAt DESC LIMIT 5;",
+  "rows": [
+    {
+      "slug": "dia-de-las-madres-cdmx-2026",
+      "dateISO": "2026-05-10",
+      "createdAt": "2026-05-12 00:09:41"
+    },
+    {
+      "slug": "alerta-amarilla-calor-cdmx-mayo-2026",
+      "dateISO": "2026-05-07",
+      "createdAt": "2026-05-12 00:09:41"
+    },
+    {
+      "slug": "azteca-mundial-2026-preparativos",
+      "dateISO": "2026-05-06",
+      "createdAt": "2026-05-12 00:09:41"
+    },
+    {
+      "slug": "bts-zocalo-sheinbaum-mayo-2026",
+      "dateISO": "2026-05-06",
+      "createdAt": "2026-05-12 00:09:41"
+    },
+    {
+      "slug": "semana-santa-cdmx-2026-guia-completa-eventos-procesiones-hospedaje-coyoacan-turismo",
+      "dateISO": "2026-03-25",
+      "createdAt": "2026-03-25 21:23:52"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\tdateISO\tcreatedAt\ndia-de-las-madres-cdmx-2026\t2026-05-10\t2026-05-12 00:09:41\nalerta-amarilla-calor-cdmx-mayo-2026\t2026-05-07\t2026-05-12 00:09:41\nazteca-mundial-2026-preparativos\t2026-05-06\t2026-05-12 00:09:41\nbts-zocalo-sheinbaum-mayo-2026\t2026-05-06\t2026-05-12 00:09:41\nsemana-santa-cdmx-2026-guia-completa-eventos-procesiones-hospedaje-coyoacan-turismo\t2026-03-25\t2026-03-25 21:23:52\n",
+  "stderr": "",
+  "execution_time_ms": 264
+}
