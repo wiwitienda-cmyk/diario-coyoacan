@@ -160,6 +160,7 @@ export default function DiarioCoyoacan() {
     title: n.title,
     summary: n.summary,
     category: n.category,
+    externalUrl: n.externalUrl ?? null,
     _isNews: true,
   }));
   const combinedArticles = [...normalizedNews, ...(allArticles || [])];
@@ -345,7 +346,8 @@ export default function DiarioCoyoacan() {
                       const art = portadaArticles[0];
                       const artTitle = art.title.length > 90 ? art.title.substring(0, 87) + '…' : art.title;
                       const artSummary = art.summary.length > 200 ? art.summary.substring(0, 197) + '…' : art.summary;
-                      const artUrl = (art as any)._isNews ? `/noticias/${art.slug}` : `/diario?slug=${art.slug}`;
+                      const artUrl = (art as any).externalUrl || ((art as any)._isNews ? `/noticias/${art.slug}` : `/diario?slug=${art.slug}`);
+                      const isExternal = !!(art as any).externalUrl;
                       return (
                         <article className="pb-8 mb-8 border-b border-gray-200">
                           {art.heroImage && (
@@ -386,12 +388,23 @@ export default function DiarioCoyoacan() {
                               <span className="text-gray-300">|</span>
                               <span className="font-medium text-gray-700">Redacción</span>
                             </div>
-                            <Link
-                              href={artUrl}
-                              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-amber-800 transition-colors"
-                            >
-                              Leer artículo <ArrowRight className="w-4 h-4" />
-                            </Link>
+                            {isExternal ? (
+                              <a
+                                href={artUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-amber-800 transition-colors"
+                              >
+                                Leer más <ExternalLink className="w-4 h-4" />
+                              </a>
+                            ) : (
+                              <Link
+                                href={artUrl}
+                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-amber-800 transition-colors"
+                              >
+                                Leer artículo <ArrowRight className="w-4 h-4" />
+                              </Link>
+                            )}
                           </div>
                         </article>
                       );
@@ -403,7 +416,8 @@ export default function DiarioCoyoacan() {
                         {portadaArticles.slice(1, 5).map((art, idx) => {
                           const artTitle = art.title.length > 80 ? art.title.substring(0, 77) + '…' : art.title;
                           const artSummary = art.summary.length > 120 ? art.summary.substring(0, 117) + '…' : art.summary;
-                          const artUrl = (art as any)._isNews ? `/noticias/${art.slug}` : `/diario?slug=${art.slug}`;
+                          const artUrl = (art as any).externalUrl || ((art as any)._isNews ? `/noticias/${art.slug}` : `/diario?slug=${art.slug}`);
+                          const isExternal = !!(art as any).externalUrl;
                           return (
                             <article key={art.slug} className="group">
                               {art.heroImage && (

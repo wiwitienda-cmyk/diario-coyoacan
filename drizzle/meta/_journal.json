@@ -29,6 +29,13 @@
       "when": 1771474837545,
       "tag": "0003_curious_spot",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1778769218702,
+      "tag": "0004_charming_killer_shrike",
+      "breakpoints": true
     }
   ]
 }

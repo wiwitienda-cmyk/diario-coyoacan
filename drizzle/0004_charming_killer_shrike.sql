@@ -1,0 +1,1 @@
+ALTER TABLE `newsArticles` ADD `externalUrl` varchar(500);

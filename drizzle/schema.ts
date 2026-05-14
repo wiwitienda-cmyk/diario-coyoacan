@@ -89,6 +89,7 @@ export const newsArticles = mysqlTable("newsArticles", {
   heroImage: varchar("heroImage", { length: 500 }).notNull(),
   category: varchar("category", { length: 100 }).notNull(),
   date: varchar("date", { length: 100 }).notNull(),
+  externalUrl: varchar("externalUrl", { length: 500 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
