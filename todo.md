@@ -765,3 +765,10 @@
 - [x] Subir a CDN (manus-upload-file --webdev)
 - [x] Integrar en SiteHeader.tsx junto al nombre "Diario Coyoacán"
 - [x] Verificar en desktop y móvil, guardar checkpoint
+
+## Fix Open Graph: link compartido siempre abre portada (14 mayo 2026)
+
+- [ ] Corregir meta tags OG en index.html con título, descripción e imagen fija del Diario (no del artículo)
+- [ ] Agregar endpoint /api/og en el servidor que devuelva meta tags SSR para la URL raíz
+- [ ] Verificar que WhatsApp muestre "Diario Coyoacán" al compartir diario.superanfitrion.com.mx
+- [ ] Guardar checkpoint

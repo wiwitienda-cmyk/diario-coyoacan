@@ -108,14 +108,11 @@ async function startServer() {
           ogType = 'article';
         }
       } else if (req.path === '/diario' || req.path === '/diario/' || req.path === '/' || req.path === '') {
-        // Página principal / portada: canonical a la raíz
+        // Página principal / portada: título FIJO del Diario para que WhatsApp/redes muestren el periódico, no el artículo
         ogUrl = 'https://diario.superanfitrion.com.mx/';
-        const latest = await getLatestArticle();
-        if (latest) {
-          ogTitle = (latest.headlineEs || '').substring(0, 50) + ' | Diario Coyoacán';
-          ogDescription = (latest.summaryEs || '').substring(0, 160);
-          ogImage = latest.heroImage || ogImage;
-        }
+        ogTitle = 'Diario Coyoacán — Periodismo local desde el corazón de la CDMX';
+        ogDescription = 'Noticias, cultura, gastronomía y vida cotidiana de Coyoacán. El periódico digital del barrio más bohemio de la Ciudad de México.';
+        ogImage = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663072521459/Q8BeTaWP8ahBzzm2xVz4Wa/ajolote-logo-og-1200x630-7i99r3qqk2JvqEyL5E7FAU.png';
       } else if (req.path === '/noticias') {
         ogUrl = 'https://diario.superanfitrion.com.mx/noticias';
         ogTitle = 'Noticias de Coyoacán | Diario Coyoacán';
